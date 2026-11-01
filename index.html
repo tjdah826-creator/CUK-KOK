@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <title>CUK콕</title>
 
-  <!-- iOS 홈 화면 추가(PWA) 전용 메타 태그 -->
+  <!-- iOS PWA 메타 태그 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CUK콕">
   <meta name="theme-color" content="#00356B">
 
-  <!-- iOS 전용 CUK콕 홈 화면 앱 아이콘 -->
+  <!-- CUK콕 앱 아이콘 -->
   <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='115' fill='%2300356B'/><circle cx='256' cy='256' r='180' fill='none' stroke='%23EDF4FD' stroke-width='14'/><path d='M256 120 V392 M160 210 H352' stroke='%23FFFFFF' stroke-width='32' stroke-linecap='round'/><circle cx='256' cy='210' r='20' fill='%23E53E3E'/><text x='256' y='445' font-size='56' font-family='sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>CUK-KOK</text></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,8 +35,10 @@
       --hot-soft: #FEF0F0;
       --warn: #D97706;
       --warn-soft: #FEF3C7;
+      --ok: #028A55;
+      --ok-soft: #EAF7EE;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.02);
-      --shadow-hover: 0 8px 24px rgba(0, 37, 85, 0.10);
+      --shadow-hover: 0 8px 24px rgba(0, 37, 85, 0.09);
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
@@ -61,6 +63,8 @@
         --hot-soft: #381A1A;
         --warn: #FBBF24;
         --warn-soft: #382A12;
+        --ok: #48D597;
+        --ok-soft: #143324;
       }
     }
 
@@ -83,14 +87,15 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
     }
 
+    /* 헤더 */
     header {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding: 8px 4px 14px;
+      padding: 6px 4px 14px;
       border-bottom: 2px solid var(--line);
     }
     .brand-wrap { display: flex; flex-direction: column; gap: 4px; }
@@ -117,11 +122,55 @@
       font-weight: 700;
       letter-spacing: -0.02em;
     }
-    .header-sub {
-      color: var(--ink-secondary);
-      font-size: 13.5px;
+    .header-sub { color: var(--ink-secondary); font-size: 13.5px; }
+
+    /* [UX 1] 모던 인스턴트 검색 바 */
+    .search-bar-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-bar-wrap:focus-within {
+      border-color: var(--cuk-accent);
+      box-shadow: 0 0 0 3px rgba(10, 95, 194, 0.12);
+    }
+    .search-icon {
+      margin-left: 14px;
+      color: var(--muted);
+      font-size: 16px;
+      user-select: none;
+    }
+    .search-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 13px 12px;
+      font: inherit;
+      font-size: 14.5px;
+      color: var(--ink);
+    }
+    .search-clear {
+      margin-right: 12px;
+      background: var(--line-subtle);
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
     }
 
+    /* 프로필 패널 */
     .profile-card {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -159,7 +208,6 @@
       color: var(--ink-secondary);
       cursor: pointer;
     }
-
     .filter-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -187,6 +235,7 @@
       outline: none;
     }
 
+    /* 칩 필터 */
     .chips-area {
       padding: 12px 18px;
       border-top: 1px solid var(--line-subtle);
@@ -196,12 +245,7 @@
       gap: 6px;
       align-items: center;
     }
-    .chips-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      margin-right: 4px;
-    }
+    .chips-label { font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 4px; }
     .chip {
       display: inline-flex;
       align-items: center;
@@ -213,6 +257,7 @@
       padding: 4px 12px;
       border-radius: 99px;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .chip:has(input:checked) {
       background: var(--cuk-soft);
@@ -222,6 +267,7 @@
     }
     .chip input { accent-color: var(--cuk-accent); }
 
+    /* [UX 2] 3단 탭 (보관함 탭 추가) */
     .tabs-wrapper {
       display: flex;
       background: var(--surface);
@@ -229,10 +275,11 @@
       border-radius: var(--radius-md);
       padding: 4px;
       box-shadow: var(--shadow-sm);
+      gap: 4px;
     }
     .tab-btn {
       flex: 1;
-      padding: 12px;
+      padding: 11px 12px;
       border: none;
       background: transparent;
       border-radius: 10px;
@@ -264,35 +311,59 @@
       color: #FFFFFF;
     }
 
-    .summary-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    /* 통계 및 정렬 컨트롤러 */
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
     }
-    .stat-pill {
+    .summary-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .stat-pill-sm {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 12.5px;
+      color: var(--ink-secondary);
     }
-    .stat-label { font-size: 11.5px; color: var(--muted); font-weight: 600; }
-    .stat-value { font-size: 17px; font-weight: 700; color: var(--ink); }
-    .stat-value b { color: var(--cuk-accent); }
-    .stat-value.highlight b { color: var(--hot); }
+    .stat-pill-sm b { color: var(--cuk-accent); }
+    .stat-pill-sm b.hot { color: var(--hot); }
 
+    .sort-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .sort-select {
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
+
+    /* 공고 카드 벤토 그리드 */
     .card-list { display: flex; flex-direction: column; gap: 12px; }
     .card {
+      position: relative;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 18px 20px;
       box-shadow: var(--shadow-sm);
       display: grid;
-      grid-template-columns: 70px 1fr;
+      grid-template-columns: 72px 1fr;
       gap: 16px;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
@@ -304,6 +375,7 @@
       .card { grid-template-columns: 1fr; gap: 10px; }
     }
 
+    /* [UX 4] D-day 뱃지 & 마감임박 라이브 펄스 */
     .dday-box {
       display: flex;
       flex-direction: column;
@@ -316,18 +388,24 @@
       height: fit-content;
       text-align: center;
     }
-    .dday-num {
-      font-family: var(--font-mono);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--cuk-accent);
-    }
+    .dday-num { font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--cuk-accent); }
     .dday-sub { font-size: 10.5px; font-weight: 600; color: var(--muted); }
-    .dday-box.hot { background: var(--hot-soft); border-color: rgba(229, 62, 62, 0.2); }
+    .dday-box.hot {
+      background: var(--hot-soft);
+      border-color: rgba(229, 62, 62, 0.3);
+      animation: pulse-border 2s infinite ease-in-out;
+    }
     .dday-box.hot .dday-num { color: var(--hot); }
     .dday-box.gap { background: var(--warn-soft); border-color: rgba(217, 119, 6, 0.2); }
     .dday-box.gap .dday-num { color: var(--warn); }
 
+    @keyframes pulse-border {
+      0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.3); }
+      70% { box-shadow: 0 0 0 6px rgba(229, 62, 62, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+    }
+
+    /* 카드 세부 본문 */
     .card-content { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
     .badge-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
     .tag {
@@ -343,17 +421,32 @@
     .tag.primary { background: var(--cuk-soft); color: var(--cuk-accent); border-color: transparent; }
     .tag.date { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); border: none; background: transparent; }
 
-    .btn-ics {
+    /* [UX 2 & 5] 북마크 & 공유 & 캘린더 액션 버튼 */
+    .action-btns {
       margin-left: auto;
-      font-family: var(--font-body);
-      font-size: 11.5px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-icon {
       border: 1px solid var(--line);
       background: var(--surface);
+      border-radius: var(--radius-sm);
+      padding: 4px 8px;
+      font-size: 11.5px;
+      font-weight: 600;
       color: var(--ink);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-icon:hover { background: var(--bg); }
+    .btn-bookmark.active {
+      background: var(--cuk-gold-soft, #FCF5E8);
+      border-color: var(--cuk-gold);
+      color: var(--cuk-gold);
     }
 
     .card-title {
@@ -365,10 +458,7 @@
     .card-title a { color: inherit; text-decoration: none; }
     .card-title a:hover { color: var(--cuk-accent); }
 
-    .benefit-line {
-      font-size: 13px;
-      color: var(--ink-secondary);
-    }
+    .benefit-line { font-size: 13px; color: var(--ink-secondary); }
     .benefit-line b { color: var(--cuk-primary); font-weight: 700; }
 
     .prep-box {
@@ -384,6 +474,7 @@
     }
     .prep-box b { color: var(--ink); }
 
+    /* [UX 3] 서류 프로그레스 바 & 인터랙티브 체크리스트 */
     details {
       background: var(--bg);
       border: 1px solid var(--line-subtle);
@@ -405,6 +496,20 @@
     summary::after { content: "▾"; font-size: 13px; transition: transform 0.2s; }
     details[open] summary::after { transform: rotate(180deg); }
 
+    .doc-progress-bar {
+      margin-top: 8px;
+      background: var(--line);
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .doc-progress-fill {
+      background: var(--ok);
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+
     .sum-content {
       margin-top: 10px;
       display: flex;
@@ -423,8 +528,8 @@
     .sum-content ul { padding-left: 16px; display: flex; flex-direction: column; gap: 2px; }
     .sum-content ul.caution li { color: var(--hot); }
     .sum-content ul.caution li span { color: var(--ink); }
-    .docs-list { list-style: none; padding-left: 0!important; display: flex; flex-direction: column; gap: 4px; }
-    .docs-list li { display: flex; align-items: center; gap: 6px; }
+    .docs-list { list-style: none; padding-left: 0!important; display: flex; flex-direction: column; gap: 5px; }
+    .docs-list li { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .quote-box {
       font-size: 11.5px;
       color: var(--ink-secondary);
@@ -434,6 +539,7 @@
       border-radius: 0 4px 4px 0;
     }
 
+    /* GAP 프로그레스 바 */
     .gap-progress-wrap {
       margin-top: 6px;
       background: var(--line-subtle);
@@ -470,11 +576,36 @@
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
     }
+
+    /* [UX 5] 토스트 팝업 알림 */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(25, 31, 40, 0.9);
+      backdrop-filter: blur(8px);
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      opacity: 0;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
 
 <div class="wrap">
+  <!-- 헤더 -->
   <header>
     <div class="brand-wrap">
       <div class="univ-tag">Catholic University of Korea · Smart Campus</div>
@@ -483,6 +614,14 @@
     </div>
   </header>
 
+  <!-- [UX 1] 실시간 인스턴트 검색 바 -->
+  <div class="search-bar-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="live-search" class="search-input" placeholder="공고명, 장학금, 자격 요건 검색...">
+    <button id="search-clear-btn" class="search-clear">✕</button>
+  </div>
+
+  <!-- 프로필 패널 -->
   <section class="profile-card">
     <div class="profile-header" id="btn-toggle-profile">
       <div class="profile-title">
@@ -533,7 +672,7 @@
     </div>
 
     <div class="chips-area">
-      <span class="chips-label">알림 분야:</span>
+      <span class="chips-label">분야:</span>
       <label class="chip"><input type="checkbox" name="interest" value="장학" checked>장학</label>
       <label class="chip"><input type="checkbox" name="interest" value="취창업" checked>취창업</label>
       <label class="chip"><input type="checkbox" name="interest" value="비교과" checked>비교과</label>
@@ -543,47 +682,59 @@
     </div>
   </section>
 
+  <!-- [UX 2] 3단 탭 내비게이션 (관심 보관함 탭 추가) -->
   <div class="tabs-wrapper">
     <button class="tab-btn" id="t-feed" aria-selected="true">
-      <span>✨ 바로 지원 가능</span>
+      <span>✨ 바로 지원</span>
       <span class="tab-badge" id="n-feed">0</span>
     </button>
     <button class="tab-btn" id="t-gap" aria-selected="false">
-      <span>🎯 조금만 더 채우면 가능 (GAP)</span>
+      <span>🎯 갭 보완</span>
       <span class="tab-badge" id="n-gap">0</span>
+    </button>
+    <button class="tab-btn" id="t-bookmark" aria-selected="false">
+      <span>📌 보관함</span>
+      <span class="tab-badge" id="n-bookmark">0</span>
     </button>
   </div>
 
-  <section class="summary-bar">
-    <div class="stat-pill">
-      <span class="stat-label">지원 적합 공고</span>
-      <span class="stat-value" id="kpi-available">0건</span>
+  <!-- 통계 및 [UX 6] 정렬 컨트롤러 -->
+  <div class="controls-row">
+    <div class="summary-bar">
+      <div class="stat-pill-sm">지원 적합: <b id="kpi-available">0건</b></div>
+      <div class="stat-pill-sm">장학 혜택: <b id="kpi-scholarship" class="hot">0건</b></div>
     </div>
-    <div class="stat-pill">
-      <span class="stat-label">놓치기 아까운 장학 기회</span>
-      <span class="stat-value highlight" id="kpi-scholarship">0건</span>
+    <div class="sort-wrap">
+      <span style="font-size:12px; color:var(--muted); font-weight:600;">정렬:</span>
+      <select id="sort-select" class="sort-select">
+        <option value="due">마감 임박순</option>
+        <option value="sch">장학금 우선순</option>
+        <option value="prep">서류 준비 빠른순</option>
+      </select>
     </div>
-    <div class="stat-pill">
-      <span class="stat-label">스펙 보완 시 가능 기회</span>
-      <span class="stat-value" id="kpi-gap">0건</span>
-    </div>
-  </section>
+  </div>
 
+  <!-- 메인 피드 목록 -->
   <main id="v-feed" class="card-list"></main>
   <main id="v-gap" class="card-list" style="display:none;"></main>
+  <main id="v-bookmark" class="card-list" style="display:none;"></main>
+
+  <!-- 하단 마감 및 필터 제외 안내 -->
   <div id="hid" class="hiddenlist"></div>
 </div>
 
+<!-- [UX 5] 토스트 알림창 -->
+<div id="toast" class="toast">링크가 복사되었습니다.</div>
+
 <script>
 (function(){
-  // [수정] 실제 오늘 날짜(자정 기준)로 설정
   var now = new Date();
   var TODAY = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Google Apps Script API를 연결한 경우 아래 주소를 입력하세요.
-  // URL이 비어있으면 내장 기본 데이터를 사용합니다.
-  var SHEET_API_URL = ""; 
+  // 구글 Apps Script Web App 실시간 연동 URL
+  var SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzjbRshI3xLedKeygd7xygTwGdy40uV5FX535rSAwglb1VCX52pZj9RjsK5zQY-gyW2/exec"; 
 
+  // 로컬 기본 데이터셋 (초기/오프라인 폴백용)[cite: 7]
   var N = [
     {id:"N001",cat:"장학",src:"교내",t:"[학생지원팀] 2026년도 두산연강재단 대학 장학생 선발 안내",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[2,3],status:["enrolled"],field:null,gpa:3.0,toeic:0,team:10,due:[2026,10,13],prep:4,benefit:"등록금 전액 지원",sum:["두산연강재단 대학 장학생 교내 추천","직전학기 평점 3.0 이상 2~3학년 재학생 대상","선발 시 등록금 전액 지원"],caution:["타 장학금 중복 수혜 불가","휴학생 및 초과학기자 제외"],docs:["장학신청서","성적증명서","지도교수 추천서"],q:"본교 2~3학년 재학생 중 직전학기 평점 3.0 이상인 자. 타 장학금 중복 수혜 불가."},
     {id:"N002",cat:"장학",src:"교내",t:"[학생지원팀] 2026년도 하반기 강화군 대학생 등록금 지원사업 안내",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:2.5,toeic:0,team:10,due:[2026,10,9],prep:3,benefit:"등록금 지원",sum:["강화군 거주 대학생 등록금 지원사업","직전학기 12학점 이상 이수 및 평점 2.5 이상","거주 요건 충족 시 등록금 실납부액 지원"],caution:["학생 본인 또는 부모 강화군 주민등록 필수","직전학기 12학점 미만 이수 시 제외"],docs:["신청서","주민등록초본","가족관계증명서","성적증명서"],q:"학생 본인 또는 부모가 강화군에 주민등록을 둔 대학교 재학생. 평점 2.5 이상."},
@@ -594,12 +745,7 @@
     {id:"N007",cat:"비교과",src:"교내",t:"[교수학습개발원] 2026 생성형 AI 프롬프트 엔지니어링 실습 과정",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,9,31],prep:0,benefit:"비교과 마일리지 10점 및 수료증",sum:["생성형 AI 프롬프트 엔지니어링 실습","실무 LLM 활용 및 프롬프트 템플릿 제작","이수 시 비교과 마일리지 10점 지급"],caution:["선착순 30명 마감","전 일정 출석 필수"],docs:["온라인 수강신청서"],q:"본교 학부 재학생 누구나 지원 가능. 선착순 30명 마감"},
     {id:"N008",cat:"학사",src:"교내",t:"[학사지원팀] 2027-1학기 다전공(복수·부·연계전공) 신청 안내",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,20],prep:5,benefit:"복수·부·연계전공 이수 승인",sum:["2027학년도 1학기 다전공 신청","트리니티 포털을 통한 온라인 접수","2개 학기 이상 이수한 재학생 대상"],caution:["2개 학기 이상 이수자만 신청 가능","학과별 선발 인원 및 요건 상이"],docs:["트리니티 온라인 신청서","학업계획서 1부"],q:"2개 학기 이상 이수한 1~3학년 재학생 대상. 학업계획서 1부 제출"},
     {id:"N009",cat:"공모전",src:"외부",t:"[외부기관] 2026 대학생 경영 혁신 전략 아이디어 공모전",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled","leave"],field:["biz"],gpa:0,toeic:0,team:4,due:[2026,10,25],prep:10,benefit:"상금 및 채용 가산점",sum:["대학생 경영 혁신 전략 아이디어 공모전","신규 비즈니스 모델 및 마케팅 제안","경영/경제 계열 최대 4인 이하 팀 구성"],caution:["경영/경제 계열 전공자 필수","최대 4인 팀 / 타 대회 기출작 금지"],docs:["기획서(PPT 20장 이내)","재학증명서","개인정보 동의서"],q:"전국 경영/경제 계열 대학생, 개인 또는 최대 4인 이하 팀 구성 필수"},
-    {id:"N010",cat:"장학",src:"교내",t:"[학부대학] 2026학년도 2학기 이원길 장학금 대상자 선발 공고",url:"https://gs.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,20],prep:4,benefit:"등록금 초과 수혜 가능 장학금",sum:["2학기 이원길 장학금 선발","학술·봉사·설계·창업 부문 공로 장학","등록금 범위 초과 수혜 가능"],caution:["휴학생 및 초과학기·수료유예자 불가","활동결과보고서 제출 필수"],docs:["트리니티 장학신청","장학금 신청서","활동결과보고서"],q:"본교 재학생(휴학생 및 수료유예자 불가). 등록금 초과 수혜 가능"},
-    {id:"N020",cat:"공모전",src:"외부",t:"[산업통상부·KIAT] 2026 공학페스티벌",url:"https://www.kiat.or.kr",grades:[1,2,3,4],status:["enrolled","leave"],field:["sci"],gpa:0,toeic:0,team:10,due:[2026,10,8],prep:5,benefit:"산업부 장관상 및 전시 기회",sum:["전국 대학 공학페스티벌 캡스톤디자인 출품","우수 공학 작품 전시 및 경진","산업통상자원부·KIAT 주관"],caution:["공학계열 대학(원)생 대상","대학별 추천 요건 확인 필요"],docs:["참가 신청서","작품 설명서","추천서"],q:"참가대상: 대학(원)생. 대학 공학 작품 출품"},
-    {id:"N021",cat:"공모전",src:"외부",t:"[한국주택금융공사] 2026년도 HF 대국민 혁신 아이디어 공모전",url:"https://www.hf.go.kr",grades:[1,2,3,4],status:["enrolled","leave"],field:null,gpa:0,toeic:0,team:1,due:[2026,10,6],prep:5,benefit:"총 300만원 (최우수 100만원)",sum:["주택금융 상품 및 서비스 혁신 아이디어 공모","국민 중심 절차 개선 및 소통 강화 방안","한국주택금융공사 주최 대국민 공모"],caution:["개인 참가만 가능 (팀 참가 불가)","공사 직원은 참가 불가"],docs:["제출 양식 (공사 홈페이지 양식)"],q:"팀 구성: 개인 참가만 가능. 주택금융 상품·서비스 품질을 높일 아이디어"},
-    {id:"N026",cat:"공모전",src:"외부",t:"[의왕시] 2026 의왕시 청년 e-Room 창업 아이디어 공모전",url:"https://www.uiwang.go.kr",grades:[1,2,3,4],status:["enrolled","leave"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,11],prep:5,benefit:"총 180만원 (대상 100만원) 및 멘토링",sum:["의왕시 지속가능발전 청년 창업 아이디어","서류평가 통과 팀 대상 멘토링 지원","본선 발표평가(11.27) 후 3팀 시상"],caution:["만 19~39세 청년만 참가 가능","11.27 발표평가 필수 참석"],docs:["QR 온라인 신청서","사업계획 요약서"],q:"참가대상: 청년 (만 19~39세). 발표평가(11.27) 참석 필요"},
-    {id:"N031",cat:"공모전",src:"외부",t:"[머니투데이방송(MTN)] 2026 MTN 중소기업 광고공모전",url:"https://www.mtn.co.kr",grades:[1,2,3,4],status:["enrolled","leave"],field:null,gpa:0,toeic:0,team:5,due:[2026,10,6],prep:7,benefit:"총 780만원 (장관상 200만원)",sum:["중소기업 브랜드 30초 TV 광고 영상 제작","11.6 참가 신청 후 배정 기업 광고 제작","교육부·중기부 장관상 수여"],caution:["전국 대학생 1~5인 팀 (휴학생 가능)","11.6 접수 마감, 작품은 11.20까지 제출"],docs:["광고 영상 (mp4)","광고기획서·콘티","팀원 전원 재학/휴학증명서"],q:"참가대상: 대학(원)생. 팀 구성: 1~5인. 전국 대학생 개인 또는 5인 이하 팀"},
-    {id:"N041",cat:"공모전",src:"외부",t:"[강릉시] 2026년 강릉시 시민 아이디어 공모전",url:"https://www.gn.go.kr",grades:[1,2,3,4],status:["enrolled","leave"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,13],prep:3,benefit:"총 200만원 (금상 100만원)",sum:["민선 9기 강릉시 발전 정책 아이디어","지역경제·복지·안전·AI 행정 4개 분야","거주지 제한 없이 국민 누구나 응모 가능"],caution:["1인당 최대 2건 응모 가능","기발표 제안 제외"],docs:["시민 아이디어 제안서"],q:"지역경제·복지·생활안전·AI 행정 등 4개 분야. 거주지와 상관없이 국민 누구나"}
+    {id:"N010",cat:"장학",src:"교내",t:"[학부대학] 2026학년도 2학기 이원길 장학금 대상자 선발 공고",url:"https://gs.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,20],prep:4,benefit:"등록금 초과 수혜 가능 장학금",sum:["2학기 이원길 장학금 선발","학술·봉사·설계·창업 부문 공로 장학","등록금 범위 초과 수혜 가능"],caution:["휴학생 및 초과학기·수료유예자 불가","활동결과보고서 제출 필수"],docs:["트리니티 장학신청","장학금 신청서","활동결과보고서"],q:"본교 재학생(휴학생 및 수료유예자 불가). 등록금 초과 수혜 가능"}
   ];
 
   var GUIDE = {
@@ -617,11 +763,27 @@
   var FIELD = {hum:"인문·사회", biz:"경영·경제", sci:"자연·공학", art:"예체능"};
   var STATUS = {enrolled:"재학", leave:"휴학"};
 
+  // [UX 2] 로컬스토리지 보관함(북마크) & [UX 3] 서류 체크 관리
+  var bookmarks = JSON.parse(localStorage.getItem("cuk_bookmarks") || "[]");
+  var checkedDocs = JSON.parse(localStorage.getItem("cuk_checked_docs") || "{}");
+
+  function saveBookmarks() { localStorage.setItem("cuk_bookmarks", JSON.stringify(bookmarks)); }
+  function saveCheckedDocs() { localStorage.setItem("cuk_checked_docs", JSON.stringify(checkedDocs)); }
+
   function el(id){ return document.getElementById(id); }
   function days(a, b){ return Math.round((a - b) / 86400000); }
   function fmt(d){ return (d.getMonth() + 1) + "." + String(d.getDate()).padStart(2, "0"); }
   function esc(s){ return String(s || "").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 
+  // [UX 5] 토스트 알림 표시
+  function showToast(msg) {
+    var t = el("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+
+  // 캘린더 등록
   window.downloadICS = function(title, y, m, d) {
     var dtStr = y + String(m + 1).padStart(2, '0') + String(d).padStart(2, '0') + "T090000Z";
     var icsData = [
@@ -644,19 +806,67 @@
     a.download = title.substring(0, 15) + "_마감.ics";
     a.click();
     URL.revokeObjectURL(url);
+    showToast("📅 캘린더 파일(.ics)이 다운로드되었습니다.");
+  };
+
+  // [UX 5] 공고 링크 복사
+  window.copyNoticeLink = function(url, title) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function() {
+        showToast("🔗 공고 링크가 클립보드에 복사되었습니다!");
+      });
+    } else {
+      showToast("공고 주소: " + url);
+    }
+  };
+
+  // [UX 2] 북마크 토글
+  window.toggleBookmark = function(id) {
+    var idx = bookmarks.indexOf(id);
+    if (idx > -1) {
+      bookmarks.splice(idx, 1);
+      showToast("보관함에서 삭제되었습니다.");
+    } else {
+      bookmarks.push(id);
+      showToast("⭐ 보관함에 저장되었습니다!");
+    }
+    saveBookmarks();
+    render();
+  };
+
+  // [UX 3] 서류 체크 토글 및 진행률 계산
+  window.toggleDocCheck = function(docKey) {
+    checkedDocs[docKey] = !checkedDocs[docKey];
+    saveCheckedDocs();
+    render();
   };
 
   var uid = 0;
   function summaryCard(n) {
-    var id = "d" + (uid++);
-    return '<details><summary>공고 핵심 요약 & 필수 서류 체크</summary><div class="sum-content">' +
-      '<div><div class="sum-block-title">3줄 핵심 요약</div><ul>' + n.sum.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' +
-      '<div><div class="sum-block-title">참가 주의 요건</div><ul class="caution">' + n.caution.map(function(s){ return "<li><span>" + esc(s) + "</span></li>"; }).join("") + '</ul></div>' +
-      '<div><div class="sum-block-title">필요 서류 체크리스트 (' + n.docs.length + '개)</div><ul class="docs-list">' + n.docs.map(function(s, i){
-        return '<li><input type="checkbox" id="' + id + '-' + i + '"><label for="' + id + '-' + i + '">' + esc(s) + '</label></li>';
-      }).join("") + '</ul></div>' +
-      '<div><div class="sum-block-title">AI 판단 근거 문맥</div><div class="quote-box">"' + esc(n.q) + '"</div></div>' +
-    '</div></details>';
+    var id = n.id || ("d" + (uid++));
+    var sumList = Array.isArray(n.sum) ? n.sum : [n.t || "공고 내용 확인"];
+    var cautionList = Array.isArray(n.caution) ? n.caution : ["세부 선발 기준 원문 공고 확인"];
+    var docsList = Array.isArray(n.docs) ? n.docs : ["신청서 및 관련 증빙"];
+
+    // 서류 진행률 계산
+    var checkedCount = 0;
+    docsList.forEach(function(d, i){
+      if (checkedDocs[id + "-doc-" + i]) checkedCount++;
+    });
+    var pct = docsList.length ? Math.round((checkedCount / docsList.length) * 100) : 0;
+
+    return '<details><summary><span>핵심 요약 & 서류 체크 (' + checkedCount + '/' + docsList.length + ' 완료)</span></summary>' +
+      '<div class="doc-progress-bar"><div class="doc-progress-fill" style="width:' + pct + '%;"></div></div>' +
+      '<div class="sum-content">' +
+        '<div><div class="sum-block-title">3줄 핵심 요약</div><ul>' + sumList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' +
+        '<div><div class="sum-block-title">참가 주의 요건</div><ul class="caution">' + cautionList.map(function(s){ return "<li><span>" + esc(s) + "</span></li>"; }).join("") + '</ul></div>' +
+        '<div><div class="sum-block-title">필요 서류 체크리스트</div><ul class="docs-list">' + docsList.map(function(s, i){
+          var docKey = id + "-doc-" + i;
+          var isChecked = checkedDocs[docKey] ? "checked" : "";
+          return '<li><input type="checkbox" id="' + docKey + '" ' + isChecked + ' onchange="toggleDocCheck(\'' + docKey + '\')"><label for="' + docKey + '">' + esc(s) + '</label></li>';
+        }).join("") + '</ul></div>' +
+        '<div><div class="sum-block-title">AI 판단 근거 문맥</div><div class="quote-box">"' + esc(n.q || n.t) + '"</div></div>' +
+      '</div></details>';
   }
 
   function render() {
@@ -667,25 +877,53 @@
     var gpa = +el("p-gpa").value;
     var toeic = +el("p-toeic").value;
     var team = +el("p-team").value;
+    var query = (el("live-search").value || "").trim().toLowerCase();
+    var sortOpt = el("sort-select").value;
 
     el("profile-summary-text").textContent = g + "학년 · " + FIELD[f] + " · " + STATUS[s];
 
     var ints = [].slice.call(document.querySelectorAll("input[name='interest']:checked")).map(function(x){ return x.value; });
-    var feed = [], gaps = [], hidden = {}, off = 0;
+    var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0;
     function hide(r){ hidden[r] = (hidden[r] || 0) + 1; }
 
     N.forEach(function(n) {
-      var due = new Date(n.due[0], n.due[1], n.due[2]);
+      // 날짜 안전 파싱
+      var due;
+      if (Array.isArray(n.due) && n.due.length >= 3) {
+        due = new Date(n.due[0], n.due[1], n.due[2]);
+      } else if (typeof n.due === "string") {
+        var dp = n.due.split("-");
+        due = new Date(+dp[0], +dp[1] - 1, +dp[2]);
+      } else {
+        due = new Date();
+      }
+
       var left = days(due, TODAY);
 
-      // [핵심 기능] 기한이 지난 공고는 자동 제외
+      // [UX] 기한 지난 공고 제외
       if (left < 0) {
         hide("마감 종료");
         return;
       }
 
-      if (n.grades.indexOf(g) < 0) { hide("학년 조건"); return; }
-      if (n.status.indexOf(s) < 0) { hide("학적 조건"); return; }
+      // [UX 1] 실시간 검색어 필터링
+      if (query) {
+        var fullText = (n.t + " " + (n.benefit || "") + " " + (n.src || "") + " " + (n.cat || "") + " " + (n.q || "")).toLowerCase();
+        if (fullText.indexOf(query) === -1) return;
+      }
+
+      var x = { n:n, due:due, left:left, short:[] };
+
+      // 북마크된 공고 별도 수집
+      if (bookmarks.indexOf(n.id) > -1) {
+        bookmarked.push(x);
+      }
+
+      var grades = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
+      var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
+
+      if (grades.indexOf(g) < 0) { hide("학년 조건"); return; }
+      if (status.indexOf(s) < 0) { hide("학적 조건"); return; }
       if (n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
       if (n.team && team > n.team) { hide("팀 인원 초과"); return; }
       if (ints.indexOf(n.cat) < 0) { off++; return; }
@@ -694,88 +932,115 @@
       if (n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(1), big:(n.gpa - gpa) > 0.5 });
       if (n.toeic && toeic < n.toeic) short.push({ k:"토익", cur:toeic, need:n.toeic, diff:n.toeic - toeic, big:(n.toeic - toeic) > 200 });
 
-      var x = { n:n, due:due, left:left, short:short };
+      x.short = short;
       if (!short.length) feed.push(x);
-      else if (short.some(function(z){ return z.big; })) hide("조건 차이가 큼");
-      else gaps.push(x);
+      else if (!short.some(function(z){ return z.big; })) gaps.push(x);
+      else hide("조건 차이가 큼");
     });
 
-    feed.sort(function(a, b){
-      var sa = a.n.cat === "장학" ? 0 : 1;
-      var sb = b.n.cat === "장학" ? 0 : 1;
-      return sa - sb || a.left - b.left;
-    });
-    gaps.sort(function(a, b){ return a.left - b.left; });
+    // [UX 6] 정렬 로직
+    function sortItems(arr) {
+      arr.sort(function(a, b){
+        if (sortOpt === "sch") {
+          var sa = a.n.cat === "장학" ? 0 : 1;
+          var sb = b.n.cat === "장학" ? 0 : 1;
+          if (sa !== sb) return sa - sb;
+        } else if (sortOpt === "prep") {
+          var pa = a.n.prep || 0, pb = b.n.prep || 0;
+          if (pa !== pb) return pa - pb;
+        }
+        return a.left - b.left;
+      });
+    }
+
+    sortItems(feed);
+    sortItems(gaps);
+    sortItems(bookmarked);
 
     var schCount = feed.filter(function(x){ return x.n.cat === "장학"; }).length;
     el("n-feed").textContent = feed.length;
     el("n-gap").textContent = gaps.length;
-    el("kpi-available").innerHTML = "총 <b>" + feed.length + "</b>건";
-    el("kpi-scholarship").innerHTML = "장학 <b>" + schCount + "</b>건";
-    el("kpi-gap").innerHTML = "스펙 근접 <b>" + gaps.length + "</b>건";
+    el("n-bookmark").textContent = bookmarked.length;
+    el("kpi-available").textContent = feed.length + "건";
+    el("kpi-scholarship").textContent = schCount + "건";
 
     var ht = Object.keys(hidden).reduce(function(a, k){ return a + hidden[k]; }, 0);
     el("hid").textContent = (ht || off) ? "숨긴 공고 " + (ht + off) + "건 · " + Object.keys(hidden).map(function(k){ return k + " " + hidden[k] + "건"; }).concat(off ? ["관심 분야 밖 " + off + "건"] : []).join(" · ") : "숨긴 공고 없음";
 
-    el("v-feed").innerHTML = feed.length ? feed.map(function(x) {
+    // 공고 카드 렌더링 함수
+    function buildCard(x, isGap) {
       var n = x.n;
-      var start = new Date(x.due.getTime() - n.prep * 86400000);
-      var must = x.left - n.prep <= 0;
-      var prepText = n.prep === 0 ? "⚡ 즉시 온라인 접수 가능" : (must ? "🚨 서류 준비 " + n.prep + "일 필요 — <b>오늘 바로 착수</b>" : "서류 준비 약 " + n.prep + "일 소요 → <b>" + fmt(start) + "까지 준비 권장</b>");
+      var prep = n.prep || 2;
+      var start = new Date(x.due.getTime() - prep * 86400000);
+      var must = x.left - prep <= 0;
+      var prepText = prep === 0 ? "⚡ 즉시 온라인 접수" : (must ? "🚨 서류 준비 " + prep + "일 소요 — <b>오늘 바로 착수</b>" : "서류 준비 약 " + prep + "일 소요 → <b>" + fmt(start) + "까지 준비 권장</b>");
+
+      var isBookmarked = bookmarks.indexOf(n.id) > -1;
+      var isHot = x.left <= 3; // 3일 이내 마감 임박 시 라이브 펄스 효과[cite: 7]
+      var dueY = x.due.getFullYear(), dueM = x.due.getMonth(), dueD = x.due.getDate();
+
+      var gapHtml = "";
+      if (isGap && x.short) {
+        gapHtml = x.short.map(function(z) {
+          var pct = Math.max(10, Math.min(100, Math.round(z.cur / z.need * 100)));
+          var msg = z.k === "토익" ? "토익 <b>+" + z.diff + "점</b>만 더 채우면 지원 가능 (" + z.cur + " / " + z.need + ")" : "평점 <b>+" + z.diff + "</b>만 더 채우면 지원 가능 (" + z.cur + " / " + z.need + ")";
+          return '<div style="margin-top:6px;">' +
+            '<div style="font-size:13px; color:var(--ink-secondary);">' + msg + '</div>' +
+            '<div class="gap-progress-wrap"><div class="gap-bar-fill" style="width:' + pct + '%;"></div></div>' +
+            '<div class="guide-box"><b>💡 행동 솔루션</b><ul style="padding-left:16px; margin-top:4px;">' +
+              (GUIDE[z.k] || []).map(function(gd){ return "<li><b>" + gd[0] + "</b>: " + esc(gd[1]) + "</li>"; }).join("") +
+            '</ul></div>' +
+          '</div>';
+        }).join("");
+      }
 
       return '<article class="card">' +
-        '<div class="dday-box ' + (x.left <= 7 ? 'hot' : '') + '">' +
+        '<div class="dday-box ' + (isHot ? 'hot' : (isGap ? 'gap' : '')) + '">' +
           '<span class="dday-num">D-' + x.left + '</span>' +
-          '<span class="dday-sub">' + (x.left === 0 ? '오늘마감' : (x.left <= 7 ? '마감임박' : '접수중')) + '</span>' +
+          '<span class="dday-sub">' + (x.left === 0 ? '오늘마감' : (isHot ? '마감임박' : '접수중')) + '</span>' +
         '</div>' +
         '<div class="card-content">' +
           '<div class="badge-row">' +
-            '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + n.cat + '</span>' +
-            '<span class="tag">' + n.src + '</span>' +
+            '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
+            '<span class="tag">' + esc(n.src || "교내") + '</span>' +
             '<span class="tag date">마감 ' + fmt(x.due) + '</span>' +
-            '<button class="btn-ics" onclick="downloadICS(\'' + esc(n.t) + '\', ' + n.due[0] + ', ' + n.due[1] + ', ' + n.due[2] + ')">📅 캘린더 등록</button>' +
+            '<div class="action-btns">' +
+              '<button class="btn-icon btn-bookmark ' + (isBookmarked ? 'active' : '') + '" onclick="toggleBookmark(\'' + n.id + '\')">' + (isBookmarked ? '★ 찜됨' : '☆ 찜') + '</button>' +
+              '<button class="btn-icon" onclick="copyNoticeLink(\'' + esc(n.url) + '\', \'' + esc(n.t) + '\')">🔗 공유</button>' +
+              '<button class="btn-icon" onclick="downloadICS(\'' + esc(n.t) + '\', ' + dueY + ', ' + dueM + ', ' + dueD + ')">📅 캘린더</button>' +
+            '</div>' +
           '</div>' +
           '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a></h3>' +
-          '<div class="benefit-line">🎁 혜택: <b>' + esc(n.benefit) + '</b></div>' +
+          '<div class="benefit-line">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
           '<div class="prep-box">' + prepText + '</div>' +
+          gapHtml +
           summaryCard(n) +
         '</div>' +
       '</article>';
-    }).join("") : '<div class="empty-state">현재 지원 가능한 공고가 없습니다. (기한이 지난 공고는 자동 숨김 처리됩니다)</div>';
+    }
 
-    el("v-gap").innerHTML = gaps.length ? gaps.map(function(x) {
-      var n = x.n;
-      var lines = x.short.map(function(z) {
-        var pct = Math.max(10, Math.min(100, Math.round(z.cur / z.need * 100)));
-        var msg = z.k === "토익" ? "토익 <b>+" + z.diff + "점</b>만 더 채우면 지원 가능 (" + z.cur + " / " + z.need + ")" : "평점 <b>+" + z.diff + "</b>만 더 채우면 지원 가능 (" + z.cur + " / " + z.need + ")";
-        return '<div style="margin-top:6px;">' +
-          '<div style="font-size:13px; color:var(--ink-secondary);">' + msg + '</div>' +
-          '<div class="gap-progress-wrap"><div class="gap-bar-fill" style="width:' + pct + '%;"></div></div>' +
-          '<div class="guide-box"><b>💡 행동 솔루션</b><ul style="padding-left:16px; margin-top:4px;">' +
-            GUIDE[z.k].map(function(gd){ return "<li><b>" + gd[0] + "</b>: " + esc(gd[1]) + "</li>"; }).join("") +
-          '</ul></div>' +
-        '</div>';
-      }).join("");
-
-      return '<article class="card">' +
-        '<div class="dday-box gap">' +
-          '<span class="dday-num">D-' + x.left + '</span>' +
-          '<span class="dday-sub">도전가능</span>' +
-        '</div>' +
-        '<div class="card-content">' +
-          '<div class="badge-row">' +
-            '<span class="tag" style="background:var(--warn-soft); color:var(--warn); border-color:transparent;">스펙 근접</span>' +
-            '<span class="tag">' + n.cat + '</span>' +
-            '<span class="tag date">마감 ' + fmt(x.due) + '</span>' +
-          '</div>' +
-          '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a></h3>' +
-          lines +
-          summaryCard(n) +
-        '</div>' +
-      '</article>';
-    }).join("") : '<div class="empty-state">현재 조건에서 근접한 갭 공고가 없습니다.</div>';
+    el("v-feed").innerHTML = feed.length ? feed.map(function(x){ return buildCard(x, false); }).join("") : '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)</div>';
+    el("v-gap").innerHTML = gaps.length ? gaps.map(function(x){ return buildCard(x, true); }).join("") : '<div class="empty-state">현재 조건에서 근접한 갭 보완 공고가 없습니다.</div>';
+    el("v-bookmark").innerHTML = bookmarked.length ? bookmarked.map(function(x){ return buildCard(x, false); }).join("") : '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 [☆ 찜] 버튼을 눌러보세요!</div>';
   }
 
+  // 실시간 검색 이벤트
+  var searchInput = el("live-search");
+  var searchClear = el("search-clear-btn");
+  searchInput.addEventListener("input", function(){
+    searchClear.style.display = this.value ? "flex" : "none";
+    render();
+  });
+  searchClear.addEventListener("click", function(){
+    searchInput.value = "";
+    this.style.display = "none";
+    render();
+  });
+
+  // 정렬 옵션 변경
+  el("sort-select").addEventListener("change", render);
+
+  // 프로필 패널 토글
   el("btn-toggle-profile").addEventListener("click", function(){
     var p = el("filter-panel");
     var isHidden = p.style.display === "none";
@@ -787,33 +1052,57 @@
     i.addEventListener("change", render);
   });
 
-  el("t-feed").addEventListener("click", function(){
-    this.setAttribute("aria-selected", "true");
-    el("t-gap").setAttribute("aria-selected", "false");
-    el("v-feed").style.display = "flex";
-    el("v-gap").style.display = "none";
-  });
-  el("t-gap").addEventListener("click", function(){
-    this.setAttribute("aria-selected", "true");
-    el("t-feed").setAttribute("aria-selected", "false");
-    el("v-gap").style.display = "flex";
-    el("v-feed").style.display = "none";
+  // 3단 탭 전환
+  var tabFeed = el("t-feed");
+  var tabGap = el("t-gap");
+  var tabBookmark = el("t-bookmark");
+  var vFeed = el("v-feed");
+  var vGap = el("v-gap");
+  var vBookmark = el("v-bookmark");
+
+  tabFeed.addEventListener("click", function(){
+    tabFeed.setAttribute("aria-selected", "true");
+    tabGap.setAttribute("aria-selected", "false");
+    tabBookmark.setAttribute("aria-selected", "false");
+    vFeed.style.display = "flex";
+    vGap.style.display = "none";
+    vBookmark.style.display = "none";
   });
 
-  // 구글 시트 API URL이 지정되어 있으면 실시간 fetch, 없으면 내장 데이터로 즉시 렌더링
+  tabGap.addEventListener("click", function(){
+    tabFeed.setAttribute("aria-selected", "false");
+    tabGap.setAttribute("aria-selected", "true");
+    tabBookmark.setAttribute("aria-selected", "false");
+    vFeed.style.display = "none";
+    vGap.style.display = "flex";
+    vBookmark.style.display = "none";
+  });
+
+  tabBookmark.addEventListener("click", function(){
+    tabFeed.setAttribute("aria-selected", "false");
+    tabGap.setAttribute("aria-selected", "false");
+    tabBookmark.setAttribute("aria-selected", "true");
+    vFeed.style.display = "none";
+    vGap.style.display = "none";
+    vBookmark.style.display = "flex";
+  });
+
+  // 초기 렌더링
+  render();
+
+  // 구글 Apps Script Web App 실시간 데이터 연동
   if (SHEET_API_URL && SHEET_API_URL.startsWith("https://script.google.com")) {
     fetch(SHEET_API_URL)
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        if (data && data.length) { N = data; }
-        render();
+        if (Array.isArray(data) && data.length > 0) {
+          N = data;
+          render();
+        }
       })
       .catch(function(err) {
-        console.warn("시트 API 연동 실패, 로컬 데이터로 대체:", err);
-        render();
+        console.warn("시트 API 연동 실패 (기본 데이터 유지):", err);
       });
-  } else {
-    render();
   }
 })();
 </script>
