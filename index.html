@@ -658,6 +658,98 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* 공유 바텀시트 */
+    .share-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 9000;
+    }
+    .share-backdrop.show { opacity: 1; pointer-events: auto; }
+    .share-sheet {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      transform: translate(-50%, 100%);
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      padding: 10px 20px max(20px, env(safe-area-inset-bottom));
+      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.12);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 9001;
+    }
+    .share-sheet.show { transform: translate(-50%, 0); }
+    .share-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--line);
+      margin: 0 auto 14px;
+    }
+    .share-title { font-size: 16px; font-weight: 700; }
+    .share-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .share-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .share-opt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      padding: 4px 0;
+    }
+    .share-ic {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s;
+    }
+    .share-opt:active .share-ic { transform: scale(0.92); }
+    .share-ic svg { width: 24px; height: 24px; }
+    .share-ic.kakao { background: #FEE500; color: #191919; }
+    .share-ic.sms { background: #34C759; color: #FFFFFF; }
+    .share-ic.mail { background: var(--cuk-accent); color: #FFFFFF; }
+    .share-ic.copy { background: var(--line-subtle); color: var(--ink); }
+    .share-ic.more { background: var(--line-subtle); color: var(--ink); }
+    .share-cancel {
+      width: 100%;
+      margin-top: 18px;
+      padding: 13px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--line-subtle);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -784,6 +876,37 @@
 <!-- [UX 5] 토스트 알림창 -->
 <div id="toast" class="toast">링크가 복사되었습니다.</div>
 
+<!-- 공유 바텀시트 -->
+<div id="share-backdrop" class="share-backdrop" onclick="closeShare()"></div>
+<div id="share-sheet" class="share-sheet" role="dialog" aria-modal="true" aria-labelledby="share-title" aria-hidden="true">
+  <div class="share-handle"></div>
+  <div class="share-title" id="share-title">공고 공유하기</div>
+  <div class="share-sub" id="share-sub"></div>
+  <div class="share-grid">
+    <button class="share-opt" onclick="shareVia('kakao')">
+      <span class="share-ic kakao"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.83 1.84 5.31 4.6 6.73L5.7 21.2c-.1.38.33.68.66.46l4.08-2.72c.51.05 1.03.08 1.56.08 5.52 0 10-3.58 10-8S17.52 3 12 3z"/></svg></span>
+      카카오톡
+    </button>
+    <button class="share-opt" onclick="shareVia('sms')">
+      <span class="share-ic sms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      문자
+    </button>
+    <button class="share-opt" onclick="shareVia('mail')">
+      <span class="share-ic mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+      메일
+    </button>
+    <button class="share-opt" onclick="shareVia('copy')">
+      <span class="share-ic copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+      링크 복사
+    </button>
+    <button class="share-opt" id="share-more" onclick="shareVia('more')">
+      <span class="share-ic more"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+      기타 앱
+    </button>
+  </div>
+  <button class="share-cancel" onclick="closeShare()">닫기</button>
+</div>
+
 <script>
 (function(){
   var now = new Date();
@@ -902,14 +1025,104 @@
     showToast("📅 캘린더 파일(.ics)이 다운로드되었습니다.");
   };
 
-  // [UX 5] 공고 링크 복사
-  window.copyNoticeLink = function(url, title) {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(function() {
-        showToast("🔗 공고 링크가 클립보드에 복사되었습니다!");
-      });
+  // [UX 5] 공유 바텀시트 (카카오톡 · 문자 · 메일 · 링크 복사 · 기타 앱)
+  // 카카오 개발자 콘솔(developers.kakao.com)에서 발급받은 "JavaScript 키"를 넣으면
+  // 카카오톡 버튼이 카카오톡 공유창을 바로 엽니다. 비워두면 휴대폰 기본 공유창(카카오톡 포함)이나 링크 복사로 대신합니다.
+  var KAKAO_JS_KEY = "";
+  var KAKAO_SDK_URL = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js";
+  var CARD = {};
+  var shareTarget = null;
+
+  function kakaoReady() {
+    return !!(window.Kakao && window.Kakao.isInitialized && window.Kakao.isInitialized());
+  }
+  // 버튼을 누른 순간 바로 공유창이 뜨도록 SDK는 미리 불러둠
+  if (KAKAO_JS_KEY) {
+    var ks = document.createElement("script");
+    ks.src = KAKAO_SDK_URL;
+    ks.crossOrigin = "anonymous";
+    ks.onload = function() {
+      try { if (!window.Kakao.isInitialized()) window.Kakao.init(KAKAO_JS_KEY); } catch (e) { console.warn("카카오 SDK 초기화 실패:", e); }
+    };
+    document.head.appendChild(ks);
+  }
+
+  function copyText(text, msg) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); showToast(msg); } catch (e) { showToast("복사에 실패했어요: " + text); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function(){ showToast(msg); }, fallback);
     } else {
-      showToast("공고 주소: " + url);
+      fallback();
+    }
+  }
+
+  function nativeShare(s) {
+    navigator.share({ title: s.title, text: s.text, url: s.url }).catch(function(){ /* 사용자가 취소한 경우 */ });
+  }
+
+  window.openShare = function(id) {
+    var x = CARD[id];
+    if (!x) return;
+    var n = x.n;
+    shareTarget = {
+      title: n.t,
+      url: n.url,
+      text: "[CUK콕] " + n.t + "\n마감 " + fmt(x.due) + " (D-" + x.left + ")" + (n.benefit ? "\n혜택: " + n.benefit : "")
+    };
+    el("share-sub").textContent = n.t;
+    el("share-more").style.display = navigator.share ? "" : "none";
+    el("share-backdrop").classList.add("show");
+    el("share-sheet").classList.add("show");
+    el("share-sheet").setAttribute("aria-hidden", "false");
+  };
+
+  window.closeShare = function() {
+    el("share-backdrop").classList.remove("show");
+    el("share-sheet").classList.remove("show");
+    el("share-sheet").setAttribute("aria-hidden", "true");
+  };
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeShare();
+  });
+
+  window.shareVia = function(kind) {
+    var s = shareTarget;
+    if (!s) return;
+    var body = s.text + "\n" + s.url;
+    closeShare();
+
+    if (kind === "kakao") {
+      if (kakaoReady()) {
+        window.Kakao.Share.sendDefault({
+          objectType: "text",
+          text: s.text,
+          link: { mobileWebUrl: s.url, webUrl: s.url },
+          buttonTitle: "공고 보기"
+        });
+      } else if (navigator.share) {
+        nativeShare(s);   // 휴대폰 기본 공유창에서 카카오톡 선택
+      } else {
+        copyText(body, "📋 복사했어요. 카카오톡 대화창에 붙여넣어 주세요.");
+      }
+    } else if (kind === "sms") {
+      location.href = "sms:?&body=" + encodeURIComponent(body);
+    } else if (kind === "mail") {
+      location.href = "mailto:?subject=" + encodeURIComponent("[CUK콕] " + s.title) + "&body=" + encodeURIComponent(body);
+    } else if (kind === "copy") {
+      copyText(s.url, "🔗 공고 링크가 복사되었습니다!");
+    } else if (kind === "more" && navigator.share) {
+      nativeShare(s);
     }
   };
 
@@ -970,6 +1183,7 @@
   // skipView: 다시 그리지 않을 목록 id (찜 애니메이션 보존용)
   function render(skipView) {
     uid = 0;
+    CARD = {};
     var g = +el("p-grade").value;
     var f = el("p-field").value;
     var s = el("p-status").value;
@@ -1012,6 +1226,7 @@
       }
 
       var x = { n:n, due:due, left:left, short:[] };
+      CARD[n.id] = x;   // 공유 시트에서 공고 정보를 찾을 때 사용
 
       // 찜한 공고 별도 수집
       if (bookmarks.indexOf(n.id) > -1) {
@@ -1105,7 +1320,7 @@
             '<span class="tag date">마감 ' + fmt(x.due) + '</span>' +
             '<div class="action-btns">' +
               heartButton(n.id, isBookmarked) +
-              '<button class="btn-icon" onclick="copyNoticeLink(\'' + esc(n.url) + '\', \'' + esc(n.t) + '\')">🔗 공유</button>' +
+              '<button class="btn-icon" onclick="openShare(\'' + esc(n.id) + '\')">🔗 공유</button>' +
               '<button class="btn-icon" onclick="downloadICS(\'' + esc(n.t) + '\', ' + dueY + ', ' + dueM + ', ' + dueD + ')">📅 캘린더</button>' +
             '</div>' +
           '</div>' +
