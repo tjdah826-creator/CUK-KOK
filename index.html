@@ -280,6 +280,21 @@
       font-weight: 600;
     }
     .chip input { accent-color: var(--cuk-accent); }
+    .filter-actions { grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-cond {
+      flex: 1;
+      min-width: 140px;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--cuk-primary);
+      background: var(--cuk-primary);
+      color: #FFFFFF;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-cond.ghost { background: var(--surface); color: var(--cuk-primary); }
 
     /* [UX 2] 3단 탭 (보관함 탭 추가) */
     .tabs-wrapper {
@@ -701,6 +716,9 @@
       opacity: 0;
       z-index: 9999;
       pointer-events: none;
+      width: max-content;
+      max-width: calc(100vw - 32px);
+      text-align: center;
     }
     .toast.show {
       transform: translateX(-50%) translateY(0);
@@ -1123,6 +1141,7 @@
     <div class="filter-grid" id="filter-panel" style="display:none;">
       <label class="filter-field">학년
         <select id="p-grade">
+          <option value="all">전체 학년</option>
           <option value="1">1학년</option>
           <option value="2">2학년</option>
           <option value="3" selected>3학년</option>
@@ -1131,6 +1150,7 @@
       </label>
       <label class="filter-field">전공 계열
         <select id="p-field">
+          <option value="all">전체 계열</option>
           <option value="hum">인문·사회</option>
           <option value="biz" selected>경영·경제</option>
           <option value="sci">자연·공학</option>
@@ -1139,29 +1159,35 @@
       </label>
       <label class="filter-field">학적 상태
         <select id="p-status">
+          <option value="all">전체 (재학·휴학)</option>
           <option value="enrolled" selected>재학</option>
           <option value="leave">휴학</option>
         </select>
       </label>
       <label class="filter-field">직전학기 평점
         <select id="p-gpa">
-          <option>2.5</option><option>2.8</option><option>3.0</option><option selected>3.3</option><option>3.5</option><option>4.0</option>
+          <option value="all">전체 (평점 무관)</option><option>2.5</option><option>2.8</option><option>3.0</option><option selected>3.3</option><option>3.5</option><option>4.0</option>
         </select>
       </label>
       <label class="filter-field">어학 (TOEIC)
         <select id="p-toeic">
-          <option value="0">미보유</option><option>600</option><option selected>750</option><option>800</option><option>900</option>
+          <option value="all">전체 (어학 무관)</option><option value="0">미보유</option><option>600</option><option selected>750</option><option>800</option><option>900</option>
         </select>
       </label>
       <label class="filter-field">공모전 팀 인원
         <select id="p-team">
-          <option value="1">1명(개인)</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option><option value="5" selected>5명 이상</option>
+          <option value="all">전체 (인원 무관)</option><option value="1">1명(개인)</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option><option value="5" selected>5명 이상</option>
         </select>
       </label>
+      <div class="filter-actions">
+        <button type="button" class="btn-cond" id="btn-cond-all">🔓 전체 조건으로 보기</button>
+        <button type="button" class="btn-cond ghost" id="btn-cond-mine">👤 내 조건으로 보기</button>
+      </div>
     </div>
 
     <div class="chips-area">
       <span class="chips-label">분야:</span>
+      <label class="chip"><input type="checkbox" id="interest-all" checked>전체</label>
       <label class="chip"><input type="checkbox" name="interest" value="장학" checked>장학</label>
       <label class="chip"><input type="checkbox" name="interest" value="취창업" checked>취창업</label>
       <label class="chip"><input type="checkbox" name="interest" value="비교과" checked>비교과</label>
@@ -1759,16 +1785,20 @@
   function render(skipView) {
     uid = 0;
     CARD = {};
-    var g = +el("p-grade").value;
+    // "all"(전체)이면 해당 조건으로 거르지 않음
+    var gv = el("p-grade").value, g = gv === "all" ? null : +gv;
     var f = el("p-field").value;
     var s = el("p-status").value;
-    var gpa = +el("p-gpa").value;
-    var toeic = +el("p-toeic").value;
-    var team = +el("p-team").value;
+    var gpaV = el("p-gpa").value, gpa = gpaV === "all" ? null : +gpaV;
+    var toeicV = el("p-toeic").value, toeic = toeicV === "all" ? null : +toeicV;
+    var teamV = el("p-team").value, team = teamV === "all" ? null : +teamV;
     var query = (el("live-search").value || "").trim().toLowerCase();
     var sortOpt = el("sort-select").value;
 
-    el("profile-summary-text").textContent = g + "학년 · " + FIELD[f] + " · " + STATUS[s];
+    el("profile-summary-text").textContent =
+      (g === null ? "전체 학년" : g + "학년") + " · " +
+      (f === "all" ? "전체 계열" : FIELD[f]) + " · " +
+      (s === "all" ? "재학·휴학" : STATUS[s]);
 
     var ints = [].slice.call(document.querySelectorAll("input[name='interest']:checked")).map(function(x){ return x.value; });
     var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0;
@@ -1811,15 +1841,15 @@
       var grades = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
       var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
 
-      if (grades.indexOf(g) < 0) { hide("학년 조건"); return; }
-      if (status.indexOf(s) < 0) { hide("학적 조건"); return; }
-      if (n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
-      if (n.team && team > n.team) { hide("팀 인원 초과"); return; }
+      if (g !== null && grades.indexOf(g) < 0) { hide("학년 조건"); return; }
+      if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건"); return; }
+      if (f !== "all" && n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
+      if (team !== null && n.team && team > n.team) { hide("팀 인원 초과"); return; }
       if (ints.indexOf(n.cat) < 0) { off++; return; }
 
       var short = [];
-      if (n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(1), big:(n.gpa - gpa) > 0.5 });
-      if (n.toeic && toeic < n.toeic) short.push({ k:"토익", cur:toeic, need:n.toeic, diff:n.toeic - toeic, big:(n.toeic - toeic) > 200 });
+      if (gpa !== null && n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(1), big:(n.gpa - gpa) > 0.5 });
+      if (toeic !== null && n.toeic && toeic < n.toeic) short.push({ k:"토익", cur:toeic, need:n.toeic, diff:n.toeic - toeic, big:(n.toeic - toeic) > 200 });
 
       x.short = short;
       if (!short.length) feed.push(x);
@@ -1978,6 +2008,38 @@
 
   document.querySelectorAll(".filter-grid select, .chips-area input").forEach(function(i){
     i.addEventListener("change", function(){ render(); });
+  });
+
+  // 분야 "전체" 칩: 누르면 모든 분야를 켜거나 끔 / 개별 분야가 모두 켜지면 자동으로 체크
+  var interestBoxes = [].slice.call(document.querySelectorAll("input[name='interest']"));
+  function syncInterestAll() {
+    el("interest-all").checked = interestBoxes.every(function(b){ return b.checked; });
+  }
+  el("interest-all").addEventListener("change", function(){
+    var on = this.checked;
+    interestBoxes.forEach(function(b){ b.checked = on; });
+    render();
+  });
+  interestBoxes.forEach(function(b){ b.addEventListener("change", syncInterestAll); });
+
+  // 조건 한 번에 바꾸기: 전체 보기 ↔ 내 조건
+  var PROFILE_IDS = ["p-grade", "p-field", "p-status", "p-gpa", "p-toeic", "p-team"];
+  var myCondition = {};
+  PROFILE_IDS.forEach(function(id){ myCondition[id] = el(id).value; });
+  el("btn-cond-all").addEventListener("click", function(){
+    PROFILE_IDS.forEach(function(id){
+      if (el(id).value !== "all") myCondition[id] = el(id).value;   // 직전 내 조건 기억
+      el(id).value = "all";
+    });
+    interestBoxes.forEach(function(b){ b.checked = true; });
+    syncInterestAll();
+    render();
+    showToast("🔓 전체 공고를 보여줘요");
+  });
+  el("btn-cond-mine").addEventListener("click", function(){
+    PROFILE_IDS.forEach(function(id){ el(id).value = myCondition[id]; });
+    render();
+    showToast("👤 내 조건으로 돌아왔어요");
   });
 
   // 3단 탭 전환
