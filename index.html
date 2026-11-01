@@ -2,22 +2,28 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>CUK콕 (CUK-KOK) - 가톨릭대학교 스마트 캠퍼스 알림 비서</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>CUK콕</title>
+
+  <!-- iOS 홈 화면 추가(PWA) 전용 메타 태그 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CUK콕">
+  <meta name="theme-color" content="#00356B">
+
+  <!-- iOS 전용 CUK콕 홈 화면 앱 아이콘 -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='115' fill='%2300356B'/><circle cx='256' cy='256' r='180' fill='none' stroke='%23EDF4FD' stroke-width='14'/><path d='M256 120 V392 M160 210 H352' stroke='%23FFFFFF' stroke-width='32' stroke-linecap='round'/><circle cx='256' cy='210' r='20' fill='%23E53E3E'/><text x='256' y='445' font-size='56' font-family='sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>CUK-KOK</text></svg>">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* CUK Catholic Blue & Psychological Palette */
       --cuk-primary: #00356B;
-      --cuk-primary-hover: #002650;
       --cuk-accent: #0A5FC2;
       --cuk-soft: #EDF4FD;
       --cuk-gold: #B37D20;
-      --cuk-gold-soft: #FCF5E8;
-
       --bg: #F7F9FC;
       --surface: #FFFFFF;
       --ink: #191F28;
@@ -25,22 +31,15 @@
       --muted: #8B95A1;
       --line: #E5E8EB;
       --line-subtle: #F2F4F6;
-
       --hot: #E53E3E;
       --hot-soft: #FEF0F0;
-      --ok: #028A55;
-      --ok-soft: #EAF7EE;
       --warn: #D97706;
       --warn-soft: #FEF3C7;
-
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.02);
-      --shadow-md: 0 4px 16px rgba(0, 37, 85, 0.06);
       --shadow-hover: 0 8px 24px rgba(0, 37, 85, 0.10);
-
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
-
       --font-body: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       --font-display: "Hahmlet", serif;
       --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
@@ -55,20 +54,13 @@
         --muted: #6B7684;
         --line: #263040;
         --line-subtle: #1E2634;
-
         --cuk-primary: #5296E8;
         --cuk-accent: #78B1F5;
         --cuk-soft: #172B45;
-
         --hot: #FF6B6B;
         --hot-soft: #381A1A;
-        --ok: #48D597;
-        --ok-soft: #143324;
         --warn: #FBBF24;
         --warn-soft: #382A12;
-
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-        --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
       }
     }
 
@@ -79,28 +71,31 @@
       font-family: var(--font-body);
       font-size: 15px;
       line-height: 1.6;
-      padding: 24px 16px 80px;
+      padding-top: max(20px, env(safe-area-inset-top));
+      padding-bottom: max(60px, env(safe-area-inset-bottom));
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
       -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
     }
     .wrap {
       max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
 
-    /* Header with Campus Identity */
     header {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding: 8px 4px 16px;
+      padding: 8px 4px 14px;
       border-bottom: 2px solid var(--line);
     }
-    .brand-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .brand-wrap { display: flex; flex-direction: column; gap: 4px; }
     .univ-tag {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--cuk-accent);
       letter-spacing: 0.05em;
@@ -118,49 +113,41 @@
     }
     h1 {
       font-family: var(--font-display);
-      font-size: clamp(24px, 4vw, 32px);
+      font-size: clamp(22px, 4vw, 28px);
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: var(--ink);
     }
     .header-sub {
       color: var(--ink-secondary);
-      font-size: 14px;
-      margin-top: 2px;
+      font-size: 13.5px;
     }
 
-    /* Interactive Profile Panel */
     .profile-card {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
       overflow: hidden;
-      transition: all 0.25s ease;
     }
     .profile-header {
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--surface);
       cursor: pointer;
       user-select: none;
     }
     .profile-title {
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--ink);
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .profile-badge-summary {
-      display: flex;
-      gap: 6px;
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--ink-secondary);
-      flex-wrap: wrap;
+      font-weight: 500;
     }
     .btn-toggle {
       background: var(--line-subtle);
@@ -176,44 +163,37 @@
     .filter-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 12px;
-      padding: 18px 20px 20px;
+      gap: 10px;
+      padding: 16px 18px;
       background: var(--bg);
       border-top: 1px solid var(--line-subtle);
     }
     .filter-field {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      font-size: 12.5px;
+      gap: 4px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--ink-secondary);
     }
     select {
       font: inherit;
-      font-size: 13.5px;
-      font-weight: 500;
-      padding: 9px 12px;
+      font-size: 13px;
+      padding: 8px 10px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--line);
       background: var(--surface);
       color: var(--ink);
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    select:focus {
-      border-color: var(--cuk-accent);
-      box-shadow: 0 0 0 3px rgba(10, 95, 194, 0.12);
     }
 
-    /* Chips Filter */
     .chips-area {
-      padding: 14px 20px;
+      padding: 12px 18px;
       border-top: 1px solid var(--line-subtle);
       background: var(--surface);
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
     .chips-label {
@@ -226,15 +206,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 12.5px;
       color: var(--ink-secondary);
       background: var(--bg);
       border: 1px solid var(--line);
-      padding: 5px 14px;
+      padding: 4px 12px;
       border-radius: 99px;
       cursor: pointer;
-      transition: all 0.15s ease;
     }
     .chip:has(input:checked) {
       background: var(--cuk-soft);
@@ -244,7 +222,6 @@
     }
     .chip input { accent-color: var(--cuk-accent); }
 
-    /* Feed Tabs */
     .tabs-wrapper {
       display: flex;
       background: var(--surface);
@@ -255,20 +232,20 @@
     }
     .tab-btn {
       flex: 1;
-      padding: 12px 16px;
+      padding: 12px;
       border: none;
       background: transparent;
       border-radius: 10px;
       font: inherit;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       color: var(--muted);
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
+      gap: 6px;
+      transition: all 0.2s;
     }
     .tab-btn[aria-selected="true"] {
       background: var(--cuk-primary);
@@ -277,60 +254,56 @@
     }
     .tab-badge {
       font-family: var(--font-mono);
-      font-size: 12px;
-      padding: 1px 7px;
+      font-size: 11.5px;
+      padding: 1px 6px;
       border-radius: 99px;
       background: rgba(0,0,0,0.06);
     }
     .tab-btn[aria-selected="true"] .tab-badge {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.25);
       color: #FFFFFF;
     }
 
-    /* KPI Summary Stats Bar */
     .summary-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
     }
     .stat-pill {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
-      padding: 14px 18px;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
       box-shadow: var(--shadow-sm);
     }
-    .stat-label { font-size: 12px; color: var(--muted); font-weight: 600; }
-    .stat-value { font-size: 18px; font-weight: 700; color: var(--ink); }
+    .stat-label { font-size: 11.5px; color: var(--muted); font-weight: 600; }
+    .stat-value { font-size: 17px; font-weight: 700; color: var(--ink); }
     .stat-value b { color: var(--cuk-accent); }
     .stat-value.highlight b { color: var(--hot); }
 
-    /* Cards Stream */
-    .card-list { display: flex; flex-direction: column; gap: 14px; }
+    .card-list { display: flex; flex-direction: column; gap: 12px; }
     .card {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 18px;
       box-shadow: var(--shadow-sm);
       display: grid;
-      grid-template-columns: 76px 1fr;
-      gap: 20px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      grid-template-columns: 70px 1fr;
+      gap: 16px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     .card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-hover);
-      border-color: rgba(10, 95, 194, 0.25);
     }
     @media (max-width: 600px) {
-      .card { grid-template-columns: 1fr; gap: 12px; }
+      .card { grid-template-columns: 1fr; gap: 10px; }
     }
 
-    /* D-Day Visual Tag */
     .dday-box {
       display: flex;
       flex-direction: column;
@@ -339,36 +312,28 @@
       background: var(--cuk-soft);
       border: 1px solid rgba(10, 95, 194, 0.15);
       border-radius: var(--radius-md);
-      padding: 10px 8px;
+      padding: 8px 6px;
       height: fit-content;
       text-align: center;
     }
     .dday-num {
       font-family: var(--font-mono);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--cuk-accent);
-      line-height: 1.1;
     }
-    .dday-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 3px; }
-    .dday-box.hot {
-      background: var(--hot-soft);
-      border-color: rgba(229, 62, 62, 0.2);
-    }
+    .dday-sub { font-size: 10.5px; font-weight: 600; color: var(--muted); }
+    .dday-box.hot { background: var(--hot-soft); border-color: rgba(229, 62, 62, 0.2); }
     .dday-box.hot .dday-num { color: var(--hot); }
-    .dday-box.gap {
-      background: var(--warn-soft);
-      border-color: rgba(217, 119, 6, 0.2);
-    }
+    .dday-box.gap { background: var(--warn-soft); border-color: rgba(217, 119, 6, 0.2); }
     .dday-box.gap .dday-num { color: var(--warn); }
 
-    /* Card Details */
-    .card-content { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    .card-content { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
     .badge-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
     .tag {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 3px 9px;
+      padding: 2px 7px;
       border-radius: 6px;
       background: var(--bg);
       color: var(--ink-secondary);
@@ -376,54 +341,42 @@
     }
     .tag.sch { background: var(--hot-soft); color: var(--hot); border-color: transparent; }
     .tag.primary { background: var(--cuk-soft); color: var(--cuk-accent); border-color: transparent; }
-    .tag.date { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: transparent; border: none; padding: 0 4px; }
+    .tag.date { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); border: none; background: transparent; }
 
     .btn-ics {
       margin-left: auto;
       font-family: var(--font-body);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--line);
       background: var(--surface);
       color: var(--ink);
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.15s;
-    }
-    .btn-ics:hover {
-      background: var(--cuk-soft);
-      border-color: var(--cuk-accent);
-      color: var(--cuk-accent);
     }
 
     .card-title {
-      font-size: 16.5px;
+      font-size: 15.5px;
       font-weight: 700;
-      line-height: 1.45;
+      line-height: 1.4;
       color: var(--ink);
     }
     .card-title a { color: inherit; text-decoration: none; }
-    .card-title a:hover { color: var(--cuk-accent); text-decoration: underline; }
+    .card-title a:hover { color: var(--cuk-accent); }
 
     .benefit-line {
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--ink-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     .benefit-line b { color: var(--cuk-primary); font-weight: 700; }
 
     .prep-box {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--ink-secondary);
       background: var(--line-subtle);
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 5px 10px;
+      border-radius: 6px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -431,14 +384,13 @@
     }
     .prep-box b { color: var(--ink); }
 
-    /* Accordion / Drawer */
     details {
       background: var(--bg);
       border: 1px solid var(--line-subtle);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
-      font-size: 13.5px;
-      margin-top: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-top: 4px;
     }
     summary {
       cursor: pointer;
@@ -450,51 +402,43 @@
       justify-content: space-between;
     }
     summary::-webkit-details-marker { display: none; }
-    summary::after {
-      content: "▾";
-      font-size: 14px;
-      transition: transform 0.2s;
-    }
+    summary::after { content: "▾"; font-size: 13px; transition: transform 0.2s; }
     details[open] summary::after { transform: rotate(180deg); }
 
     .sum-content {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding-top: 10px;
+      gap: 10px;
+      padding-top: 8px;
       border-top: 1px solid var(--line);
     }
     .sum-block-title {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--muted);
-      letter-spacing: 0.04em;
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
-    .sum-content ul { padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
-    .sum-content ul.caution li { color: var(--hot); font-weight: 500; }
-    .sum-content ul.caution li span { color: var(--ink); font-weight: 400; }
-    .docs-list { list-style: none; padding-left: 0!important; display: flex; flex-direction: column; gap: 5px; }
-    .docs-list li { display: flex; align-items: center; gap: 8px; }
-    .docs-list input { accent-color: var(--cuk-accent); }
+    .sum-content ul { padding-left: 16px; display: flex; flex-direction: column; gap: 2px; }
+    .sum-content ul.caution li { color: var(--hot); }
+    .sum-content ul.caution li span { color: var(--ink); }
+    .docs-list { list-style: none; padding-left: 0!important; display: flex; flex-direction: column; gap: 4px; }
+    .docs-list li { display: flex; align-items: center; gap: 6px; }
     .quote-box {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--ink-secondary);
-      padding: 8px 12px;
+      padding: 6px 10px;
       background: var(--surface);
       border-left: 3px solid var(--cuk-accent);
-      border-radius: 0 6px 6px 0;
-      font-style: italic;
+      border-radius: 0 4px 4px 0;
     }
 
-    /* GAP Progress Bar */
     .gap-progress-wrap {
-      margin-top: 8px;
+      margin-top: 6px;
       background: var(--line-subtle);
       border-radius: 99px;
-      height: 8px;
+      height: 7px;
       overflow: hidden;
     }
     .gap-bar-fill {
@@ -506,40 +450,44 @@
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-top: 8px;
-      font-size: 13px;
+      padding: 10px 12px;
+      margin-top: 6px;
+      font-size: 12.5px;
     }
-    .guide-box b { color: var(--cuk-gold); }
-
     .empty-state {
-      padding: 48px 16px;
+      padding: 40px 16px;
       text-align: center;
       background: var(--surface);
       border-radius: var(--radius-lg);
       border: 1px dashed var(--line);
       color: var(--muted);
     }
+    .hiddenlist {
+      padding: 12px 16px;
+      font-size: 12.5px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+    }
   </style>
 </head>
 <body>
 
 <div class="wrap">
-  <!-- Campus Brand Header -->
   <header>
     <div class="brand-wrap">
-      <div class="univ-tag">Catholic University of Korea · AI Assistant</div>
+      <div class="univ-tag">Catholic University of Korea · Smart Campus</div>
       <h1>CUK콕 (CUK-KOK)</h1>
-      <div class="header-sub">가톨릭대학교 학생을 위한 맞춤형 기회·장학 알림 & 스펙 갭(GAP) 비서</div>
+      <div class="header-sub">가톨릭대 맞춤형 장학·공모전 기회 & 스펙 갭 알림 비서</div>
     </div>
   </header>
 
-  <!-- Profile & Matcher Controller -->
   <section class="profile-card">
     <div class="profile-header" id="btn-toggle-profile">
       <div class="profile-title">
-        <span>👤 내 캠퍼스 프로필</span>
-        <span class="profile-badge-summary" id="profile-summary-text">3학년 · 경영·경제 · 재학 · 평점 3.3[cite: 1]</span>
+        <span>👤 내 프로필</span>
+        <span class="profile-badge-summary" id="profile-summary-text">3학년 · 경영·경제 · 재학</span>
       </div>
       <button class="btn-toggle" id="btn-toggle-label">조건 수정 ▾</button>
     </div>
@@ -584,7 +532,6 @@
       </label>
     </div>
 
-    <!-- Category Filter Chips -->
     <div class="chips-area">
       <span class="chips-label">알림 분야:</span>
       <label class="chip"><input type="checkbox" name="interest" value="장학" checked>장학</label>
@@ -596,10 +543,9 @@
     </div>
   </section>
 
-  <!-- Decision Tabs -->
   <div class="tabs-wrapper">
     <button class="tab-btn" id="t-feed" aria-selected="true">
-      <span>✨ 지금 바로 지원 가능</span>
+      <span>✨ 바로 지원 가능</span>
       <span class="tab-badge" id="n-feed">0</span>
     </button>
     <button class="tab-btn" id="t-gap" aria-selected="false">
@@ -608,8 +554,7 @@
     </button>
   </div>
 
-  <!-- KPI Summary Bar -->
-  <section class="summary-bar" id="summary-bar-container">
+  <section class="summary-bar">
     <div class="stat-pill">
       <span class="stat-label">지원 적합 공고</span>
       <span class="stat-value" id="kpi-available">0건</span>
@@ -624,19 +569,21 @@
     </div>
   </section>
 
-  <!-- Feed View -->
   <main id="v-feed" class="card-list"></main>
-
-  <!-- Gap View -->
   <main id="v-gap" class="card-list" style="display:none;"></main>
+  <div id="hid" class="hiddenlist"></div>
 </div>
 
 <script>
 (function(){
-  // 기준 시점 (가상 고정: 2026.10.28)[cite: 1]
-  var TODAY = new Date(2026, 9, 28);
+  // [수정] 실제 오늘 날짜(자정 기준)로 설정
+  var now = new Date();
+  var TODAY = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // 스프레드시트 42건 정규화 데이터 세트[cite: 1]
+  // Google Apps Script API를 연결한 경우 아래 주소를 입력하세요.
+  // URL이 비어있으면 내장 기본 데이터를 사용합니다.
+  var SHEET_API_URL = ""; 
+
   var N = [
     {id:"N001",cat:"장학",src:"교내",t:"[학생지원팀] 2026년도 두산연강재단 대학 장학생 선발 안내",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[2,3],status:["enrolled"],field:null,gpa:3.0,toeic:0,team:10,due:[2026,10,13],prep:4,benefit:"등록금 전액 지원",sum:["두산연강재단 대학 장학생 교내 추천","직전학기 평점 3.0 이상 2~3학년 재학생 대상","선발 시 등록금 전액 지원"],caution:["타 장학금 중복 수혜 불가","휴학생 및 초과학기자 제외"],docs:["장학신청서","성적증명서","지도교수 추천서"],q:"본교 2~3학년 재학생 중 직전학기 평점 3.0 이상인 자. 타 장학금 중복 수혜 불가."},
     {id:"N002",cat:"장학",src:"교내",t:"[학생지원팀] 2026년도 하반기 강화군 대학생 등록금 지원사업 안내",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:2.5,toeic:0,team:10,due:[2026,10,9],prep:3,benefit:"등록금 지원",sum:["강화군 거주 대학생 등록금 지원사업","직전학기 12학점 이상 이수 및 평점 2.5 이상","거주 요건 충족 시 등록금 실납부액 지원"],caution:["학생 본인 또는 부모 강화군 주민등록 필수","직전학기 12학점 미만 이수 시 제외"],docs:["신청서","주민등록초본","가족관계증명서","성적증명서"],q:"학생 본인 또는 부모가 강화군에 주민등록을 둔 대학교 재학생. 평점 2.5 이상."},
@@ -655,7 +602,6 @@
     {id:"N041",cat:"공모전",src:"외부",t:"[강릉시] 2026년 강릉시 시민 아이디어 공모전",url:"https://www.gn.go.kr",grades:[1,2,3,4],status:["enrolled","leave"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,13],prep:3,benefit:"총 200만원 (금상 100만원)",sum:["민선 9기 강릉시 발전 정책 아이디어","지역경제·복지·안전·AI 행정 4개 분야","거주지 제한 없이 국민 누구나 응모 가능"],caution:["1인당 최대 2건 응모 가능","기발표 제안 제외"],docs:["시민 아이디어 제안서"],q:"지역경제·복지·생활안전·AI 행정 등 4개 분야. 거주지와 상관없이 국민 누구나"}
   ];
 
-  // 행동 가이드 (심리학 기반 행동 유도 트리거)[cite: 1]
   var GUIDE = {
     "토익": [
       ["시험 일정", "마감 전 성적이 발표되는 정기시험 일정을 확인하세요."],
@@ -676,7 +622,6 @@
   function fmt(d){ return (d.getMonth() + 1) + "." + String(d.getDate()).padStart(2, "0"); }
   function esc(s){ return String(s || "").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 
-  // 캘린더(.ics) 다운로드
   window.downloadICS = function(title, y, m, d) {
     var dtStr = y + String(m + 1).padStart(2, '0') + String(d).padStart(2, '0') + "T090000Z";
     var icsData = [
@@ -723,21 +668,27 @@
     var toeic = +el("p-toeic").value;
     var team = +el("p-team").value;
 
-    // 프로필 헤더 요약 갱신
-    el("profile-summary-text").textContent = g + "학년 · " + FIELD[f] + " · " + STATUS[s] + " · 평점 " + gpa + " · 토익 " + (toeic ? toeic + "점" : "미보유");
+    el("profile-summary-text").textContent = g + "학년 · " + FIELD[f] + " · " + STATUS[s];
 
     var ints = [].slice.call(document.querySelectorAll("input[name='interest']:checked")).map(function(x){ return x.value; });
-    var feed = [], gaps = [];
+    var feed = [], gaps = [], hidden = {}, off = 0;
+    function hide(r){ hidden[r] = (hidden[r] || 0) + 1; }
 
     N.forEach(function(n) {
       var due = new Date(n.due[0], n.due[1], n.due[2]);
       var left = days(due, TODAY);
 
-      if (n.grades.indexOf(g) < 0) return;
-      if (n.status.indexOf(s) < 0) return;
-      if (n.field && n.field.indexOf(f) < 0) return;
-      if (n.team && team > n.team) return;
-      if (ints.indexOf(n.cat) < 0) return;
+      // [핵심 기능] 기한이 지난 공고는 자동 제외
+      if (left < 0) {
+        hide("마감 종료");
+        return;
+      }
+
+      if (n.grades.indexOf(g) < 0) { hide("학년 조건"); return; }
+      if (n.status.indexOf(s) < 0) { hide("학적 조건"); return; }
+      if (n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
+      if (n.team && team > n.team) { hide("팀 인원 초과"); return; }
+      if (ints.indexOf(n.cat) < 0) { off++; return; }
 
       var short = [];
       if (n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(1), big:(n.gpa - gpa) > 0.5 });
@@ -745,10 +696,10 @@
 
       var x = { n:n, due:due, left:left, short:short };
       if (!short.length) feed.push(x);
-      else if (!short.some(function(z){ return z.big; })) gaps.push(x);
+      else if (short.some(function(z){ return z.big; })) hide("조건 차이가 큼");
+      else gaps.push(x);
     });
 
-    // 장학금 우선 정렬 및 마감 임박 순
     feed.sort(function(a, b){
       var sa = a.n.cat === "장학" ? 0 : 1;
       var sb = b.n.cat === "장학" ? 0 : 1;
@@ -756,7 +707,6 @@
     });
     gaps.sort(function(a, b){ return a.left - b.left; });
 
-    // 헤더 통계치 갱신
     var schCount = feed.filter(function(x){ return x.n.cat === "장학"; }).length;
     el("n-feed").textContent = feed.length;
     el("n-gap").textContent = gaps.length;
@@ -764,7 +714,9 @@
     el("kpi-scholarship").innerHTML = "장학 <b>" + schCount + "</b>건";
     el("kpi-gap").innerHTML = "스펙 근접 <b>" + gaps.length + "</b>건";
 
-    // 피드 렌더링
+    var ht = Object.keys(hidden).reduce(function(a, k){ return a + hidden[k]; }, 0);
+    el("hid").textContent = (ht || off) ? "숨긴 공고 " + (ht + off) + "건 · " + Object.keys(hidden).map(function(k){ return k + " " + hidden[k] + "건"; }).concat(off ? ["관심 분야 밖 " + off + "건"] : []).join(" · ") : "숨긴 공고 없음";
+
     el("v-feed").innerHTML = feed.length ? feed.map(function(x) {
       var n = x.n;
       var start = new Date(x.due.getTime() - n.prep * 86400000);
@@ -774,7 +726,7 @@
       return '<article class="card">' +
         '<div class="dday-box ' + (x.left <= 7 ? 'hot' : '') + '">' +
           '<span class="dday-num">D-' + x.left + '</span>' +
-          '<span class="dday-sub">' + (x.left <= 7 ? '마감임박' : '접수중') + '</span>' +
+          '<span class="dday-sub">' + (x.left === 0 ? '오늘마감' : (x.left <= 7 ? '마감임박' : '접수중')) + '</span>' +
         '</div>' +
         '<div class="card-content">' +
           '<div class="badge-row">' +
@@ -789,9 +741,8 @@
           summaryCard(n) +
         '</div>' +
       '</article>';
-    }).join("") : '<div class="empty-state">현재 선택된 조건에 부합하는 공고가 없습니다. 조건을 조금 넓혀보세요.</div>';
+    }).join("") : '<div class="empty-state">현재 지원 가능한 공고가 없습니다. (기한이 지난 공고는 자동 숨김 처리됩니다)</div>';
 
-    // 갭(GAP) 피드 렌더링
     el("v-gap").innerHTML = gaps.length ? gaps.map(function(x) {
       var n = x.n;
       var lines = x.short.map(function(z) {
@@ -825,7 +776,6 @@
     }).join("") : '<div class="empty-state">현재 조건에서 근접한 갭 공고가 없습니다.</div>';
   }
 
-  // 필터 패널 토글
   el("btn-toggle-profile").addEventListener("click", function(){
     var p = el("filter-panel");
     var isHidden = p.style.display === "none";
@@ -833,12 +783,10 @@
     el("btn-toggle-label").textContent = isHidden ? "닫기 ▴" : "조건 수정 ▾";
   });
 
-  // 변경 이벤트 리스너 바인딩
   document.querySelectorAll(".filter-grid select, .chips-area input").forEach(function(i){
     i.addEventListener("change", render);
   });
 
-  // 탭 전환 핸들러
   el("t-feed").addEventListener("click", function(){
     this.setAttribute("aria-selected", "true");
     el("t-gap").setAttribute("aria-selected", "false");
@@ -852,7 +800,21 @@
     el("v-feed").style.display = "none";
   });
 
-  render();
+  // 구글 시트 API URL이 지정되어 있으면 실시간 fetch, 없으면 내장 데이터로 즉시 렌더링
+  if (SHEET_API_URL && SHEET_API_URL.startsWith("https://script.google.com")) {
+    fetch(SHEET_API_URL)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.length) { N = data; }
+        render();
+      })
+      .catch(function(err) {
+        console.warn("시트 API 연동 실패, 로컬 데이터로 대체:", err);
+        render();
+      });
+  } else {
+    render();
+  }
 })();
 </script>
 </body>
