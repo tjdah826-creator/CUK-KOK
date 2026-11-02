@@ -1,0 +1,16 @@
+{
+  "name": "CUK-콕 · 가톨릭대 맞춤 장학·공모전 알림",
+  "short_name": "CUK-콕",
+  "description": "공모전·대외활동으로 한 칸씩, 위로",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F6FA",
+  "theme_color": "#456A94",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
