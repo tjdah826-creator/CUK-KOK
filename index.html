@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>CUK-콕</title>
 
   <!-- iOS PWA 메타 태그 -->
@@ -957,7 +957,6 @@
     .section-title .st-count { font-size: 14px; font-weight: 700; color: var(--warn); }
 
     .bottom-nav { display: none; }
-    .sub-short { display: none; }
 
     @media (max-width: 600px) {
       body { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
@@ -976,8 +975,6 @@
       .univ-tag { display: none; }
       h1 { font-size: 28px; letter-spacing: -0.04em; line-height: 1.25; }
       .h1-en { display: none; }
-      .sub-long { display: none; }
-      .sub-short { display: inline !important; }
       .header-sub { color: var(--cuk-navy); font-size: 12.5px; font-weight: 700; line-height: 1.4; word-break: keep-all; }
       .menu-btn { display: inline-flex; position: absolute; right: 16px; top: 50%; transform: translateY(-60%); }
 
@@ -1652,6 +1649,185 @@
     .vf-chip span { font-size: 11px; opacity: 0.7; }
     .vf-chip:hover span { opacity: 1; }
     .empty-state small { display: inline-block; margin-top: 6px; color: var(--ink-secondary); }
+
+    /* ===================== v2.2: 기준일 · 분류 내비 · D-5 · 상세 5단 · 캘린더 ===================== */
+    .filter-field { min-width: 0; }
+    .filter-field select { width: 100%; min-width: 0; text-overflow: ellipsis; }
+    .basis-date {
+      align-self: flex-start; width: max-content; max-width: 100%;
+      display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;
+      font-size: 12px; color: var(--ink-secondary); background: var(--cuk-soft);
+      border-radius: 99px; padding: 2px 10px; white-space: nowrap;
+    }
+    .basis-date b { color: var(--cuk-accent); font-family: var(--font-mono); font-weight: 700; }
+    .nav-filter { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .nav-filter .scope-seg { width: 100%; max-width: 560px; }
+    .cat-chips {
+      width: 100%; justify-content: center; flex-wrap: nowrap; overflow-x: auto;
+      padding: 2px 2px 6px; border: none; background: transparent;
+      scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+    }
+    .cat-chips .chip { flex: 0 0 auto; padding: 6px 14px; font-size: 13px; background: var(--surface); }
+    .cat-chips .chip input { position: absolute; opacity: 0; pointer-events: none; }
+    .cat-chips .chip { position: relative; }
+    .cat-chips .chip:has(input:checked) { background: var(--cuk-accent); border-color: var(--cuk-accent); color: #fff; }
+    /* '전체'가 켜져 있으면 개별 분야 칩은 기본 모양으로 (전체만 강조) */
+    .cat-chips:has(#interest-all:checked) .chip:has(input[name="interest"]) { background: var(--surface); border-color: var(--line); color: var(--ink-secondary); font-weight: 600; }
+    .cat-chips .chip:has(input:focus-visible) { outline: 2px solid var(--cuk-accent); outline-offset: 2px; }
+    .cc { font-family: var(--font-mono); font-size: 11px; font-weight: 700; opacity: .75; }
+    .cc:empty { display: none; }
+    @media (max-width: 700px) { .cat-chips { justify-content: flex-start; } }
+    .d5-chip {
+      height: 34px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--line);
+      background: var(--surface); color: var(--ink-secondary); font: inherit; font-size: 12.5px; font-weight: 700;
+      cursor: pointer; white-space: nowrap;
+    }
+    .d5-chip:hover { border-color: var(--hot); color: var(--hot); }
+    .d5-chip[aria-pressed="true"] { background: var(--hot); border-color: var(--hot); color: #fff; }
+    .sum-block-title { display: flex; align-items: center; gap: 6px; text-transform: none; }
+    .sum-block-title i {
+      font-style: normal; width: 16px; height: 16px; border-radius: 50%; background: var(--cuk-accent); color: #fff;
+      font-size: 10px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+    }
+    .sum-block-title em { font-style: normal; font-weight: 600; color: var(--muted); font-size: 10.5px; }
+    .sum-block.req .sum-block-title i { background: var(--hot); }
+    .sum-block.pref .sum-block-title i { background: var(--ok, #16A34A); }
+    .sum-content ul.req-list li::marker { color: var(--hot); }
+    .sum-content ul.req-list li.caution-li { color: var(--hot); }
+    .sum-content ul.req-list li.caution-li span { color: var(--ink-secondary); }
+    .sum-empty { font-size: 12px; color: var(--muted); }
+    .submit-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 2px 0 6px; }
+    .submit-tag { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: var(--cuk-soft); color: var(--cuk-accent); }
+    .submit-tag.off, .submit-tag.both { background: #FFEDD5; color: #C2410C; }
+    .submit-tag.unknown { background: var(--line-subtle); color: var(--muted); }
+    .submit-warn { font-size: 11.5px; font-weight: 700; color: #fff; background: #EA580C; padding: 3px 9px; border-radius: 99px; }
+    .submit-guess { font-size: 11px; color: var(--muted); }
+    .cal-opts { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .cal-opt {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
+      background: var(--surface); color: var(--ink); text-decoration: none; font: inherit; text-align: left; cursor: pointer;
+    }
+    .cal-opt:hover { border-color: var(--cuk-accent); background: var(--cuk-soft); }
+    .cal-opt b { display: block; font-size: 14px; }
+    .cal-opt small { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .cal-opt-ic {
+      width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
+      background: var(--bg); font-size: 18px; flex: 0 0 auto;
+    }
+    .view-btn, .view-btn span { white-space: nowrap; }
+    @media (max-width: 600px) {
+      .header-sub { font-size: 12px; letter-spacing: -0.02em; text-wrap: balance; }
+      .sort-label { display: none; }
+      .toolbar-actions { gap: 6px; }
+      .d5-chip { padding: 0 10px; }
+    }
+    @media (max-width: 380px) { .d5-long { display: none; } }
+    @media (max-width: 600px) { .basis-date { align-self: center; margin-top: 6px; font-size: 11.5px; } }
+    .cal-opt-ic.g { background: #4285F4; color: #fff; font-weight: 800; font-size: 17px; }
+
+    /* ===================== v2.3: 지난 공고 · 사용법 · 댓글 ===================== */
+    .past-note { font-size: 13px; color: var(--ink-secondary); background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius-md); padding: 10px 14px; line-height: 1.55; }
+    .card.closed { background: color-mix(in srgb, var(--surface) 88%, var(--line-subtle)); }
+    .card.closed .card-title a { color: var(--ink-secondary); }
+    .dday-box.closed { background: var(--line-subtle); border-color: var(--line); }
+    .dday-box.closed .dday-num { color: var(--muted); font-size: 15px; }
+    .prep-box.closed { background: var(--line-subtle); color: var(--ink-secondary); }
+    .mini-dday.closed, .htile-icon.closed { background: var(--line-subtle) !important; color: var(--muted) !important; }
+    .similar-link {
+      display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; padding: 6px 12px; border-radius: 99px;
+      border: 1px dashed var(--cuk-accent); background: transparent; color: var(--cuk-accent);
+      font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+    }
+    .similar-link:hover { background: var(--cuk-soft); }
+    @media (max-width: 600px) { .bn-label { font-size: 10.5px; letter-spacing: -0.03em; } .bn-item { min-width: 0; } }
+
+    .fab-wrap { position: fixed; right: 20px; bottom: 24px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; z-index: 8500; }
+    .fab {
+      width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; font: inherit; font-size: 21px; font-weight: 800;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18); display: inline-flex; align-items: center; justify-content: center;
+      transition: transform .15s ease;
+    }
+    .fab:hover { transform: translateY(-2px); }
+    .fab.help { background: var(--cuk-navy, #0E2A5C); color: #fff; font-size: 22px; }
+    .fab.cmt { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+    .fab-bubble {
+      word-break: keep-all;
+      position: relative; max-width: 230px; background: var(--ink); color: #fff; font-size: 12.5px; line-height: 1.45;
+      padding: 9px 30px 9px 12px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.2); animation: fabIn .3s ease;
+    }
+    .fab-bubble::after { content: ""; position: absolute; right: 18px; bottom: -6px; border: 6px solid transparent; border-bottom: 0; border-top-color: var(--ink); }
+    .fab-bubble button { position: absolute; right: 6px; top: 6px; background: none; border: none; color: #fff; opacity: .7; cursor: pointer; font-size: 12px; }
+    @keyframes fabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @media (max-width: 600px) {
+      .fab-wrap { right: 16px; bottom: calc(96px + env(safe-area-inset-bottom)); gap: 8px; }
+      .fab { width: 44px; height: 44px; font-size: 18px; }
+    }
+    body.modal-open { overflow: hidden; }
+
+    .modal-sheet { max-width: 560px; max-height: 86vh; display: flex; flex-direction: column; padding-bottom: max(14px, env(safe-area-inset-bottom)); }
+    @media (min-width: 700px) {
+      .modal-sheet { top: 50%; bottom: auto; border-radius: 18px; transform: translate(-50%, -46%); opacity: 0; transition: opacity .2s, transform .25s, visibility .25s; }
+      .modal-sheet.show { transform: translate(-50%, -50%); opacity: 1; }
+      .modal-sheet .share-handle { display: none; }
+    }
+    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .modal-head .share-sub { white-space: normal; }
+    .modal-x { flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg); cursor: pointer; font-size: 14px; color: var(--ink-secondary); }
+    .modal-body { overflow-y: auto; margin-top: 12px; flex: 1 1 auto; min-height: 0; overscroll-behavior: contain; }
+    .help-sec { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--surface); }
+    .help-sec summary { cursor: pointer; padding: 11px 14px; font-weight: 700; font-size: 14px; list-style: none; }
+    .help-sec summary::-webkit-details-marker { display: none; }
+    .help-sec summary::after { content: "▾"; float: right; color: var(--muted); }
+    .help-sec[open] summary::after { content: "▴"; }
+    .help-sec > :not(summary) { padding: 0 14px 12px; margin: 0; font-size: 13px; line-height: 1.6; color: var(--ink-secondary); }
+    .help-sec.tips { border-color: #F5C26B; background: #FFFBEB; }
+    .help-steps { padding-left: 34px !important; display: flex; flex-direction: column; gap: 6px; }
+    .help-ul { padding-left: 32px !important; display: flex; flex-direction: column; gap: 4px; }
+    .help-dl { display: grid; grid-template-columns: minmax(96px, auto) 1fr; gap: 6px 12px; }
+    .help-dl dt { font-weight: 700; color: var(--ink); white-space: nowrap; }
+    .help-dl dd { margin: 0; }
+    @media (max-width: 480px) { .help-dl { grid-template-columns: 1fr; gap: 2px; } .help-dl dd { margin-bottom: 6px; } }
+
+    .cmt-rule { font-size: 12px; color: var(--ink-secondary); background: var(--bg); border-radius: 8px; padding: 8px 10px; line-height: 1.5; }
+    .cmt-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .cmt-empty { text-align: center; color: var(--muted); font-size: 13px; padding: 26px 8px; }
+    .cmt { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--surface); }
+    .cmt.reply { margin-left: 22px; background: var(--bg); border-style: dashed; }
+    .cmt.mine { border-color: var(--cuk-accent); }
+    .cmt-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; }
+    .cmt-type { font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--cuk-soft); color: var(--cuk-accent); }
+    .cmt-type.t-후기 { background: #DCFCE7; color: #15803D; }
+    .cmt-type.t-팁 { background: #FEF3C7; color: #B45309; }
+    .cmt-nick-v { font-size: 12.5px; }
+    .cmt-nick-v small { color: var(--cuk-accent); font-weight: 600; }
+    .cmt-time { color: var(--muted); margin-left: auto; }
+    .cmt-text { font-size: 13.5px; line-height: 1.6; margin-top: 5px; word-break: break-word; }
+    .cmt-acts { display: flex; gap: 10px; margin-top: 4px; }
+    .cmt-acts button { background: none; border: none; padding: 2px 0; font: inherit; font-size: 12px; color: var(--muted); cursor: pointer; }
+    .cmt-acts button:hover { color: var(--ink); text-decoration: underline; }
+    .cmt-acts button.confirm { color: #DC2626; font-weight: 700; }
+    .cmt-done { font-size: 12px; color: var(--muted); }
+    .cmt-form { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+    .cmt-reply { font-size: 12.5px; color: var(--cuk-accent); }
+    .cmt-reply button { margin-left: 6px; border: none; background: var(--bg); border-radius: 99px; padding: 1px 8px; font: inherit; font-size: 11.5px; cursor: pointer; }
+    .cmt-types { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .cmt-types label { cursor: pointer; }
+    .cmt-types input[type=radio] { position: absolute; opacity: 0; pointer-events: none; }
+    .cmt-types label span { display: inline-block; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); font-size: 12.5px; font-weight: 600; color: var(--ink-secondary); }
+    .cmt-types input:checked + span { background: var(--cuk-accent); border-color: var(--cuk-accent); color: #fff; }
+    .cmt-types input:focus-visible + span { outline: 2px solid var(--cuk-accent); outline-offset: 2px; }
+    .cmt-nick { margin-left: auto; width: 110px; height: 30px; border: 1px solid var(--line); border-radius: 8px; padding: 0 8px; font: inherit; font-size: 12.5px; background: var(--surface); color: var(--ink); }
+    .cmt-examples { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+    .cmt-examples button { flex: 0 0 auto; border: 1px dashed var(--line); background: var(--bg); border-radius: 99px; padding: 3px 10px; font: inherit; font-size: 12px; color: var(--ink-secondary); cursor: pointer; }
+    .cmt-examples button:hover { border-color: var(--cuk-accent); color: var(--cuk-accent); }
+    .cmt-input-row { display: flex; gap: 8px; align-items: stretch; }
+    .cmt-input-row textarea { flex: 1; min-width: 0; resize: vertical; min-height: 44px; max-height: 160px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font: inherit; font-size: 13.5px; background: var(--surface); color: var(--ink); }
+    .cmt-input-row textarea:focus, .cmt-nick:focus { outline: none; border-color: var(--cuk-accent); }
+    .cmt-send { flex: 0 0 auto; padding: 0 16px; border: none; border-radius: 10px; background: var(--cuk-accent); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+    .cmt-send:disabled { opacity: .6; cursor: default; }
+    .cmt-count { font-size: 11px; color: var(--muted); text-align: right; margin-top: -4px; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+    @media (max-width: 600px) { .cmt-nick { width: 92px; } }
   </style>
 </head>
 <body>
@@ -1674,7 +1850,8 @@
     <div class="brand-wrap">
       <div class="univ-tag">Catholic University of Korea · Smart Campus</div>
       <h1>CUK-콕<span class="h1-en"> (CUK-KOK)</span></h1>
-      <div class="header-sub"><span class="sub-long">가톨릭대 맞춤형 장학·공모전 기회 & 스펙 갭 알림 비서</span><span class="sub-short">가톨릭대 맞춤형 장학·공모 알림 비서</span></div>
+      <div class="header-sub">가톨릭대 맞춤형 장학·공모전 기회 &amp; 스펙 갭 알림 비서</div>
+      <div class="basis-date" id="basis-date" title="매일 오전 7시에 공고를 새로 모아요">📅 공고 기준일: <b id="basis-date-v">-</b></div>
     </div>
     <nav class="gnb" aria-label="메인 메뉴">
   <!-- [UX 2] 3단 탭 내비게이션 (관심 보관함 탭 추가) -->
@@ -1694,6 +1871,10 @@
     <button class="tab-btn" id="t-cal" aria-selected="false">
       <span><i class="tab-ic">📅 </i>달력</span>
       <span class="tab-badge" id="n-cal">0</span>
+    </button>
+    <button class="tab-btn" id="t-past" aria-selected="false" title="마감된 공고를 모아 보고 다음 회차를 준비해요">
+      <span><i class="tab-ic">📦 </i>지난 공고</span>
+      <span class="tab-badge" id="n-past">0</span>
     </button>
   </div>
     </nav>
@@ -1731,7 +1912,7 @@
           <option value="1">1학년</option>
           <option value="2">2학년</option>
           <option value="3">3학년</option>
-          <option value="4">4학년</option>
+          <option value="4">4학년 이상 (초과학기·졸업유예 포함)</option>
         </select>
       </label>
       <label class="filter-field">전공 계열
@@ -1748,11 +1929,12 @@
           <option value="all" selected>전체 (재학·휴학)</option>
           <option value="enrolled">재학</option>
           <option value="leave">휴학</option>
+          <option value="grad">졸업생</option>
         </select>
       </label>
       <label class="filter-field">직전학기 평점
         <select id="p-gpa">
-          <option value="all" selected>전체 (평점 무관)</option><option>2.5</option><option>2.8</option><option>3.0</option><option>3.3</option><option>3.5</option><option>4.0</option>
+          <option value="all" selected>전체 (평점 무관)</option><option value="2.5">2.5 이상</option><option value="2.8">2.8 이상</option><option value="3.0">3.0 이상</option><option value="3.3">3.3 이상</option><option value="3.5">3.5 이상</option><option value="4.0">4.0 이상</option>
         </select>
       </label>
       <label class="filter-field">어학 (TOEIC)
@@ -1762,7 +1944,7 @@
       </label>
       <label class="filter-field">공모전 팀 인원
         <select id="p-team">
-          <option value="all" selected>전체 (인원 무관)</option><option value="1">1명(개인)</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option><option value="5">5명 이상</option>
+          <option value="all" selected>전체 (인원 무관)</option><option value="1">1명(개인)</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option><option value="5">5명</option><option value="6">6명 이상</option>
         </select>
       </label>
       <div class="filter-actions">
@@ -1774,17 +1956,6 @@
       </div>
     </div>
 
-    <div class="chips-area">
-      <span class="chips-label">분야:</span>
-      <label class="chip"><input type="checkbox" id="interest-all" checked>전체</label>
-      <label class="chip"><input type="checkbox" name="interest" value="장학" checked>장학</label>
-      <label class="chip"><input type="checkbox" name="interest" value="취창업" checked>취창업</label>
-      <label class="chip"><input type="checkbox" name="interest" value="비교과" checked>비교과</label>
-      <label class="chip"><input type="checkbox" name="interest" value="학사" checked>학사</label>
-      <label class="chip"><input type="checkbox" name="interest" value="공모전" checked>공모전</label>
-      <label class="chip"><input type="checkbox" name="interest" value="교환·어학" checked>교환·어학</label>
-      <label class="chip"><input type="checkbox" name="interest" value="대외활동" checked>대외활동</label>
-    </div>
   </section>
 
   <!-- 통계 및 [UX 6] 정렬 컨트롤러 -->
@@ -1802,20 +1973,33 @@
   <!-- 시트 연결 전(또는 실패 시) 코드 안의 예시 데이터를 보여줄 때 표시 -->
   <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.</div>
 
-  <!-- 교내 / 교외 크게 나눠 보기 -->
-  <div class="scope-seg" role="tablist" aria-label="교내·교외 구분">
+  <!-- 공고 분류: 1단계 대분류(교내/교외) + 2단계 중분류(분야) — 본문 위 가운데 -->
+  <nav class="nav-filter" aria-label="공고 분류">
+  <div class="scope-seg" role="tablist" aria-label="대분류: 교내·교외 구분">
     <button type="button" class="scope-btn" role="tab" data-scope="all">전체 <b id="sc-all">0</b></button>
     <button type="button" class="scope-btn" role="tab" data-scope="in">🏫 교내 <b id="sc-in">0</b></button>
     <button type="button" class="scope-btn" role="tab" data-scope="out">🌐 교외 <b id="sc-out">0</b></button>
   </div>
+    <div class="chips-area cat-chips" role="group" aria-label="분야 (중분류)">
+      <label class="chip"><input type="checkbox" id="interest-all" checked>전체 <b class="cc" id="cc-all"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="장학" checked>장학 <b class="cc" data-cat="장학"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="취창업" checked>취창업 <b class="cc" data-cat="취창업"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="비교과" checked>비교과 <b class="cc" data-cat="비교과"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="학사" checked>학사 <b class="cc" data-cat="학사"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="공모전" checked>공모전 <b class="cc" data-cat="공모전"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="교환·어학" checked>교환·어학 <b class="cc" data-cat="교환·어학"></b></label>
+      <label class="chip"><input type="checkbox" name="interest" value="대외활동" checked>대외활동 <b class="cc" data-cat="대외활동"></b></label>
+    </div>
+  </nav>
 
   <!-- 목록 제목 + 정렬 · 보기 (윈도우 탐색기 스타일) -->
   <div class="view-toolbar">
   <h2 class="section-title" id="view-title">바로 지원 <span class="st-count" id="view-count"></span></h2>
     <button type="button" class="vf-chip" id="vf-chip" hidden title="누르면 검토중 공고도 다시 보여요">✓ 검증된 공고만 <span aria-hidden="true">✕</span></button>
     <div class="toolbar-actions">
+      <button type="button" class="d5-chip" id="d5-chip" aria-pressed="false" title="마감 5일 이내 공고만 보여요">⏰ D-5<span class="d5-long"> 마감 임박만</span></button>
       <div class="sort-wrap">
-      <span style="font-size:12px; color:var(--muted); font-weight:600;">정렬:</span>
+      <span class="sort-label" style="font-size:12px; color:var(--muted); font-weight:600; white-space:nowrap;">정렬:</span>
       <select id="sort-select" class="sort-select">
         <option value="due">마감 임박순</option>
         <option value="sch">장학금 우선순</option>
@@ -1856,11 +2040,13 @@
   </div>
 
   <!-- 메인 피드 목록 -->
+  <div class="past-note" id="past-note" hidden>📦 <b>마감된 공고</b>를 최근 마감순으로 모았어요. 작년 주제·혜택·제출 서류를 보고 다음 회차를 미리 준비하세요. 참여 후기가 있다면 💬 댓글로 나눠 주세요.</div>
   <div class="list-area">
   <main id="v-feed" class="card-list"></main>
   <main id="v-gap" class="card-list" style="display:none;"></main>
   <main id="v-bookmark" class="card-list" style="display:none;"></main>
   <main id="v-cal" class="card-list" style="display:none;"></main>
+  <main id="v-past" class="card-list" style="display:none;"></main>
   <!-- 미리 보기 창: 목록에서 고른 공고를 오른쪽에 자세히 -->
   <aside class="preview-pane" id="preview-pane" aria-label="미리 보기" hidden></aside>
   </div>
@@ -1887,6 +2073,7 @@
     <h4>🔒 개인정보</h4>
     <ul>
       <li>프로필 조건·찜·서류 체크는 이 기기의 브라우저에만 저장되고 서버로 보내지 않아요</li>
+      <li>댓글은 로그인 없이 닉네임·글 종류·내용·작성 시각만 저장해요. 연락처·이메일·학번 모양의 글자는 자동으로 가려지고, 신고가 쌓인 글은 숨겨져요</li>
     </ul>
     <h4>🧩 오픈소스</h4>
     <ul>
@@ -1921,11 +2108,120 @@
       <span class="bn-label">마감 달력</span>
       <span class="bn-badge" id="bn-cal"></span>
     </button>
+    <button class="bn-item" data-tab="past" aria-label="지난 공고">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9"/><path d="M10 13h4"/></svg>
+      <span class="bn-label">지난 공고</span>
+    </button>
     <button class="bn-item" data-tab="profile" aria-label="내 조건">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
       <span class="bn-label">내 조건</span>
     </button>
 </nav>
+
+<!-- 오른쪽 아래: 정보 공유방 · 사용법 -->
+<div class="fab-wrap">
+  <div class="fab-bubble" id="fab-bubble" hidden>처음이세요? <b>?</b>를 눌러 사용법을 확인해 보세요 <button type="button" aria-label="닫기" onclick="hideHelpBubble()">✕</button></div>
+  <button type="button" class="fab cmt" id="fab-cmt" onclick="openComments('general')" aria-label="정보 공유방 열기" title="정보 공유방: 공모전 질문·후기·팁 나누기">💬</button>
+  <button type="button" class="fab help" id="fab-help" onclick="openHelp()" aria-label="사용법 안내 열기" title="사용법 · 꿀팁">?</button>
+</div>
+
+<!-- 사용법 · 꿀팁 안내창 -->
+<div id="help-backdrop" class="share-backdrop" onclick="closeHelp()"></div>
+<div id="help-sheet" class="share-sheet modal-sheet" role="dialog" aria-modal="true" aria-labelledby="help-title" aria-hidden="true">
+  <div class="share-handle"></div>
+  <div class="modal-head"><div class="share-title" id="help-title">❓ CUK-콕 사용법 · 꿀팁</div><button type="button" class="modal-x" onclick="closeHelp()" aria-label="닫기">✕</button></div>
+  <div class="modal-body help-body">
+    <details class="help-sec" open><summary>🚀 처음이라면 이렇게 시작하세요</summary>
+      <ol class="help-steps">
+        <li><b>내 조건 설정</b> — 왼쪽(모바일은 하단 ⚙️ 내 조건)에서 학년·학적·평점·토익·팀 인원을 고르고 <b>💾 이 조건 저장</b>을 누르세요. 다음에 열 때도 그대로예요.</li>
+        <li><b>바로 지원</b> 탭에서 지금 지원할 수 있는 공고를 마감 임박순으로 확인하세요.</li>
+        <li>마음에 드는 공고는 <b>♡ 찜</b>, 마감일은 <b>📅 캘린더</b>로 내 일정에 넣어 두세요.</li>
+      </ol>
+    </details>
+    <details class="help-sec"><summary>🧭 메뉴 (탭) 안내</summary>
+      <dl class="help-dl">
+        <dt>✨ 바로 지원</dt><dd>내 조건을 모두 만족하는 접수 중인 공고예요.</dd>
+        <dt>🎯 갭 보완</dt><dd>평점·토익이 <b>조금만</b> 모자란 공고예요. 얼마나 채우면 되는지와 준비 방법을 알려 줘요.</dd>
+        <dt>💗 보관함</dt><dd>하트(찜)를 누른 공고만 모아 봐요. 이 기기에만 저장돼요.</dd>
+        <dt>📅 마감 달력</dt><dd>날짜별 마감 건수를 달력으로 보여 줘요. 날짜를 누르면 그날 마감 공고와 바로가기가 나와요. 하단 메뉴의 숫자는 <b>오늘 마감</b> 건수예요.</dd>
+        <dt>📦 지난 공고</dt><dd>마감된 공고를 1년 동안 모아 둬요. 작년 주제·혜택·서류를 보고 다음 회차를 미리 준비하세요.</dd>
+      </dl>
+    </details>
+    <details class="help-sec"><summary>🔎 원하는 공고만 골라 보기</summary>
+      <dl class="help-dl">
+        <dt>전체 · 🏫 교내 · 🌐 교외</dt><dd>학교 공지만, 또는 외부 기관 공고만 볼 수 있어요.</dd>
+        <dt>분야 칩</dt><dd>장학·공모전·대외활동 등 분야를 눌러 켜고 꺼요. 숫자는 분야별 건수예요. '전체'를 누르면 모두 켜져요.</dd>
+        <dt>⏰ D-5 마감 임박만</dt><dd>5일 안에 마감되는 공고만 남겨요.</dd>
+        <dt>정렬</dt><dd>마감 임박순 · 장학금 우선순 · 서류 준비 빠른순.</dd>
+        <dt>🔍 검색</dt><dd>공고명·혜택·자격 문구로 바로 찾아요.</dd>
+        <dt>✓ 검증 / 검토중</dt><dd>'검증'은 운영자가 원문과 대조한 공고예요. 보기 › 표시 › <b>검증된 공고만 보기</b>로 검증된 것만 볼 수 있어요.</dd>
+      </dl>
+    </details>
+    <details class="help-sec"><summary>🗂️ 공고 카드 읽는 법</summary>
+      <dl class="help-dl">
+        <dt>D-day · 마감</dt><dd>마감까지 남은 날이에요. 마감일에 마우스를 올리면 어디서 가져온 날짜인지 보여요.</dd>
+        <dt>핵심 요약 & 서류 체크</dt><dd>① 3줄 요약 ② 필수 자격 ③ 우대 조건 ④ 접수 방식·서류 체크리스트 ⑤ 원문 근거로 나눠 보여 줘요. 서류를 체크하면 진행률이 저장돼요.</dd>
+        <dt>📮 오프라인 접수</dt><dd>우편·방문 접수는 주황 경고가 붙어요. 우편은 <b>소인 날짜</b>, 방문은 <b>마감 시각</b>을 꼭 확인하세요.</dd>
+        <dt>🔗 공유 · 💬 댓글</dt><dd>카카오톡·문자·메일로 공유하고, 공고마다 질문·후기·팁을 남길 수 있어요.</dd>
+        <dt>🏠 기관 홈페이지 링크</dt><dd>공고로 바로 가지 않는 링크는 '공고 검색' 버튼으로 찾아갈 수 있어요.</dd>
+      </dl>
+    </details>
+    <details class="help-sec"><summary>🪟 보기 방식 바꾸기</summary>
+      <p>오른쪽 위 <b>보기</b>에서 윈도우 탐색기처럼 아주 큰 카드 · 큰 카드 · 보통/작은 카드 · 목록 · 자세히(표) · 타일 · 내용을 고를 수 있어요. PC에서는 <b>세부 정보 창</b>을 켜면 목록 옆에 공고 정보가 함께 보여요. 고른 보기는 이 기기에 기억돼요.</p>
+    </details>
+    <details class="help-sec"><summary>💬 댓글 · 정보 공유방</summary>
+      <p>공고 카드의 <b>💬 댓글</b>에서 "참여해 보신 분 계신가요?" 같은 질문이나 후기·팁을 남길 수 있어요. 오른쪽 아래 💬 버튼은 공고와 상관없는 <b>자유 정보 공유방</b>이에요.</p>
+      <ul class="help-ul">
+        <li>로그인 없이 닉네임으로 써요. 이름·연락처·학번은 적지 마세요 (연락처·이메일·학번 모양은 자동으로 가려져요).</li>
+        <li>내가 쓴 글은 같은 기기에서 지울 수 있고, 부적절한 글은 신고할 수 있어요. 신고가 쌓이면 자동으로 숨겨져요.</li>
+      </ul>
+    </details>
+    <details class="help-sec tips" open><summary>🍯 꿀팁</summary>
+      <ul class="help-ul">
+        <li><b>⏰ D-5 + 서류 준비 빠른순</b>으로 정렬하면 "오늘 당장 낼 수 있는 것"부터 처리할 수 있어요.</li>
+        <li><b>갭 보완</b>의 토익·평점 차이가 작다면, 다음 시험 일정과 맞춰 보세요. 다음 회차 지원 자격이 생겨요.</li>
+        <li>카드의 <b>📦 지난 공고와 비교</b> 버튼로 작년 주제와 수상작 경향을 미리 볼 수 있어요.</li>
+        <li><b>📅 캘린더</b>의 .ics 파일엔 마감 하루 전 알림이 들어 있어요.</li>
+        <li>휴대폰 브라우저의 <b>홈 화면에 추가</b>를 하면 앱처럼 바로 열 수 있어요.</li>
+        <li>AI 요약은 참고용이에요. 마감일·자격은 반드시 <b>원문 공고</b>에서 한 번 더 확인하세요.</li>
+      </ul>
+    </details>
+  </div>
+</div>
+
+<!-- 댓글 · 정보 공유 창 -->
+<div id="cmt-backdrop" class="share-backdrop" onclick="closeComments()"></div>
+<div id="cmt-sheet" class="share-sheet modal-sheet" role="dialog" aria-modal="true" aria-labelledby="cmt-title" aria-hidden="true">
+  <div class="share-handle"></div>
+  <div class="modal-head">
+    <div><div class="share-title" id="cmt-title">💬 댓글</div><div class="share-sub" id="cmt-sub"></div></div>
+    <button type="button" class="modal-x" onclick="closeComments()" aria-label="닫기">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="cmt-rule">🙏 서로 돕는 공간이에요. <b>이름·연락처·학번</b> 같은 개인정보는 적지 마세요. 부적절한 글은 신고하면 숨겨져요.</div>
+    <div class="cmt-list" id="cmt-list" aria-live="polite"></div>
+  </div>
+  <form class="cmt-form" id="cmt-form" autocomplete="off">
+    <div class="cmt-reply" id="cmt-reply" hidden></div>
+    <div class="cmt-types" role="radiogroup" aria-label="글 종류">
+      <label><input type="radio" name="cmt-type" value="질문" checked><span>❓ 질문</span></label>
+      <label><input type="radio" name="cmt-type" value="후기"><span>📝 참여 후기</span></label>
+      <label><input type="radio" name="cmt-type" value="팁"><span>💡 준비 팁</span></label>
+      <input type="text" class="cmt-nick" id="cmt-nick" maxlength="12" aria-label="닉네임" placeholder="닉네임">
+    </div>
+    <div class="cmt-examples" id="cmt-examples">
+      <button type="button" data-ex="이 공모전 참여해 보신 분 계신가요?">참여해 보신 분?</button>
+      <button type="button" data-ex="실제로 참여해 보니 어떤가요? 준비 기간은 얼마나 걸렸나요?">실제로 해 보니 어때요?</button>
+      <button type="button" data-ex="팀원 구하고 있어요. 관심 있는 분은 댓글 남겨 주세요!">팀원 구해요</button>
+    </div>
+    <input type="text" name="website" class="hp" tabindex="-1" aria-hidden="true">
+    <div class="cmt-input-row">
+      <textarea id="cmt-text" maxlength="500" rows="2" placeholder="질문이나 경험, 준비 팁을 나눠 주세요 (500자 이내)"></textarea>
+      <button type="submit" class="cmt-send" id="cmt-send">등록</button>
+    </div>
+    <div class="cmt-count"><span id="cmt-len">0</span>/500</div>
+  </form>
+</div>
 
 <!-- [UX 5] 토스트 알림창 -->
 <div id="toast" class="toast">링크가 복사되었습니다.</div>
@@ -1959,6 +2255,23 @@
     </button>
   </div>
   <button class="share-cancel" onclick="closeShare()">닫기</button>
+</div>
+
+<!-- 캘린더 등록 바텀시트: 구글 캘린더 바로 추가 / .ics 파일 -->
+<div id="cal-backdrop" class="share-backdrop" onclick="closeCalSheet()"></div>
+<div id="cal-sheet" class="share-sheet" role="dialog" aria-modal="true" aria-labelledby="cal-sheet-title" aria-hidden="true">
+  <div class="share-handle"></div>
+  <div class="share-title" id="cal-sheet-title">마감일을 캘린더에 추가</div>
+  <div class="share-sub" id="cal-sheet-sub"></div>
+  <div class="cal-opts">
+    <a class="cal-opt" id="cal-google" href="#" target="_blank" rel="noopener" onclick="setTimeout(closeCalSheet, 300)">
+      <span class="cal-opt-ic g">G</span><span><b>구글 캘린더에 바로 추가</b><small>새 창에서 일정 등록 화면이 열려요 (안드로이드·PC)</small></span>
+    </a>
+    <button type="button" class="cal-opt" id="cal-ics">
+      <span class="cal-opt-ic">📥</span><span><b>캘린더 파일(.ics) 받기</b><small>아이폰 캘린더·아웃룩에서 열어 등록해요</small></span>
+    </button>
+  </div>
+  <button class="share-cancel" onclick="closeCalSheet()">닫기</button>
 </div>
 
 <script>
@@ -1996,7 +2309,7 @@
   };
 
   var FIELD = {hum:"인문·사회", biz:"경영·경제", sci:"자연·공학", art:"예체능"};
-  var STATUS = {enrolled:"재학", leave:"휴학"};
+  var STATUS = {enrolled:"재학", leave:"휴학", grad:"졸업생"};
 
   // 하트 SVG (Uiverse heart-container 마크업)
   var HEART_PATH_OUTLINE = "M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z";
@@ -2077,6 +2390,7 @@
     if (el("v-gap").style.display !== "none") return "v-gap";
     if (el("v-bookmark").style.display !== "none") return "v-bookmark";
     if (el("v-cal").style.display !== "none") return "v-cal";
+    if (el("v-past").style.display !== "none") return "v-past";
     return "v-feed";
   }
 
@@ -2236,20 +2550,62 @@
   }
 
   // 캘린더 등록
-  window.downloadICS = function(title, y, m, d) {
-    var dtStr = y + String(m + 1).padStart(2, '0') + String(d).padStart(2, '0') + "T090000Z";
+  // 마감일을 하루 종일 일정으로 (시간대 차이로 날짜가 밀리지 않게)
+  function ymd(dt) { return dt.getFullYear() + String(dt.getMonth() + 1).padStart(2, "0") + String(dt.getDate()).padStart(2, "0"); }
+  function calDetails(n) {
+    return "[CUK-콕 마감 알림]\n혜택: " + (n && n.benefit || "공고 내용 참조") +
+      "\n지원 전 원문 공고를 꼭 확인하세요." + (n && n.url ? "\n원문: " + n.url : "");
+  }
+  // 구글 캘린더 일정 등록 화면 (Web Intent)
+  function makeGoogleCalUrl(n, due) {
+    var next = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent("[마감] " + n.t) +
+      "&dates=" + ymd(due) + "/" + ymd(next) +
+      "&details=" + encodeURIComponent(calDetails(n)) +
+      "&ctz=Asia/Seoul";
+  }
+  var calTarget = null;
+  window.openCalSheet = function(id) {
+    var x = CARD[id];
+    if (!x) return;
+    calTarget = x;
+    el("cal-sheet-sub").textContent = x.n.t + " · 마감 " + x.due.getFullYear() + "." + fmt(x.due);
+    el("cal-google").href = makeGoogleCalUrl(x.n, x.due);
+    el("cal-backdrop").classList.add("show");
+    el("cal-sheet").classList.add("show");
+    el("cal-sheet").setAttribute("aria-hidden", "false");
+  };
+  window.closeCalSheet = function() {
+    el("cal-backdrop").classList.remove("show");
+    el("cal-sheet").classList.remove("show");
+    el("cal-sheet").setAttribute("aria-hidden", "true");
+  };
+  el("cal-ics").addEventListener("click", function(){
+    if (!calTarget) return;
+    downloadICS(calTarget.n, calTarget.due);
+    closeCalSheet();
+  });
+
+  window.downloadICS = function(n, due) {
+    var next = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
+    var title = n.t;
     var icsData = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
       "PRODID:-//CUK-KOK//Scheduler//KO",
       "BEGIN:VEVENT",
-      "SUMMARY:[CUK-콕 마감] " + title,
-      "DTSTART:" + dtStr,
-      "DTEND:" + dtStr,
-      "DESCRIPTION:CUK-콕 마감 일정 등록 알림",
+      "UID:" + (n.id || "cuk") + "-" + ymd(due) + "@cuk-kok",
+      "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
+      "SUMMARY:[마감] " + title,
+      "DTSTART;VALUE=DATE:" + ymd(due),
+      "DTEND;VALUE=DATE:" + ymd(next),
+      "DESCRIPTION:" + calDetails(n).replace(/\n/g, "\\n"),
+      (n.url ? "URL:" + n.url : ""),
+      "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:내일 마감: " + title, "END:VALARM",
       "END:VEVENT",
       "END:VCALENDAR"
-    ].join("\r\n");
+    ].filter(Boolean).join("\r\n");
 
     var blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
     var url = URL.createObjectURL(blob);
@@ -2313,7 +2669,7 @@
     shareTarget = {
       title: n.t,
       url: n.url,
-      text: "[CUK-콕] " + n.t + "\n마감 " + fmt(x.due) + " (D-" + x.left + ")" + (n.benefit ? "\n혜택: " + n.benefit : "")
+      text: "[CUK-콕] " + n.t + "\n마감 " + fmt(x.due) + (x.left < 0 ? " (마감됨)" : " (D-" + x.left + ")") + (n.benefit ? "\n혜택: " + n.benefit : "")
     };
     el("share-sub").textContent = n.t;
     el("share-more").style.display = navigator.share ? "" : "none";
@@ -2329,7 +2685,7 @@
   };
 
   document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape") closeShare();
+    if (e.key === "Escape") { closeShare(); closeCalSheet(); }
   });
 
   window.shareVia = function(kind) {
@@ -2389,11 +2745,55 @@
   };
 
   var uid = 0;
+  // 팀 인원 범위: teamMin~teamMax (없으면 예전 team = 최대 인원)
+  function teamRange(n) {
+    var max = +n.teamMax || +n.team || 10;
+    var min = +n.teamMin || 1;
+    if (min > max) min = max;
+    return { min: min, max: max };
+  }
+  function teamText(n) {
+    var r = teamRange(n);
+    if (r.min === 1 && r.max >= 10) return "제한 없음";
+    if (r.min === 1 && r.max === 1) return "개인만 (1명)";
+    if (r.min === r.max) return r.min + "명 팀";
+    if (r.max >= 10) return r.min + "명 이상 팀";
+    return (r.min === 1 ? "개인 또는 " + r.max + "명 이내" : r.min + "~" + r.max + "명 팀");
+  }
+  // 제출 방식: 시트(AI) 값이 없으면 서류·원문에서 추정
+  function submitInfo(n) {
+    var raw = String(n.submit_type || "");
+    var text = raw || [].concat(n.docs || [], n.sum || [], n.caution || [], [n.q || ""]).join(" ");
+    var off = /(우편|등기|소인|방문|직접\s*제출|현장\s*접수|대면|오프라인)/.test(text);
+    var on = /(온라인|구글\s*폼|네이버\s*폼|홈페이지|이메일|메일|트리니티|포털|인스타그램|댓글|웹|게시판|잡아람|데이콘|접수 사이트)/.test(text);
+    var kind = off && on ? "both" : off ? "off" : on ? "on" : "unknown";
+    var label = raw || { both: "온라인 + 오프라인", off: "오프라인 (우편·방문)", on: "온라인 접수", unknown: "원문에서 확인 필요" }[kind];
+    return { kind: kind, label: label, guessed: !raw };
+  }
+  // 필수 자격: 시트(AI)에 정리된 값이 없으면 조건 값으로 만들어 보여줌
+  function requiredList(n) {
+    if (Array.isArray(n.required_qualifications) && n.required_qualifications.length) return n.required_qualifications;
+    var out = [];
+    var gr = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
+    if (gr.length && gr.length < 4) out.push(gr.join("·") + "학년");
+    var st = Array.isArray(n.status) ? n.status : [];
+    if (st.length) out.push("학적: " + st.map(function(k){ return STATUS[k] || k; }).join("·"));
+    if (Array.isArray(n.field) && n.field.length) out.push("전공 계열: " + n.field.map(function(f){ return FIELD[f] || f; }).join(", "));
+    if (n.gpa) out.push("직전학기 평점 " + Number(n.gpa).toFixed(1) + " 이상");
+    if (n.toeic) out.push("TOEIC " + n.toeic + "점 이상");
+    var tt = teamText(n);
+    if (tt !== "제한 없음") out.push("팀 구성: " + tt);
+    return out.length ? out : ["별도 자격 제한 없음 (원문 확인)"];
+  }
+
   function summaryCard(n) {
     var id = n.id || ("d" + (uid++));
-    var sumList = Array.isArray(n.sum) ? n.sum : [n.t || "공고 내용 확인"];
-    var cautionList = Array.isArray(n.caution) ? n.caution : ["세부 선발 기준 원문 공고 확인"];
-    var docsList = Array.isArray(n.docs) ? n.docs : ["신청서 및 관련 증빙"];
+    var sumList = Array.isArray(n.sum) && n.sum.length ? n.sum : [n.t || "공고 내용 확인"];
+    var reqList = requiredList(n);
+    var cautionList = Array.isArray(n.caution) ? n.caution : [];
+    var prefList = Array.isArray(n.preferred_qualifications) ? n.preferred_qualifications : [];
+    var docsList = Array.isArray(n.docs) && n.docs.length ? n.docs : ["신청서 및 관련 증빙"];
+    var sub = submitInfo(n);
 
     // 서류 진행률 계산
     var checkedCount = 0;
@@ -2402,18 +2802,29 @@
     });
     var pct = docsList.length ? Math.round((checkedCount / docsList.length) * 100) : 0;
 
+    var subTag = '<span class="submit-tag ' + sub.kind + '">' + (sub.kind === "off" || sub.kind === "both" ? "📮 " : sub.kind === "on" ? "💻 " : "❔ ") + esc(sub.label) + '</span>' +
+      (sub.kind === "off" || sub.kind === "both" ? '<span class="submit-warn">⚠️ 우편 소인일·방문 마감 시각 유의</span>' : '') +
+      (sub.guessed && sub.kind !== "unknown" ? '<span class="submit-guess">서류·원문에서 추정</span>' : '');
+
     return '<details data-key="' + esc(id) + '"><summary><span>핵심 요약 & 서류 체크 (' + checkedCount + '/' + docsList.length + ' 완료)</span></summary>' +
       '<div class="doc-progress-bar"><div class="doc-progress-fill" style="width:' + pct + '%;"></div></div>' +
       '<div class="sum-content">' +
         '<div class="ai-note">🤖 <b>AI 요약은 참고용이에요.</b> AI(Claude)가 원문을 읽고 정리한 내용이라 틀릴 수 있으니 마감일·자격 조건은 꼭 원문 공고에서 확인하세요.</div>' +
-        '<div><div class="sum-block-title">3줄 핵심 요약 · AI 생성</div><ul>' + sumList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' +
-        '<div><div class="sum-block-title">참가 주의 요건</div><ul class="caution">' + cautionList.map(function(s){ return "<li><span>" + esc(s) + "</span></li>"; }).join("") + '</ul></div>' +
-        '<div><div class="sum-block-title">필요 서류 체크리스트</div><ul class="docs-list">' + docsList.map(function(s, i){
+        '<div class="sum-block"><div class="sum-block-title"><i>1</i>3줄 핵심 요약 · AI 생성</div><ul>' + sumList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' +
+        '<div class="sum-block req"><div class="sum-block-title"><i>2</i>필수 지원 자격 <em>못 갖추면 지원 불가</em></div><ul class="req-list">' +
+          reqList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") +
+          cautionList.map(function(s){ return '<li class="caution-li"><span>' + esc(s) + "</span></li>"; }).join("") + '</ul></div>' +
+        '<div class="sum-block pref"><div class="sum-block-title"><i>3</i>우대 조건 · 가산점 <em>있으면 유리</em></div>' +
+          (prefList.length ? '<ul class="pref-list">' + prefList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul>'
+                           : '<div class="sum-empty">정리된 우대 조건이 없어요. 원문에서 확인하세요.</div>') + '</div>' +
+        '<div class="sum-block"><div class="sum-block-title"><i>4</i>접수 방식 · 서류 체크리스트</div>' +
+          '<div class="submit-row">' + subTag + '</div>' +
+          '<ul class="docs-list">' + docsList.map(function(s, i){
           var docKey = id + "-doc-" + i;
           var isChecked = checkedDocs[docKey] ? "checked" : "";
           return '<li><input type="checkbox" id="' + docKey + '" ' + isChecked + ' onchange="toggleDocCheck(\'' + docKey + '\')"><label for="' + docKey + '">' + esc(s) + '</label></li>';
         }).join("") + '</ul></div>' +
-        '<div><div class="sum-block-title">AI 판단 근거 (원문 발췌)</div><div class="quote-box">"' + esc(n.q || n.t) + '"</div></div>' +
+        '<div class="sum-block"><div class="sum-block-title"><i>5</i>AI 판단 근거 (원문 발췌)</div><div class="quote-box">"' + esc(n.q || n.t) + '"</div></div>' +
       '</div></details>';
   }
 
@@ -2427,7 +2838,7 @@
   // xl=아주 큰 카드(1열) · large=큰 카드(기본) · medium=보통 카드 · small=작은 카드 · list=목록 · details=자세히 · tiles=타일 · content=내용
   var VIEW_MODES = ["xl", "large", "medium", "small", "list", "details", "tiles", "content"];
   var VIEW = "large", PANE = "none";
-  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true };
+  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false };
   try {
     var v2 = localStorage.getItem("cuk_view2");
     if (VIEW_MODES.indexOf(v2) > -1) VIEW = v2;
@@ -2513,14 +2924,15 @@
       ["마감일", x.due.getFullYear() + "." + fmt(x.due) + " (" + WD[x.due.getDay()] + ")"],
       ["마감일 출처", esc(n.dueSource || "확인 필요")],
       ["마감일 근거", n.dueEvidence ? '<span class="info-quote">"' + esc(n.dueEvidence) + '"</span>' : "-"],
-      ["남은 날", x.left === 0 ? "오늘 마감" : "D-" + x.left],
+      ["남은 날", x.left < 0 ? "마감됨 (" + (-x.left) + "일 전)" : x.left === 0 ? "오늘 마감" : "D-" + x.left],
       ["혜택", esc(n.benefit || "-")],
       ["지원 학년", grades],
       ["학적", status],
       ["전공 계열", esc(field)],
       ["최소 평점", n.gpa ? Number(n.gpa).toFixed(1) + " 이상" : "제한 없음"],
       ["최소 TOEIC", n.toeic ? n.toeic + "점 이상" : "제한 없음"],
-      ["팀 인원", n.team && n.team < 10 ? "최대 " + n.team + "명" : "-"],
+      ["팀 인원", teamText(n)],
+      ["접수 방식", esc(submitInfo(n).label)],
       ["서류 준비", (n.prep || 0) === 0 ? "즉시 신청" : "약 " + n.prep + "일"],
       ["필요 서류", docs],
       ["링크", lt === "직접" ? "공고로 바로 이동" : "기관 홈페이지 (들어가서 찾기)"]
@@ -2534,6 +2946,7 @@
       '<div class="info-actions">' +
         (n.url ? '<a class="cal-link" href="' + esc(n.url) + '" target="_blank" rel="noopener">원문 공고 열기 ↗</a>' : '') +
         (lt !== "직접" ? '<a class="cal-link ghost" href="' + esc(searchUrl(n)) + '" target="_blank" rel="noopener">🔎 공고 검색</a>' : '') +
+        '<button type="button" class="cal-link ghost" onclick="openComments(\'' + esc(n.id) + '\')">💬 댓글 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>' +
       '</div>' +
       '<div class="ai-note">🤖 AI가 정리한 정보예요. 지원 전 원문 공고를 꼭 확인하세요.</div>' +
     '</div>';
@@ -2559,7 +2972,7 @@
       (s === "all" ? "재학·휴학" : STATUS[s]);
 
     var ints = [].slice.call(document.querySelectorAll("input[name='interest']:checked")).map(function(x){ return x.value; });
-    var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0;
+    var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0, pastAll = [];
     function hide(r){ hidden[r] = (hidden[r] || 0) + 1; }
 
     N.forEach(function(n) {
@@ -2581,16 +2994,18 @@
 
       var left = days(due, TODAY);
 
-      // [UX] 기한 지난 공고 제외
-      if (left < 0) {
-        hide("마감 종료");
-        return;
-      }
-
       // [UX 1] 실시간 검색어 필터링
       if (query) {
         var fullText = (n.t + " " + (n.benefit || "") + " " + (n.src || "") + " " + (n.cat || "") + " " + (n.q || "")).toLowerCase();
         if (fullText.indexOf(query) === -1) return;
+      }
+
+      // 기한 지난 공고 → '지난 공고' 탭으로 (내 조건과 상관없이 참고용으로 모두)
+      if (left < 0) {
+        var px = { n:n, due:due, left:left, short:[], closed:true };
+        CARD[n.id] = px;
+        pastAll.push(px);
+        return;
       }
 
       var x = { n:n, due:due, left:left, short:[] };
@@ -2605,10 +3020,17 @@
       var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
 
       if (g !== null && grades.indexOf(g) < 0) { hide("학년 조건"); return; }
-      if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건"); return; }
+      if (s === "grad") {
+        // 졸업생: 공고에 졸업생 허용이 있거나, '누구나·일반인·청년' 대상 공고만
+        var openText = [n.q || "", n.t || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
+        if (status.indexOf("grad") < 0 && !/(누구나|일반인|청년|졸업생|졸업자|제한 없음)/.test(openText)) { hide("학적 조건"); return; }
+      } else if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건"); return; }
       if (f !== "all" && n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
-      if (team !== null && n.team && team > n.team) { hide("팀 인원 초과"); return; }
-      if (ints.indexOf(n.cat) < 0) { off++; return; }
+      if (team !== null) {
+        var tr = teamRange(n);
+        if (team < tr.min || team > tr.max) { hide("팀 인원 조건 미부합"); return; }
+      }
+      x.offCat = ints.indexOf(n.cat) < 0;   // 분야 칩은 건수를 센 뒤에 거름
 
       var short = [];
       if (gpa !== null && n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(1), big:(n.gpa - gpa) > 0.5 });
@@ -2648,6 +3070,37 @@
       feed = feed.filter(isVerified); gaps = gaps.filter(isVerified); bookmarked = bookmarked.filter(isVerified);
     }
 
+    // ⏰ D-5 마감 임박만
+    var d5Hidden = 0;
+    if (SHOW.d5) {
+      var within5 = function(x){ return x.left <= 5; };
+      d5Hidden = feed.concat(gaps).filter(function(x){ return !within5(x); }).length;
+      feed = feed.filter(within5); gaps = gaps.filter(within5); bookmarked = bookmarked.filter(within5);
+    }
+    el("d5-chip").setAttribute("aria-pressed", SHOW.d5 ? "true" : "false");
+
+    // 분야(중분류) 칩 건수: 지금 고른 교내/교외 기준 → 그다음 고른 분야만 남김
+    var cc = {}, ccAll = 0;
+    feed.concat(gaps).forEach(function(x){
+      if (SCOPE !== "all" && scopeOf(x.n) !== SCOPE) return;
+      cc[x.n.cat] = (cc[x.n.cat] || 0) + 1; ccAll++;
+    });
+    [].forEach.call(document.querySelectorAll(".cc[data-cat]"), function(b){ b.textContent = cc[b.getAttribute("data-cat")] || 0; });
+    el("cc-all").textContent = ccAll;
+    var inCat = function(x){ return !x.offCat; };
+    off = feed.concat(gaps).filter(function(x){ return x.offCat; }).length;
+    feed = feed.filter(inCat); gaps = gaps.filter(inCat);
+
+    // 지난 공고: 검증·교내외·분야 조건만 적용, 최근 마감순 / 같은 분야 건수 (카드의 '비교하기'용)
+    var pastByCat = {};
+    var past = pastAll.filter(function(x){
+      if (SHOW.verifiedOnly && x.n.verified !== true) return false;
+      if (SCOPE !== "all" && scopeOf(x.n) !== SCOPE) return false;
+      pastByCat[x.n.cat] = (pastByCat[x.n.cat] || 0) + 1;
+      return ints.indexOf(x.n.cat) > -1;
+    }).sort(function(a, b){ return b.left - a.left; });
+    el("n-past").textContent = past.length;
+
     // 교내/교외 건수 (다른 조건은 모두 적용한 뒤) → 선택한 구분만 남기기
     var sc = { in: 0, out: 0 };
     feed.concat(gaps).forEach(function(x){ sc[scopeOf(x.n)]++; });
@@ -2668,13 +3121,13 @@
     el("n-bookmark").textContent = bookmarked.length;
     el("n-cal").textContent = feed.length + gaps.length;
 
-    // 하단 내비 배지 (0건이면 숨김) — 달력은 3일 이내 마감 건수
-    var urgent = feed.concat(gaps).filter(function(x){ return x.left <= 3; }).length;
+    // 하단 내비 배지 (0건이면 숨김) — 달력은 '오늘 마감(D-0)' 건수 (달력 화면의 오늘 칸과 같은 수)
+    var todayDueCount = feed.concat(gaps).filter(function(x){ return x.left === 0; }).length;
     function setBadge(id, n){ var b = el(id); if (b) b.textContent = n ? (n > 99 ? "99+" : n) : ""; }
     setBadge("bn-feed", feed.length);
     setBadge("bn-gap", gaps.length);
     setBadge("bn-bookmark", bookmarked.length);
-    setBadge("bn-cal", urgent);
+    setBadge("bn-cal", todayDueCount);
     if (window.updateViewTitle) window.updateViewTitle();
 
     // 달력용 데이터 (바로 지원 + 갭 보완)
@@ -2687,8 +3140,9 @@
     var ht = Object.keys(hidden).reduce(function(a, k){ return a + hidden[k]; }, 0);
     var hidParts = Object.keys(hidden).map(function(k){ return k + " " + hidden[k] + "건"; })
       .concat(off ? ["관심 분야 밖 " + off + "건"] : [])
-      .concat(unverifiedHidden ? ["검토중이라 숨김 " + unverifiedHidden + "건"] : []);
-    var hidTotal = ht + off + unverifiedHidden;
+      .concat(unverifiedHidden ? ["검토중이라 숨김 " + unverifiedHidden + "건"] : [])
+      .concat(d5Hidden ? ["D-5 밖 " + d5Hidden + "건"] : []);
+    var hidTotal = ht + off + unverifiedHidden + d5Hidden;
     el("hid").textContent = hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음";
     el("vf-chip").hidden = !SHOW.verifiedOnly;
 
@@ -2701,7 +3155,9 @@
       var prepText = prep === 0 ? "⚡ 즉시 온라인 접수" : (must ? "🚨 서류 준비 " + prep + "일 소요 — <b>오늘 바로 착수</b>" : "서류 준비 약 " + prep + "일 소요 → <b>" + fmt(start) + "까지 준비 권장</b>");
 
       var isBookmarked = bookmarks.indexOf(n.id) > -1;
-      var isHot = x.left <= 3; // 3일 이내 마감 임박 시 라이브 펄스 효과
+      var isHot = !x.closed && x.left <= 3; // 3일 이내 마감 임박 시 라이브 펄스 효과
+      if (x.closed) prepText = "📦 " + (-x.left) + "일 전 마감 · 다음 회차 준비 참고용";
+      var pastN = !x.closed ? (pastByCat[n.cat] || 0) : 0;
       var dueY = x.due.getFullYear(), dueM = x.due.getMonth(), dueD = x.due.getDate();
 
       var gapHtml = "";
@@ -2719,11 +3175,13 @@
         }).join("");
       }
 
-      return '<article class="card">' +
-        '<div class="dday-box ' + (isHot ? 'hot' : (isGap ? 'gap' : '')) + '">' +
-          '<span class="dday-num">D-' + x.left + '</span>' +
-          '<span class="dday-sub">' + (x.left === 0 ? '오늘마감' : (isHot ? '마감임박' : '접수중')) + '</span>' +
-        '</div>' +
+      return '<article class="card' + (x.closed ? ' closed' : '') + '">' +
+        (x.closed
+          ? '<div class="dday-box closed"><span class="dday-num">마감</span><span class="dday-sub">' + (-x.left) + '일 전</span></div>'
+          : '<div class="dday-box ' + (isHot ? 'hot' : (isGap ? 'gap' : '')) + '">' +
+              '<span class="dday-num">D-' + x.left + '</span>' +
+              '<span class="dday-sub">' + (x.left === 0 ? '오늘마감' : (isHot ? '마감임박' : '접수중')) + '</span>' +
+            '</div>') +
         '<div class="card-content">' +
           '<div class="badge-row">' +
             '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
@@ -2734,13 +3192,15 @@
             '<div class="action-btns">' +
               heartButton(n.id, isBookmarked) +
               '<button class="btn-icon" onclick="openShare(\'' + esc(n.id) + '\')">🔗 공유</button>' +
-              '<button class="btn-icon" onclick="downloadICS(\'' + esc(n.t) + '\', ' + dueY + ', ' + dueM + ', ' + dueD + ')">📅 캘린더</button>' +
+              cmtButton(n) +
+              (x.closed ? '' : '<button class="btn-icon" onclick="openCalSheet(\'' + esc(n.id) + '\')">📅 캘린더</button>') +
             '</div>' +
           '</div>' +
           '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener" title="' + esc(n.t) + '">' + esc(n.t) + ' ↗</a></h3>' +
           linkNote(n) +
           '<div class="benefit-line" title="' + esc(n.benefit || "") + '">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
-          '<div class="prep-box">' + prepText + '</div>' +
+          '<div class="prep-box' + (x.closed ? ' closed' : '') + '">' + prepText + '</div>' +
+          (pastN ? '<button type="button" class="similar-link" onclick="showPastCat(\'' + esc(n.cat) + '\')">📦 지난 ' + esc(n.cat) + ' 공고 ' + pastN + '건과 비교 →</button>' : '') +
           gapHtml +
           summaryCard(n) +
         '</div>' +
@@ -2748,10 +3208,11 @@
     }
 
     lastBuildCard = buildCard;
-    VIEW_ITEMS = { "v-feed": feed, "v-gap": gaps, "v-bookmark": bookmarked };
+    VIEW_ITEMS = { "v-feed": feed, "v-gap": gaps, "v-bookmark": bookmarked, "v-past": past };
 
     // ----- 보기 방식별 마크업 -----
     function miniDday(x) {
+      if (x.closed) return '<span class="mini-dday closed">마감</span>';
       var cls = x.left <= 3 ? " hot" : (x.isGap ? " gap" : "");
       return '<span class="mini-dday' + cls + '">' + (x.left === 0 ? "오늘" : "D-" + x.left) + '</span>';
     }
@@ -2776,9 +3237,9 @@
     // 타일: 왼쪽 D-day 아이콘 + 오른쪽 제목·속성 (탐색기 '타일')
     function buildHTile(x) {
       var n = x.n;
-      var cls = x.left <= 3 ? " hot" : (x.isGap ? " gap" : "");
+      var cls = x.closed ? " closed" : x.left <= 3 ? " hot" : (x.isGap ? " gap" : "");
       return '<article class="htile' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
-        '<div class="htile-icon' + cls + '"><b>' + (x.left === 0 ? "오늘" : "D-" + x.left) + '</b><span>' + fmt(x.due) + '</span></div>' +
+        '<div class="htile-icon' + cls + '"><b>' + (x.closed ? "마감" : x.left === 0 ? "오늘" : "D-" + x.left) + '</b><span>' + fmt(x.due) + '</span></div>' +
         '<div class="htile-body">' +
           '<div class="htile-title" title="' + esc(n.t) + '">' + esc(n.t) + '</div>' +
           '<div class="htile-meta">' + esc(n.cat) + ' · ' + srcLabel(n) + verifyTag(n) + demoTag(n) + '</div>' +
@@ -2859,6 +3320,9 @@
     if (skipView !== "v-bookmark") {
       setList("v-bookmark", buildList(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>'));
     }
+    if (skipView !== "v-past") {
+      setList("v-past", buildList(past, '<div class="empty-state">고른 분야·구분에 마감된 공고가 아직 없어요.<br><small>공고는 마감 후 1년 동안 이곳에 모여요.</small></div>'));
+    }
     renderPreview();
   }
 
@@ -2896,6 +3360,197 @@
 
   document.querySelectorAll(".filter-grid select, .chips-area input").forEach(function(i){
     i.addEventListener("change", function(){ render(); });
+  });
+
+  // ===== ❓ 사용법 안내창 =====
+  function lsGet(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+  function sheetOpen(name, on) {
+    el(name + "-backdrop").classList.toggle("show", on);
+    el(name + "-sheet").classList.toggle("show", on);
+    el(name + "-sheet").setAttribute("aria-hidden", on ? "false" : "true");
+    document.body.classList.toggle("modal-open", on);
+    if (on && !el("fab-bubble").hidden) hideHelpBubble();
+  }
+  window.openHelp = function(){ hideHelpBubble(); sheetOpen("help", true); el("help-sheet").querySelector(".modal-x").focus(); };
+  window.closeHelp = function(){ sheetOpen("help", false); };
+  window.hideHelpBubble = function(){ el("fab-bubble").hidden = true; lsSet("cuk_help_seen", "1"); };
+  if (!lsGet("cuk_help_seen")) {
+    setTimeout(function(){ el("fab-bubble").hidden = false; }, 1200);
+    setTimeout(function(){ if (!el("fab-bubble").hidden) hideHelpBubble(); }, 12000);
+  }
+
+  // ===== 💬 댓글 · 정보 공유 =====
+  // 로그인 없이: 이 기기의 임시 ID(도배 방지)와 삭제 키(내 글 지우기)만 브라우저에 보관
+  function randId(n){ var a = new Uint8Array(n); (window.crypto || window.msCrypto).getRandomValues(a); return [].map.call(a, function(b){ return ("0" + b.toString(16)).slice(-2); }).join(""); }
+  var DEVICE = lsGet("cuk_device") || randId(12); lsSet("cuk_device", DEVICE);
+  var CMT_KEY = lsGet("cuk_cmt_key") || randId(16); lsSet("cuk_cmt_key", CMT_KEY);
+  var MY_CMTS = []; try { MY_CMTS = JSON.parse(lsGet("cuk_my_cmts") || "[]"); } catch (e) {}
+  var REPORTED = []; try { REPORTED = JSON.parse(lsGet("cuk_reported") || "[]"); } catch (e) {}
+  var NICK = lsGet("cuk_nick") || ("콕" + Math.floor(100 + Math.random() * 900));
+  var cmtThread = null, cmtItems = [], cmtReplyTo = null, cmtBusy = false;
+
+  window.cmtButton = function(n) {
+    return '<button class="btn-icon" onclick="openComments(\'' + esc(n.id) + '\')" title="질문·후기·팁 나누기">💬 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>';
+  };
+  function cmtApi() { return SHEET_API_URL; }
+  function relTime(s) {
+    var m = String(s || "").match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+    if (!m) return esc(s);
+    var d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]), diff = (Date.now() - d.getTime()) / 60000;
+    if (diff < 1) return "방금";
+    if (diff < 60) return Math.floor(diff) + "분 전";
+    if (diff < 1440) return Math.floor(diff / 60) + "시간 전";
+    if (diff < 10080) return Math.floor(diff / 1440) + "일 전";
+    return (+m[2]) + "." + m[3];
+  }
+  var TYPE_IC = { "질문": "❓", "후기": "📝", "팁": "💡", "기타": "💬" };
+  function cmtHtml(c, isReply) {
+    var mine = MY_CMTS.indexOf(c.id) > -1;
+    return '<div class="cmt' + (isReply ? ' reply' : '') + (mine ? ' mine' : '') + '" data-cid="' + esc(c.id) + '">' +
+      '<div class="cmt-meta"><span class="cmt-type t-' + esc(c.type) + '">' + (TYPE_IC[c.type] || "💬") + ' ' + esc(c.type === "후기" ? "참여 후기" : c.type === "팁" ? "준비 팁" : c.type) + '</span>' +
+        '<b class="cmt-nick-v">' + esc(c.nick) + (mine ? ' <small>(나)</small>' : '') + '</b><span class="cmt-time">' + relTime(c.at) + '</span></div>' +
+      '<div class="cmt-text">' + esc(c.text).replace(/\n/g, "<br>") + '</div>' +
+      '<div class="cmt-acts">' +
+        (isReply ? '' : '<button type="button" data-act="reply">답글</button>') +
+        (mine ? '<button type="button" data-act="delete">삭제</button>'
+              : (REPORTED.indexOf(c.id) > -1 ? '<span class="cmt-done">신고함</span>' : '<button type="button" data-act="report">신고</button>')) +
+      '</div></div>';
+  }
+  function renderComments(state) {
+    var box = el("cmt-list");
+    if (state === "loading") { box.innerHTML = '<div class="cmt-empty">댓글을 불러오는 중…</div>'; return; }
+    if (state === "error") { box.innerHTML = '<div class="cmt-empty">댓글 서버에 연결하지 못했어요. 잠시 후 다시 열어 주세요.</div>'; return; }
+    if (!cmtItems.length) {
+      box.innerHTML = '<div class="cmt-empty">아직 댓글이 없어요. <b>첫 질문이나 경험</b>을 남겨 주세요! 🙌</div>'; return;
+    }
+    var tops = cmtItems.filter(function(c){ return !c.parent; });
+    box.innerHTML = tops.map(function(c){
+      return cmtHtml(c, false) + cmtItems.filter(function(r){ return r.parent === c.id; }).map(function(r){ return cmtHtml(r, true); }).join("");
+    }).join("");
+  }
+  function setCmtCount(id, nAll) {
+    var item = N.filter(function(n){ return n.id === id; })[0];
+    if (item) item.cmt = nAll;
+    [].forEach.call(document.querySelectorAll('[data-cmt="' + id + '"]'), function(s){ s.textContent = nAll; });
+  }
+  function setReplyTo(c) {
+    cmtReplyTo = c;
+    var r = el("cmt-reply");
+    r.hidden = !c;
+    if (c) r.innerHTML = '↪ <b>' + esc(c.nick) + '</b>님에게 답글 <button type="button" onclick="cancelReply()">취소</button>';
+    el("cmt-text").placeholder = c ? "답글을 적어 주세요" : "질문이나 경험, 준비 팁을 나눠 주세요 (500자 이내)";
+  }
+  window.cancelReply = function(){ setReplyTo(null); };
+  window.openComments = function(id) {
+    cmtThread = id;
+    var x = CARD[id];
+    var title = id === "general" ? "💬 정보 공유방" : "💬 댓글";
+    el("cmt-title").textContent = title;
+    el("cmt-sub").textContent = id === "general" ? "공모전·대외활동 정보, 팀원 모집, 준비 노하우를 자유롭게 나눠요" : (x ? x.n.t : (N.filter(function(n){ return n.id === id; })[0] || {}).t || "");
+    el("cmt-examples").hidden = false;
+    el("cmt-nick").value = NICK;
+    setReplyTo(null);
+    sheetOpen("cmt", true);
+    cmtItems = [];
+    renderComments("loading");
+    fetch(cmtApi() + "?action=comments&id=" + encodeURIComponent(id) + "&t=" + Date.now(), { cache: "no-store" })
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        if (cmtThread !== id) return;
+        cmtItems = Array.isArray(list) ? list : [];
+        renderComments();
+        setCmtCount(id, cmtItems.length);
+      })
+      .catch(function(){ if (cmtThread === id) renderComments("error"); });
+  };
+  window.closeComments = function(){ sheetOpen("cmt", false); cmtThread = null; };
+  function cmtPost(body) {
+    return fetch(cmtApi(), { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })
+      .then(function(r){ return r.json(); })
+      .then(function(res){ if (!res || !res.ok) throw new Error(res && res.error || "요청에 실패했어요"); return res; });
+  }
+  el("cmt-examples").addEventListener("click", function(e){
+    var b = e.target.closest("[data-ex]");
+    if (!b) return;
+    var t = el("cmt-text");
+    t.value = b.getAttribute("data-ex");
+    if (/참여해 보니|어떤가요/.test(t.value)) el("cmt-form").querySelector('input[value="질문"]').checked = true;
+    t.focus(); el("cmt-len").textContent = t.value.length;
+  });
+  el("cmt-text").addEventListener("input", function(){ el("cmt-len").textContent = this.value.length; });
+  el("cmt-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    if (cmtBusy || !cmtThread) return;
+    var text = el("cmt-text").value.trim();
+    if (text.length < 2) { showToast("두 글자 이상 적어 주세요"); return; }
+    var nick = el("cmt-nick").value.trim() || NICK;
+    NICK = nick; lsSet("cuk_nick", nick);
+    var type = (el("cmt-form").querySelector('input[name="cmt-type"]:checked') || {}).value || "질문";
+    cmtBusy = true; el("cmt-send").disabled = true; el("cmt-send").textContent = "등록 중";
+    var thread = cmtThread;
+    cmtPost({ action: "add", id: thread, parent: cmtReplyTo ? cmtReplyTo.id : "", type: type, nick: nick, text: text,
+              device: DEVICE, key: CMT_KEY, website: el("cmt-form").website.value })
+      .then(function(res){
+        MY_CMTS.push(res.comment.id); lsSet("cuk_my_cmts", JSON.stringify(MY_CMTS.slice(-300)));
+        if (thread === cmtThread) {
+          cmtItems.push(res.comment);
+          renderComments();
+          el("cmt-text").value = ""; el("cmt-len").textContent = "0";
+          setReplyTo(null);
+          var last = el("cmt-list").querySelector('[data-cid="' + res.comment.id + '"]');
+          last && last.scrollIntoView({ block: "nearest" });
+        }
+        setCmtCount(thread, cmtItems.length);
+        showToast("💬 댓글을 남겼어요");
+      })
+      .catch(function(err){ showToast("⚠️ " + err.message); })
+      .then(function(){ cmtBusy = false; el("cmt-send").disabled = false; el("cmt-send").textContent = "등록"; });
+  });
+  el("cmt-list").addEventListener("click", function(e){
+    var b = e.target.closest("[data-act]");
+    if (!b) return;
+    var cid = b.closest("[data-cid]").getAttribute("data-cid");
+    var c = cmtItems.filter(function(z){ return z.id === cid; })[0];
+    var act = b.getAttribute("data-act");
+    if (act === "reply") { setReplyTo(c); el("cmt-text").focus(); return; }
+    // 실수로 누르지 않게: 한 번 더 눌러야 실행 (확인 대화상자 대신)
+    if (!b.classList.contains("confirm")) {
+      b.classList.add("confirm");
+      b.textContent = act === "delete" ? "정말 삭제할까요?" : "정말 신고할까요?";
+      setTimeout(function(){ if (b.isConnected) { b.classList.remove("confirm"); b.textContent = act === "delete" ? "삭제" : "신고"; } }, 3500);
+      return;
+    }
+    b.disabled = true;
+    cmtPost({ action: act, cid: cid, key: CMT_KEY })
+      .then(function(){
+        if (act === "delete") {
+          cmtItems = cmtItems.filter(function(z){ return z.id !== cid && z.parent !== cid; });
+          setCmtCount(cmtThread, cmtItems.length);
+          showToast("🗑️ 댓글을 지웠어요");
+        } else {
+          REPORTED.push(cid); lsSet("cuk_reported", JSON.stringify(REPORTED.slice(-300)));
+          showToast("🚩 신고했어요. 신고가 쌓이면 자동으로 숨겨져요");
+        }
+        renderComments();
+      })
+      .catch(function(err){ b.disabled = false; showToast("⚠️ " + err.message); });
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") { closeHelp(); closeComments(); } });
+
+  // 📅 공고 기준일: 시트에서 받아 온 날(매일 7시 갱신) / 예시 데이터면 '예시'
+  window.setBasisDate = function(live) {
+    var d = new Date();
+    el("basis-date-v").textContent = d.getFullYear() + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + String(d.getDate()).padStart(2, "0") + (live ? "" : " (예시 데이터)");
+  };
+  setBasisDate(false);
+
+  // ⏰ D-5 마감 임박만 보기 (정렬과 별개, 기기별로 기억)
+  el("d5-chip").addEventListener("click", function(){
+    SHOW.d5 = !SHOW.d5;
+    saveViewState();
+    render();
+    showToast(SHOW.d5 ? "⏰ 마감 5일 이내 공고만 보여요" : "전체 마감 일정으로 돌아왔어요");
   });
 
   // 분야 "전체" 칩: 누르면 모든 분야를 켜거나 끔 / 개별 분야가 모두 켜지면 자동으로 체크
@@ -2983,7 +3638,8 @@
   var tabCal = el("t-cal");
   var vCal = el("v-cal");
 
-  var TAB_TITLE = { feed:"바로 지원", gap:"갭 보완", bookmark:"보관함", cal:"마감 달력" };
+  var TAB_TITLE = { feed:"바로 지원", gap:"갭 보완", bookmark:"보관함", cal:"마감 달력", past:"지난 공고" };
+  var tabPast = el("t-past"), vPast = el("v-past");
   currentTab = "feed";
   window.updateViewTitle = function() {
     el("view-title").firstChild.nodeValue = TAB_TITLE[currentTab] + " ";
@@ -3005,6 +3661,10 @@
     vGap.style.display = which === "gap" ? "" : "none";
     vBookmark.style.display = which === "bookmark" ? "" : "none";
     vCal.style.display = which === "cal" ? "" : "none";
+    tabPast.setAttribute("aria-selected", which === "past" ? "true" : "false");
+    vPast.style.display = which === "past" ? "" : "none";
+    el("d5-chip").hidden = which === "past" || which === "cal";
+    el("past-note").hidden = which !== "past";
     expandedId = null;
     applyViewClasses();
     renderPreview();
@@ -3013,6 +3673,16 @@
   tabGap.addEventListener("click", function(){ showTab("gap"); });
   tabBookmark.addEventListener("click", function(){ showTab("bookmark"); });
   tabCal.addEventListener("click", function(){ showTab("cal"); });
+  tabPast.addEventListener("click", function(){ showTab("past"); });
+  // 카드의 '같은 분야 지난 공고' → 그 분야만 골라 지난 공고 탭으로
+  window.showPastCat = function(cat) {
+    interestBoxes.forEach(function(b){ b.checked = b.value === cat; });
+    syncInterestAll();
+    showTab("past");
+    render();
+    window.scrollTo({ top: Math.max(0, el("view-title").getBoundingClientRect().top + window.pageYOffset - 16), behavior: "smooth" });
+    showToast("📦 " + cat + " 분야의 지난 공고예요 · 분야 칩 '전체'로 되돌릴 수 있어요");
+  };
 
   // ----- 교내/교외 버튼 -----
   [].forEach.call(document.querySelectorAll(".scope-btn"), function(b){
@@ -3157,6 +3827,7 @@
         N = data;
         usingFallback = false;
         el("demo-banner").style.display = "none";
+        setBasisDate(true);
         render();
       })
       .catch(function(err) {
