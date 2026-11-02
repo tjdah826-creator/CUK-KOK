@@ -10,6 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CUK-콕">
   <meta name="theme-color" content="#456A94">
+  <meta name="color-scheme" content="light">
 
   <!-- 앱 아이콘 (홈 화면에 추가 · 브라우저 탭) — 이 HTML과 같은 폴더에 이미지 파일을 올려두세요 -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -74,8 +75,10 @@
       --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
+    /* 다크 테마는 기본으로 끔 (PC 다크모드에서 화면이 어두워지던 문제).
+       필요하면 <html data-theme="dark"> 로 켤 수 있어요. */
+    @supports (display: block) {
+      :root[data-theme="dark"] {
         --bg: #0F141C;
         --surface: #18202C;
         --ink: #F2F4F8;
@@ -1041,9 +1044,9 @@
 
       .toast { bottom: calc(100px + env(safe-area-inset-bottom)); }
     }
-    @media (max-width: 600px) and (prefers-color-scheme: dark) {
-      .bn-item.active { background: #263142; }
-      .menu-btn { border-color: #556070; color: #B0B8C6; }
+    @media (max-width: 600px) {
+      :root[data-theme="dark"] .bn-item.active { background: #263142; }
+      :root[data-theme="dark"] .menu-btn { border-color: #556070; color: #B0B8C6; }
     }
 
     /* 공유 바텀시트 */
@@ -1138,23 +1141,215 @@
       color: var(--ink-secondary);
       cursor: pointer;
     }
+
+    /* ===================== 레이아웃 공통 ===================== */
+    .topbar { display: none; }
+    .site-header { margin-bottom: 18px; }
+    .header-inner {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .brand-link { display: none; }
+    .brand-mark { width: 44px; height: 44px; display: block; }
+    .gnb { flex-basis: 100%; }
+    .side, .content { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .card-list > .empty-state { grid-column: 1 / -1; }
+
+    @media (min-width: 601px) {
+      .brand-link { display: inline-flex; align-self: center; }
+      .header-inner { justify-content: flex-start; }
+    }
+    @media (max-width: 600px) {
+      .header-inner { justify-content: center; }
+    }
+
+    /* ===================== PC (1024px 이상) — 가톨릭대학교 홈페이지 스타일 ===================== */
+    @media (min-width: 1024px) {
+      :root {
+        --cuk-univ: #0B2B5C;          /* 가톨릭대 남색 (Intelligent Blue 계열) */
+        --cuk-univ-soft: #E8EEF8;
+        --bg: #F3F5F8;
+      }
+      body { padding: 0 0 48px; font-size: 15.5px; }
+
+      /* 남색 상단 바 */
+      .topbar { display: block; background: var(--cuk-univ); color: #FFFFFF; font-size: 12px; }
+      .topbar-inner {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 8px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .topbar-univ { letter-spacing: 0.12em; opacity: 0.85; font-weight: 600; }
+      .topbar-links { display: flex; gap: 20px; }
+      .topbar-links a { color: #FFFFFF; text-decoration: none; opacity: 0.85; }
+      .topbar-links a:hover { opacity: 1; text-decoration: underline; }
+
+      /* 흰 헤더: 로고 왼쪽 · 메뉴 오른쪽, 스크롤해도 위에 고정 */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 500;
+        margin: 0;
+        padding: 0;
+        background: #FFFFFF;
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 2px 10px rgba(11, 43, 92, 0.05);
+      }
+      .header-inner {
+        max-width: 1240px;
+        padding: 0 32px;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 16px;
+      }
+      .brand-link { align-self: center; }
+      .brand-wrap { justify-content: center; padding: 14px 0; gap: 2px; }
+      .univ-tag { color: var(--cuk-univ); }
+      .univ-tag::before { background: var(--cuk-univ); }
+      h1 { font-size: 26px; line-height: 1.2; }
+      .header-sub { font-size: 13px; }
+
+      /* 가로 메뉴(GNB): 밑줄로 현재 메뉴 표시 */
+      .gnb { flex-basis: auto; margin-left: auto; display: flex; }
+      .tabs-wrapper {
+        display: flex;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        gap: 4px;
+      }
+      .tab-btn {
+        flex: none;
+        height: 100%;
+        padding: 0 20px;
+        border-radius: 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--ink-secondary);
+        box-shadow: inset 0 -3px 0 transparent;
+      }
+      .tab-btn:hover { color: var(--cuk-univ); background: var(--cuk-univ-soft); }
+      .tab-btn[aria-selected="true"] {
+        background: transparent;
+        color: var(--cuk-univ);
+        box-shadow: inset 0 -3px 0 var(--cuk-univ);
+      }
+      .tab-btn .tab-badge { background: var(--line-subtle); color: var(--ink-secondary); }
+      .tab-btn[aria-selected="true"] .tab-badge { background: var(--cuk-univ); color: #FFFFFF; }
+
+      /* 본문: 왼쪽 조건 사이드바 + 오른쪽 공고 목록 */
+      .wrap {
+        max-width: 1240px;
+        padding: 28px 32px 0;
+        display: grid;
+        grid-template-columns: 330px minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+      }
+      .side {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 116px);
+        overflow-y: auto;
+        padding-right: 4px;
+        gap: 14px;
+      }
+      /* PC에서는 조건 패널을 항상 펼쳐 둠 */
+      #filter-panel { display: grid !important; grid-template-columns: 1fr 1fr; }
+      #btn-toggle-label { display: none; }
+      .profile-header { cursor: default; }
+      .profile-card, .search-bar-wrap { box-shadow: none; }
+      .controls-row { flex-direction: column; align-items: stretch; }
+      .sort-wrap { margin-left: 0; }
+      .sort-select { flex: 1; }
+
+      .section-title { font-size: 21px; margin-top: 0; }
+
+      /* 공고 카드 2열 */
+      .card-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+      .card { grid-template-columns: 64px 1fr; padding: 18px; border-radius: var(--radius-md); }
+      .card:hover { transform: none; border-color: var(--cuk-univ); box-shadow: 0 6px 20px rgba(11, 43, 92, 0.08); }
+
+      /* 달력: 왼쪽 달력 · 오른쪽 선택한 날짜 공고 */
+      #v-cal { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+      #cal-detail { position: sticky; top: 100px; }
+      .cal-detail-title { margin-top: 0; }
+      .cal-day { min-height: 64px; }
+
+      .site-footer { grid-column: 1 / -1; }
+    }
+
+    /* 아주 넓은 화면: 공고 3열 */
+    @media (min-width: 1500px) {
+      .topbar-inner, .header-inner, .wrap { max-width: 1440px; }
+      .card-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      #v-cal { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+    }
   </style>
 </head>
 <body>
 
-<div class="wrap">
-  <!-- 헤더 -->
-  <header>
+<!-- PC 상단 바 (가톨릭대학교 홈페이지 스타일) -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-univ">THE CATHOLIC UNIVERSITY OF KOREA</span>
+    <nav class="topbar-links" aria-label="학교 바로가기">
+      <a href="https://www.catholic.ac.kr/ko/index.do" target="_blank" rel="noopener">가톨릭대학교</a>
+      <a href="https://www.catholic.ac.kr/ko/campuslife/notice.do" target="_blank" rel="noopener">학교 공지사항</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 헤더: 로고 + 메뉴 -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand-link" href="./" aria-label="CUK-콕 처음으로"><svg class="brand-mark" viewBox="0 0 60 60" aria-hidden="true"><rect x="6" y="34" width="12" height="20" rx="3" fill="#2D46C7"/><rect x="22" y="22" width="12" height="32" rx="3" fill="#2D46C7"/><rect x="38" y="12" width="12" height="42" rx="3" fill="#2D46C7"/><circle cx="44" cy="5.5" r="4.5" fill="#DD9356"/></svg></a>
     <div class="brand-wrap">
       <div class="univ-tag">Catholic University of Korea · Smart Campus</div>
       <h1>CUK-콕<span class="h1-en"> (CUK-KOK)</span></h1>
       <div class="header-sub"><span class="sub-long">가톨릭대 맞춤형 장학·공모전 기회 & 스펙 갭 알림 비서</span><span class="sub-short">가톨릭대 맞춤형 장학·공모 알림 비서</span></div>
     </div>
+    <nav class="gnb" aria-label="메인 메뉴">
+  <!-- [UX 2] 3단 탭 내비게이션 (관심 보관함 탭 추가) -->
+  <div class="tabs-wrapper">
+    <button class="tab-btn" id="t-feed" aria-selected="true">
+      <span><i class="tab-ic">✨ </i>바로 지원</span>
+      <span class="tab-badge" id="n-feed">0</span>
+    </button>
+    <button class="tab-btn" id="t-gap" aria-selected="false">
+      <span><i class="tab-ic">🎯 </i>갭 보완</span>
+      <span class="tab-badge" id="n-gap">0</span>
+    </button>
+    <button class="tab-btn" id="t-bookmark" aria-selected="false">
+      <span><i class="tab-ic">💗 </i>보관함</span>
+      <span class="tab-badge" id="n-bookmark">0</span>
+    </button>
+    <button class="tab-btn" id="t-cal" aria-selected="false">
+      <span><i class="tab-ic">📅 </i>달력</span>
+      <span class="tab-badge" id="n-cal">0</span>
+    </button>
+  </div>
+    </nav>
     <button class="menu-btn" id="menu-btn" aria-label="내 조건 설정">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-  </header>
+  </div>
+</header>
 
+<div class="wrap">
+  <!-- 왼쪽(PC) / 위쪽(모바일): 검색 · 내 조건 · 요약 -->
+  <aside class="side">
   <!-- [UX 1] 실시간 인스턴트 검색 바 -->
   <div class="search-bar-wrap">
     <span class="search-icon">🔍</span>
@@ -1236,26 +1431,6 @@
     </div>
   </section>
 
-  <!-- [UX 2] 3단 탭 내비게이션 (관심 보관함 탭 추가) -->
-  <div class="tabs-wrapper">
-    <button class="tab-btn" id="t-feed" aria-selected="true">
-      <span><i class="tab-ic">✨ </i>바로 지원</span>
-      <span class="tab-badge" id="n-feed">0</span>
-    </button>
-    <button class="tab-btn" id="t-gap" aria-selected="false">
-      <span><i class="tab-ic">🎯 </i>갭 보완</span>
-      <span class="tab-badge" id="n-gap">0</span>
-    </button>
-    <button class="tab-btn" id="t-bookmark" aria-selected="false">
-      <span><i class="tab-ic">💗 </i>보관함</span>
-      <span class="tab-badge" id="n-bookmark">0</span>
-    </button>
-    <button class="tab-btn" id="t-cal" aria-selected="false">
-      <span><i class="tab-ic">📅 </i>달력</span>
-      <span class="tab-badge" id="n-cal">0</span>
-    </button>
-  </div>
-
   <!-- 통계 및 [UX 6] 정렬 컨트롤러 -->
   <div class="controls-row">
     <div class="summary-bar">
@@ -1272,6 +1447,10 @@
     </div>
   </div>
 
+  </aside>
+
+  <!-- 오른쪽(PC) / 아래쪽(모바일): 공고 목록 -->
+  <div class="content">
   <!-- 시트 연결 전(또는 실패 시) 코드 안의 예시 데이터를 보여줄 때 표시 -->
   <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.</div>
 
@@ -1314,6 +1493,7 @@
       <li>글꼴: Pretendard · Hahmlet · IBM Plex Mono (SIL Open Font License 1.1)</li>
     </ul>
   </footer>
+  </div>
 </div>
 
 
@@ -2156,10 +2336,10 @@
     tabGap.setAttribute("aria-selected", which === "gap" ? "true" : "false");
     tabBookmark.setAttribute("aria-selected", which === "bookmark" ? "true" : "false");
     tabCal.setAttribute("aria-selected", which === "cal" ? "true" : "false");
-    vFeed.style.display = which === "feed" ? "flex" : "none";
-    vGap.style.display = which === "gap" ? "flex" : "none";
-    vBookmark.style.display = which === "bookmark" ? "flex" : "none";
-    vCal.style.display = which === "cal" ? "flex" : "none";
+    vFeed.style.display = which === "feed" ? "" : "none";
+    vGap.style.display = which === "gap" ? "" : "none";
+    vBookmark.style.display = which === "bookmark" ? "" : "none";
+    vCal.style.display = which === "cal" ? "" : "none";
   }
   tabFeed.addEventListener("click", function(){ showTab("feed"); });
   tabGap.addEventListener("click", function(){ showTab("gap"); });
