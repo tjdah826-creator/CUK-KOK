@@ -1539,6 +1539,11 @@
       background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14);
     }
+    /* 메뉴와 하위 메뉴 사이 틈을 투명하게 메워서 지나가는 동안 닫히지 않게 */
+    .vm-sub::after {
+      content: ""; position: absolute; top: 0; bottom: 0; right: -14px; width: 14px;
+    }
+    @media (max-width: 1023px) { .vm-sub::after { display: none; } }
     .vm-has-sub[aria-expanded="true"] { background: var(--bg); }
     @media (max-width: 1023px) {
       .vm-pane, .vm-pc, .vm-item[data-show="side"] { display: none; }
@@ -3018,7 +3023,7 @@
   var viewBtn = el("view-btn"), viewMenu = el("view-menu");
   function setMenu(open) {
     viewMenu.hidden = !open;
-    if (!open && el("vm-sub")) { el("vm-sub").hidden = true; el("vm-show-btn").setAttribute("aria-expanded", "false"); }
+    if (!open && el("vm-sub")) { el("vm-sub").hidden = true; el("vm-show-btn").setAttribute("aria-expanded", "false"); subPinned = false; cancelSubClose(); }
     viewBtn.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) { var f = viewMenu.querySelector('[aria-checked="true"]') || viewMenu.querySelector(".vm-item"); f && f.focus(); }
   }
@@ -3031,13 +3036,40 @@
     showBtn.setAttribute("aria-expanded", open ? "true" : "false");
   }
   // PC에서는 '표시'에 마우스를 올리면 하위 메뉴가 열림 (탐색기처럼)
-  showBtn.parentNode.addEventListener("mouseenter", function(){ if (wideMQ.matches) setSub(true); });
-  showBtn.parentNode.addEventListener("mouseleave", function(){ if (wideMQ.matches) setSub(false); });
+  // 하위 메뉴가 너무 빨리 닫히지 않게:
+  //  - 마우스가 벗어나도 0.6초 기다렸다가 닫음 (대각선으로 옮기다 다른 항목을 스쳐도 유지)
+  //  - '표시'를 클릭하면 고정 → 다시 클릭하거나 보기 메뉴를 닫을 때까지 열려 있음
+  var subTimer = null, subPinned = false;
+  function cancelSubClose() { if (subTimer) { clearTimeout(subTimer); subTimer = null; } }
+  showBtn.parentNode.addEventListener("mouseenter", function(){
+    if (!wideMQ.matches) return;
+    cancelSubClose();
+    setSub(true);
+  });
+  showBtn.parentNode.addEventListener("mouseleave", function(){
+    if (!wideMQ.matches || subPinned) return;
+    cancelSubClose();
+    subTimer = setTimeout(function(){ setSub(false); }, 600);
+  });
+  // 다른 보기 항목 위에 오래 머물면 그때 닫힘 (탐색기와 같은 느낌)
+  [].forEach.call(viewMenu.querySelectorAll(":scope > .vm-item"), function(it){
+    it.addEventListener("mouseenter", function(){
+      if (!wideMQ.matches || subPinned || showSub.hidden) return;
+      cancelSubClose();
+      subTimer = setTimeout(function(){ setSub(false); }, 600);
+    });
+  });
   viewMenu.addEventListener("click", function(e){
     var b = e.target.closest(".vm-item");
     if (!b) return;
     e.stopPropagation();
-    if (b === showBtn) { setSub(showSub.hidden); return; }
+    if (b === showBtn) {
+      cancelSubClose();
+      if (showSub.hidden) { setSub(true); subPinned = true; }
+      else if (!subPinned) { subPinned = true; }            // 마우스로 열린 상태에서 클릭 → 고정
+      else { setSub(false); subPinned = false; }            // 고정된 상태에서 다시 클릭 → 닫기
+      return;
+    }
     if (b.hasAttribute("data-show")) {
       var k = b.getAttribute("data-show");
       SHOW[k] = !SHOW[k];
