@@ -1625,6 +1625,7 @@
     .info-grid dt { color: var(--muted); font-weight: 600; }
     .info-grid dd { color: var(--ink); overflow-wrap: anywhere; }
     .info-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .info-quote { color: var(--ink-secondary); font-size: 12.5px; }
     @media (min-width: 1024px) {
       .content.preview-on.view-medium .card-list:not(#v-cal) { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
       .content.preview-on.view-tiles .card-list:not(#v-cal) { grid-template-columns: minmax(0, 1fr); }
@@ -2062,6 +2063,10 @@
     return n.verified === true
       ? '<span class="tag verified" title="운영자가 원문과 대조해 확인한 공고예요">✓ 검증</span>'
       : '<span class="tag reviewing" title="AI가 정리했고 아직 운영자 확인 전이에요">검토중</span>';
+  }
+  // 마감일 출처 안내 (마우스를 올리면 보임)
+  function dueTip(n) {
+    return "마감일 출처: " + (n.dueSource || "확인 필요") + (n.dueEvidence ? "\n근거: " + n.dueEvidence : "");
   }
   function demoTag(n) { return isDemo(n) ? '<span class="tag demo">시연용 예시</span>' : ''; }
 
@@ -2506,6 +2511,8 @@
       ["구분", srcLabel(n)],
       ["검수", n.verified === true ? "✓ 검증 (운영자 확인 완료)" : "검토중 (AI 정리, 확인 전)"],
       ["마감일", x.due.getFullYear() + "." + fmt(x.due) + " (" + WD[x.due.getDay()] + ")"],
+      ["마감일 출처", esc(n.dueSource || "확인 필요")],
+      ["마감일 근거", n.dueEvidence ? '<span class="info-quote">"' + esc(n.dueEvidence) + '"</span>' : "-"],
       ["남은 날", x.left === 0 ? "오늘 마감" : "D-" + x.left],
       ["혜택", esc(n.benefit || "-")],
       ["지원 학년", grades],
@@ -2717,7 +2724,7 @@
             '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
             '<span class="tag">' + srcLabel(n) + '</span>' +
             verifyTag(n) +
-            '<span class="tag date">마감 ' + fmt(x.due) + '</span>' +
+            '<span class="tag date" title="' + esc(dueTip(n)) + '">마감 ' + fmt(x.due) + '</span>' +
             demoTag(n) +
             '<div class="action-btns">' +
               heartButton(n.id, isBookmarked) +
@@ -2808,7 +2815,7 @@
         '<td class="c-center">' + catTag(n) + '</td>' +
         '<td class="d-title" title="' + esc(n.t) + '">' + (SHOW.wrap ? esc(n.t) + demoTag(n) : demoTag(n) + esc(n.t)) + '</td>' +
         '<td class="c-center">' + srcLabel(n) + '</td>' +
-        '<td class="d-num c-center">' + fmt(x.due) + '</td>' +
+        '<td class="d-num c-center" title="' + esc(dueTip(n)) + '">' + fmt(x.due) + '</td>' +
         '<td class="c-center">' + miniDday(x) + '</td>' +
         '<td class="d-benefit" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</td>' +
         '<td class="d-num c-center">' + (prep === 0 ? "즉시" : prep + "일") + '</td>' +
