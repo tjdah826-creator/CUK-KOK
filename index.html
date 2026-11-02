@@ -1487,7 +1487,7 @@
 
     /* 목록: 엑셀 행처럼 고정 열 · 고정 높이 */
     .row-item {
-      display: grid; grid-template-columns: 58px 76px minmax(0, 1fr) 92px 34px 36px;
+      display: grid; grid-template-columns: 58px 76px minmax(0, 1fr) 64px 92px 34px 36px;
       align-items: center; gap: 10px; height: 50px; padding: 0 14px;
     }
     .row-item > .tag { justify-self: center; }
@@ -1503,7 +1503,7 @@
     .d-table th, .d-table td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 46px; }
     .d-table th.w-cat { width: 82px; } .d-table th.w-src { width: 54px; } .d-table th.w-due { width: 62px; }
     .d-table th.w-dday { width: 78px; } .d-table th.w-ben { width: 17%; } .d-table th.w-prep { width: 58px; }
-    .d-table th.w-open { width: 44px; } .d-table th.w-like { width: 46px; }
+    .d-table th.w-open { width: 44px; } .d-table th.w-like { width: 46px; } .d-table th.w-ver { width: 66px; }
     /* 좁은 칸에서는 '시연용 예시'를 '예시'로 짧게 */
     .d-title .tag.demo, .row-title .tag.demo { font-size: 0; padding: 2px 5px; }
     .d-title .tag.demo::after, .row-title .tag.demo::after { content: "예시"; font-size: 10.5px; }
@@ -1626,6 +1626,14 @@
       .content.preview-on .crow { grid-template-columns: minmax(0, 1fr) 34px; }
       .content.preview-on .crow-side { display: none; }
     }
+
+    /* ===================== 검수 표시: O → 검증 / X → 검토중 ===================== */
+    .tag.verified { background: var(--ok-soft); color: var(--ok); border-color: transparent; white-space: nowrap; }
+    .tag.reviewing { background: var(--line-subtle); color: var(--muted); border-color: var(--line); white-space: nowrap; }
+    .row-item > .tag.verified, .row-item > .tag.reviewing { min-width: 0; justify-self: center; }
+    .htile-meta .tag.verified, .htile-meta .tag.reviewing { margin-left: 6px; font-size: 10px; padding: 0 5px; }
+    .crow-due .tag { font-size: 10.5px; padding: 1px 6px; }
+    .d-table .tag.verified, .d-table .tag.reviewing { min-width: 0; }
   </style>
 </head>
 <body>
@@ -2029,6 +2037,12 @@
   // 시연용 예시(가상) 데이터인지: 시트에서 온 demo 표시, 또는 아직 시트를 못 불러와 코드 안 예시를 쓰는 중
   var usingFallback = true;
   function isDemo(n) { return usingFallback || n.demo === true; }
+  // 운영자 검수: 시트의 '검수' 열이 O → "검증", 그 외(X·빈칸) → "검토중"
+  function verifyTag(n) {
+    return n.verified === true
+      ? '<span class="tag verified" title="운영자가 원문과 대조해 확인한 공고예요">✓ 검증</span>'
+      : '<span class="tag reviewing" title="AI가 정리했고 아직 운영자 확인 전이에요">검토중</span>';
+  }
   function demoTag(n) { return isDemo(n) ? '<span class="tag demo">시연용 예시</span>' : ''; }
 
   function esc(s){ return String(s || "").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
@@ -2149,6 +2163,7 @@
               '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
               '<span class="tag ' + (it.kind === "feed" ? 'kind-feed">바로 지원' : 'kind-gap">갭 보완') + '</span>' +
               '<span class="tag date">D-' + it.x.left + '</span>' +
+              verifyTag(n) +
               demoTag(n) +
             '</div>' +
             '<div class="cal-item-title">' + esc(n.t) + '</div>' +
@@ -2469,6 +2484,7 @@
     var rows = [
       ["분야", esc(n.cat || "-")],
       ["구분", srcLabel(n)],
+      ["검수", n.verified === true ? "✓ 검증 (운영자 확인 완료)" : "검토중 (AI 정리, 확인 전)"],
       ["마감일", x.due.getFullYear() + "." + fmt(x.due) + " (" + WD[x.due.getDay()] + ")"],
       ["남은 날", x.left === 0 ? "오늘 마감" : "D-" + x.left],
       ["혜택", esc(n.benefit || "-")],
@@ -2667,6 +2683,7 @@
           '<div class="badge-row">' +
             '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
             '<span class="tag">' + srcLabel(n) + '</span>' +
+            verifyTag(n) +
             '<span class="tag date">마감 ' + fmt(x.due) + '</span>' +
             demoTag(n) +
             '<div class="action-btns">' +
@@ -2698,14 +2715,14 @@
     function expand(x, wrapTag) {
       if (previewActive() || expandedId !== x.n.id) return "";
       return wrapTag === "tr"
-        ? '<tr class="exp-row"><td colspan="9"><div class="expand">' + buildCard(x, x.isGap) + '</div></td></tr>'
+        ? '<tr class="exp-row"><td colspan="10"><div class="expand">' + buildCard(x, x.isGap) + '</div></td></tr>'
         : '<div class="expand">' + buildCard(x, x.isGap) + '</div>';
     }
     function buildTile(x) {
       var n = x.n;
       return '<article class="tile' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         '<div class="tile-top">' + miniDday(x) + heartButton(n.id, bookmarks.indexOf(n.id) > -1) + '</div>' +
-        '<div class="tile-tags">' + catTag(n) + demoTag(n) + '</div>' +
+        '<div class="tile-tags">' + catTag(n) + verifyTag(n) + demoTag(n) + '</div>' +
         '<div class="tile-title" title="' + esc(n.t) + '">' + esc(n.t) + '</div>' +
         (VIEW === "medium" && Array.isArray(n.sum) && n.sum[0] ? '<div class="tile-sum" title="' + esc(n.sum[0]) + '">' + esc(n.sum[0]) + '</div>' : '') +
         '<div class="tile-meta" title="' + esc(n.benefit || "") + '">마감 ' + fmt(x.due) + (n.benefit ? ' · ' + esc(n.benefit) : '') + '</div>' +
@@ -2719,7 +2736,7 @@
         '<div class="htile-icon' + cls + '"><b>' + (x.left === 0 ? "오늘" : "D-" + x.left) + '</b><span>' + fmt(x.due) + '</span></div>' +
         '<div class="htile-body">' +
           '<div class="htile-title" title="' + esc(n.t) + '">' + esc(n.t) + '</div>' +
-          '<div class="htile-meta">' + esc(n.cat) + ' · ' + srcLabel(n) + demoTag(n) + '</div>' +
+          '<div class="htile-meta">' + esc(n.cat) + ' · ' + srcLabel(n) + verifyTag(n) + demoTag(n) + '</div>' +
           '<div class="htile-meta" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</div>' +
         '</div>' +
         heartButton(n.id, bookmarks.indexOf(n.id) > -1) +
@@ -2735,7 +2752,7 @@
           '<div class="crow-sum" title="' + esc(sum0) + '">' + esc(sum0) + '</div>' +
         '</div>' +
         '<div class="crow-side">' +
-          '<div class="crow-due">' + srcLabel(n) + ' · 마감 ' + fmt(x.due) + ' ' + miniDday(x) + '</div>' +
+          '<div class="crow-due">' + verifyTag(n) + ' ' + srcLabel(n) + ' · 마감 ' + fmt(x.due) + ' ' + miniDday(x) + '</div>' +
           '<div class="crow-ben" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</div>' +
         '</div>' +
         heartButton(n.id, bookmarks.indexOf(n.id) > -1) +
@@ -2746,6 +2763,7 @@
       return '<div class="row-item' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         miniDday(x) + catTag(n) +
         '<span class="row-title" title="' + esc(n.t) + '">' + demoTag(n) + esc(n.t) + '</span>' +
+        verifyTag(n) +
         '<span class="row-due">' + fmt(x.due) + ' 마감</span>' +
         '<a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a>' +
         heartButton(n.id, bookmarks.indexOf(n.id) > -1) +
@@ -2762,6 +2780,7 @@
         '<td class="d-benefit" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</td>' +
         '<td class="d-num c-center">' + (prep === 0 ? "즉시" : prep + "일") + '</td>' +
         '<td class="c-center"><a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a></td>' +
+        '<td class="c-center">' + verifyTag(n) + '</td>' +
         '<td class="c-center">' + heartButton(n.id, bookmarks.indexOf(n.id) > -1) + '</td>' +
       '</tr>' + expand(x, "tr");
     }
@@ -2772,7 +2791,7 @@
       if (VIEW === "tiles") return arr.map(buildHTile).join("");
       if (VIEW === "content") return arr.map(buildContentRow).join("");
       if (VIEW === "details") {
-        return '<table class="d-table"><thead><tr><th class="w-cat">분야</th><th class="w-title">공고명</th><th class="w-src">구분</th><th class="w-due">마감</th><th class="w-dday">남은 날</th><th class="w-ben">혜택</th><th class="w-prep" title="서류 준비 기간">준비</th><th class="w-open">원문</th><th class="w-like">찜</th></tr></thead><tbody>' +
+        return '<table class="d-table"><thead><tr><th class="w-cat">분야</th><th class="w-title">공고명</th><th class="w-src">구분</th><th class="w-due">마감</th><th class="w-dday">남은 날</th><th class="w-ben">혜택</th><th class="w-prep" title="서류 준비 기간">준비</th><th class="w-open">원문</th><th class="w-ver">검수</th><th class="w-like">찜</th></tr></thead><tbody>' +
           arr.map(buildDetailsRow).join("") + '</tbody></table>';
       }
       return arr.map(function(x){ return buildCard(x, x.isGap); }).join("");   // 아주 큰 카드 · 큰 카드
