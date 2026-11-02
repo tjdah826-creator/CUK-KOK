@@ -2567,11 +2567,16 @@
       var due;
       if (Array.isArray(n.due) && n.due.length >= 3) {
         due = new Date(n.due[0], n.due[1], n.due[2]);
-      } else if (typeof n.due === "string") {
-        var dp = n.due.split("-");
-        due = new Date(+dp[0], +dp[1] - 1, +dp[2]);
+      } else if (typeof n.due === "string" && /(\d{4})-(\d{1,2})-(\d{1,2})/.test(n.due)) {
+        var dp = n.due.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+        due = new Date(+dp[1], +dp[2] - 1, +dp[3]);
       } else {
-        due = new Date();
+        due = null;
+      }
+      // 마감일을 읽을 수 없는 공고는 엉뚱한 날짜로 보여주지 않고 숨김
+      if (!due || isNaN(due.getTime()) || due.getMonth() + 1 !== +(String(n.due).match(/-(\d{1,2})-/) || [0, due.getMonth() + 1])[1]) {
+        hide("마감일 확인 필요");
+        return;
       }
 
       var left = days(due, TODAY);
