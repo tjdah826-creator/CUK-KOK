@@ -1876,6 +1876,57 @@
       .card .btn-icon { font-size: 11.5px; padding: 4px 8px; }
       .card .tag { font-size: 11px; }
     }
+
+    /* ===================== 🎯 갭 보완 퀘스트 ===================== */
+.gap-empty .ge-ic { font-size: 30px; margin-bottom: 6px; }
+    .gap-empty b { color: var(--ink); }
+    .ge-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+    .ge-btns .btn-cond { flex: 0 1 auto; }
+    .quest {
+      margin-top: 8px; border: 1px solid #F5C26B; border-radius: 14px; padding: 12px 14px;
+      background: linear-gradient(180deg, #FFFBEB 0%, var(--surface) 70%);
+    }
+    .quest-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .quest-badge { font-size: 10.5px; font-weight: 800; letter-spacing: .04em; color: #fff; background: #D97706; border-radius: 6px; padding: 2px 7px; }
+    .quest-goal { font-size: clamp(12.5px, 3.9cqi, 14px); color: var(--ink); }
+    .quest-goal em { font-style: normal; color: #DC2626; }
+    .quest-bar { position: relative; height: 12px; margin: 12px 0 4px; background: var(--line-subtle); border-radius: 99px; }
+    .quest-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #FBBF24, #F97316); transition: width .4s ease; }
+    .quest-scale { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-secondary); margin-bottom: 4px; font-family: var(--font-mono); }
+    .quest-scale b { color: #B45309; }
+    .quest-scale span:last-child b { color: #15803D; }
+    .quest-fill { position: relative; }
+    .quest-fill::after { content: ""; position: absolute; right: -1px; top: -3px; width: 4px; height: 18px; border-radius: 2px; background: #B45309; }
+    .quest-me, .quest-target { position: absolute; top: -19px; font-size: 11px; font-weight: 700; white-space: nowrap; font-family: var(--font-mono); }
+    .quest-me { transform: translateX(-50%); color: #B45309; }
+    .quest-me::after { content: ""; position: absolute; left: 50%; top: 15px; width: 2px; height: 16px; background: #B45309; transform: translateX(-50%); border-radius: 2px; }
+    .quest-target { right: 0; color: #15803D; }
+    .quest-sub { font-size: 12.5px; color: var(--ink-secondary); }
+    .quest-sub b { color: #B45309; }
+    .quest-how { margin-top: 10px; font-size: 12px; font-weight: 800; color: var(--ink); }
+    .quest-steps { list-style: none; padding: 0 !important; margin: 6px 0 0; display: flex; flex-direction: column; gap: 8px; }
+    .qstep { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; align-items: start; }
+    .qcheck { position: relative; cursor: pointer; }
+    .qcheck input { position: absolute; opacity: 0; width: 26px; height: 26px; margin: 0; cursor: pointer; }
+    .qcheck span {
+      display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center;
+      border: 2px solid #F59E0B; color: #B45309; font-size: 12px; font-weight: 800; background: var(--surface);
+    }
+    .qcheck input:checked + span { background: #16A34A; border-color: #16A34A; color: #fff; font-size: 0; }
+    .qcheck input:checked + span::after { content: "✓"; font-size: 13px; }
+    .qcheck input:focus-visible + span { outline: 2px solid var(--cuk-accent); outline-offset: 2px; }
+    .qstep.done .qtitle { color: #15803D; }
+    .qtitle { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 24px; }
+    .qtip { font-size: 12px; color: var(--ink-secondary); background: #FEF3C7; border-radius: 6px; padding: 4px 8px; margin: 2px 0 4px; }
+    .qitems { list-style: none; padding: 0 !important; margin: 2px 0 0; display: flex; flex-direction: column; gap: 5px; }
+    .qitems li { font-size: 12.5px; line-height: 1.45; border-left: 2px solid var(--line); padding-left: 8px; }
+    .qitems a { color: var(--cuk-accent); font-weight: 700; text-decoration: none; word-break: keep-all; }
+    .qitems a:hover { text-decoration: underline; }
+    .qmeta { font-size: 11.5px; color: var(--muted); }
+    .qwhen { color: var(--ink-secondary); font-weight: 600; }
+    .qver { margin-left: 6px; font-size: 10.5px; font-weight: 700; color: var(--muted); background: var(--line-subtle); border-radius: 4px; padding: 0 5px; }
+    .quest-foot { margin-top: 10px; font-size: 12px; color: var(--ink-secondary); border-top: 1px dashed #F5C26B; padding-top: 8px; }
+    .quest-foot b { color: #B45309; }
   </style>
 </head>
 <body>
@@ -2189,7 +2240,7 @@
     <details class="help-sec"><summary>🧭 메뉴 (탭) 안내</summary>
       <dl class="help-dl">
         <dt>✨ 바로 지원</dt><dd>내 조건을 모두 만족하는 접수 중인 공고예요.</dd>
-        <dt>🎯 갭 보완</dt><dd>평점·토익이 <b>조금만</b> 모자란 공고예요. 얼마나 채우면 되는지와 준비 방법을 알려 줘요.</dd>
+        <dt>🎯 갭 보완</dt><dd>평점·토익이 <b>조금만</b> 모자란 공고예요. 🎯 퀘스트 카드가 남은 점수와 함께 ① 시험 일정 ② 교내 교양과목 ③ 교내 비교과를 알려 주고, 한 단계씩 체크하면 진행도가 저장돼요.</dd>
         <dt>💗 보관함</dt><dd>하트(찜)를 누른 공고만 모아 봐요. 이 기기에만 저장돼요.</dd>
         <dt>📅 마감 달력</dt><dd>날짜별 마감 건수를 달력으로 보여 줘요. 날짜를 누르면 그날 마감 공고와 바로가기가 나와요. 하단 메뉴의 숫자는 <b>오늘 마감</b> 건수예요.</dd>
         <dt>📦 지난 공고</dt><dd>마감된 공고를 1년 동안 모아 둬요. 작년 주제·혜택·서류를 보고 다음 회차를 미리 준비하세요.</dd>
@@ -2341,20 +2392,46 @@
     {id:"N007",cat:"비교과",src:"교내",t:"[교수학습개발원] 2026 생성형 AI 프롬프트 엔지니어링 실습 과정",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,9,31],prep:0,benefit:"비교과 마일리지 10점 및 수료증",sum:["생성형 AI 프롬프트 엔지니어링 실습","실무 LLM 활용 및 프롬프트 템플릿 제작","이수 시 비교과 마일리지 10점 지급"],caution:["선착순 30명 마감","전 일정 출석 필수"],docs:["온라인 수강신청서"],q:"본교 학부 재학생 누구나 지원 가능. 선착순 30명 마감"},
     {id:"N008",cat:"학사",src:"교내",t:"[학사지원팀] 2027-1학기 다전공(복수·부·연계전공) 신청 안내",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,20],prep:5,benefit:"복수·부·연계전공 이수 승인",sum:["2027학년도 1학기 다전공 신청","트리니티 포털을 통한 온라인 접수","2개 학기 이상 이수한 재학생 대상"],caution:["2개 학기 이상 이수자만 신청 가능","학과별 선발 인원 및 요건 상이"],docs:["트리니티 온라인 신청서","학업계획서 1부"],q:"2개 학기 이상 이수한 1~3학년 재학생 대상. 학업계획서 1부 제출"},
     {id:"N009",cat:"공모전",src:"외부",t:"[외부기관] 2026 대학생 경영 혁신 전략 아이디어 공모전",url:"https://www.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled","leave"],field:["biz"],gpa:0,toeic:0,team:4,due:[2026,10,25],prep:10,benefit:"상금 및 채용 가산점",sum:["대학생 경영 혁신 전략 아이디어 공모전","신규 비즈니스 모델 및 마케팅 제안","경영/경제 계열 최대 4인 이하 팀 구성"],caution:["경영/경제 계열 전공자 필수","최대 4인 팀 / 타 대회 기출작 금지"],docs:["기획서(PPT 20장 이내)","재학증명서","개인정보 동의서"],q:"전국 경영/경제 계열 대학생, 개인 또는 최대 4인 이하 팀 구성 필수"},
-    {id:"N010",cat:"장학",src:"교내",t:"[학부대학] 2026학년도 2학기 이원길 장학금 대상자 선발 공고",url:"https://gs.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,20],prep:4,benefit:"등록금 초과 수혜 가능 장학금",sum:["2학기 이원길 장학금 선발","학술·봉사·설계·창업 부문 공로 장학","등록금 범위 초과 수혜 가능"],caution:["휴학생 및 초과학기·수료유예자 불가","활동결과보고서 제출 필수"],docs:["트리니티 장학신청","장학금 신청서","활동결과보고서"],q:"본교 재학생(휴학생 및 수료유예자 불가). 등록금 초과 수혜 가능"}
+    {id:"N010",cat:"장학",src:"교내",t:"[학부대학] 2026학년도 2학기 이원길 장학금 대상자 선발 공고",url:"https://gs.catholic.ac.kr/ko/campuslife/notice.do",grades:[1,2,3,4],status:["enrolled"],field:null,gpa:0,toeic:0,team:10,due:[2026,10,20],prep:4,benefit:"등록금 초과 수혜 가능 장학금",sum:["2학기 이원길 장학금 선발","학술·봉사·설계·창업 부문 공로 장학","등록금 범위 초과 수혜 가능"],caution:["휴학생 및 초과학기·수료유예자 불가","활동결과보고서 제출 필수"],docs:["트리니티 장학신청","장학금 신청서","활동결과보고서"],q:"본교 재학생(휴학생 및 수료유예자 불가). 등록금 초과 수혜 가능"},
+    // ===== 시연용 갭 보완 예시 (가상 공고 · 실제 모집 아님) =====
+    {"id": "N901", "cat": "교환·어학", "src": "교내", "t": "[시연] 2027-1학기 미주권 교환학생 선발", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3], "status": ["enrolled"], "field": null, "gpa": 3.0, "toeic": 800, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-11-20", "prep": 7, "benefit": "해외 자매대학 1학기 파견·학점 인정", "sum": ["미주 자매대학 1학기 파견", "TOEIC 800 이상, 평점 3.0 이상", "영문 학업계획서 제출"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["공인어학성적표", "영문 학업계획서", "성적증명서"], "q": "TOEIC 800점 이상, 누적 평점 3.0 이상인 1~3학년 재학생", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 800점 이상", "직전학기 평점 3.0 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N902", "cat": "교환·어학", "src": "교내", "t": "[시연] 2026 동계 영국 단기어학연수", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3, 4], "status": ["enrolled"], "field": null, "gpa": 0, "toeic": 780, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-11-14", "prep": 4, "benefit": "연수비 일부 지원 + 계절학기 학점", "sum": ["영국 4주 어학연수", "TOEIC 780 이상 지원 가능", "이수 시 계절학기 학점 인정"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["참가신청서", "어학성적표", "여권 사본"], "q": "TOEIC 780점 이상 재학생", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 780점 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N903", "cat": "장학", "src": "외부", "t": "[시연] ○○미래재단 성적우수 장학생 모집", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [2, 3, 4], "status": ["enrolled"], "field": null, "gpa": 3.5, "toeic": 0, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-11-25", "prep": 5, "benefit": "학기당 300만원", "sum": ["직전학기 평점 3.5 이상", "2~4학년 재학생 대상", "추천서 1부 필요"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["장학신청서", "성적증명서", "추천서"], "q": "직전학기 평점 3.5 이상 2~4학년 재학생", "submit_type": "온라인(홈페이지)", "required_qualifications": ["직전학기 평점 3.5 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N904", "cat": "취창업", "src": "외부", "t": "[시연] 글로벌 기업 동계 인턴십 (마케팅)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [3, 4], "status": ["enrolled"], "field": null, "gpa": 0, "toeic": 850, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-11-28", "prep": 6, "benefit": "월 220만원 + 정규직 전환 기회", "sum": ["8주 동계 인턴십", "TOEIC 850 이상 필수", "영문 이력서 제출"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["영문 이력서", "어학성적표"], "q": "TOEIC 850점 이상 3~4학년", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 850점 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N905", "cat": "비교과", "src": "교내", "t": "[시연] 영어 프레젠테이션 경진대회", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3, 4], "status": ["enrolled"], "field": null, "gpa": 0, "toeic": 800, "team": 3, "teamMin": 1, "teamMax": 3, "due": "2026-12-04", "prep": 4, "benefit": "대상 50만원 · ELP 마일리지", "sum": ["영어 PT 경진대회", "1~3인 팀, TOEIC 800 이상 팀원 1명 필수", "발표 영상 제출"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["참가신청서", "발표 영상"], "q": "팀원 중 1명 이상 TOEIC 800점 이상", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 800점 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N906", "cat": "장학", "src": "교내", "t": "[시연] 교환학생 파견 장학금", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3], "status": ["enrolled"], "field": null, "gpa": 3.4, "toeic": 820, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-12-01", "prep": 3, "benefit": "파견 학기 등록금 50%", "sum": ["교환학생 합격자 대상 장학", "TOEIC 820, 평점 3.4 이상", "신청서만 제출"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["장학신청서"], "q": "교환학생 합격자 중 TOEIC 820점·평점 3.4 이상", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 820점 이상", "직전학기 평점 3.4 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N907", "cat": "대외활동", "src": "외부", "t": "[시연] 국제회의 통역 서포터즈 모집", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3, 4], "status": ["enrolled"], "field": null, "gpa": 0, "toeic": 900, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-12-10", "prep": 5, "benefit": "활동비 + 수료증", "sum": ["국제회의 현장 안내·통역 지원", "TOEIC 900 이상", "영어 인터뷰 진행"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["지원서", "어학성적표"], "q": "TOEIC 900점 이상 대학생", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 900점 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N908", "cat": "교환·어학", "src": "교내", "t": "[시연] 하계 싱가포르 해외 인턴십", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [2, 3, 4], "status": ["enrolled"], "field": null, "gpa": 3.5, "toeic": 800, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-12-15", "prep": 7, "benefit": "항공권·체재비 지원", "sum": ["싱가포르 현지 기업 6주 인턴십", "TOEIC 800, 평점 3.5 이상", "영문 자기소개서"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["영문 자기소개서", "어학성적표", "성적증명서"], "q": "TOEIC 800점 이상, 평점 3.5 이상 2~4학년", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 800점 이상", "직전학기 평점 3.5 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N909", "cat": "장학", "src": "교내", "t": "[시연] 학업장려 우수장학", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3, 4], "status": ["enrolled"], "field": null, "gpa": 3.6, "toeic": 0, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-11-18", "prep": 2, "benefit": "등록금 30% 감면", "sum": ["직전학기 평점 3.6 이상", "재학생 누구나", "온라인 신청"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["온라인 신청서"], "q": "직전학기 평점 3.6 이상 재학생", "submit_type": "온라인(홈페이지)", "required_qualifications": ["직전학기 평점 3.6 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0},
+    {"id": "N910", "cat": "비교과", "src": "교내", "t": "[시연] 글로벌 리더십 프로그램 3기", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do", "grades": [1, 2, 3], "status": ["enrolled"], "field": null, "gpa": 3.4, "toeic": 760, "team": 10, "teamMin": 1, "teamMax": 10, "due": "2026-12-20", "prep": 3, "benefit": "해외 연수 기회 + 수료증", "sum": ["글로벌 리더십 12주 과정", "TOEIC 760, 평점 3.4 이상", "면접 선발"], "caution": ["시연용 가상 공고예요 (실제 모집 아님)"], "docs": ["지원서", "어학성적표"], "q": "TOEIC 760점·평점 3.4 이상 1~3학년", "submit_type": "온라인(홈페이지)", "required_qualifications": ["TOEIC 760점 이상", "직전학기 평점 3.4 이상"], "preferred_qualifications": [], "demo": true, "verified": false, "linkType": "메인", "dueSource": "시연용 예시 (가상)", "cmt": 0}
   ];
 
-  var GUIDE = {
-    "토익": [
-      ["시험 일정", "마감 전 성적이 발표되는 정기시험 일정을 확인하세요."],
-      ["교내 어학 교양", "교양 강좌 '실용영어 Ⅱ' (2학점) — 수강신청 장바구니에 담아보세요."],
-      ["교내 무료 특강", "[비교과] 방학 어학완성 인텐시브 코스로 마일리지와 함께 준비하세요."]
-    ],
-    "평점": [
-      ["성적 재계산", "이번 학기 성적이 확정되면 자동으로 매칭 점수가 갱신됩니다."],
-      ["교내 학습 지원", "교수학습개발원(CTL) 러닝 튜터링 프로그램으로 직전학기 학점을 보완하세요."]
-    ]
+  // ===== 갭 보완 행동 가이드 =====
+  // 시트 「갭 보완 가이드」 탭에서 불러와요 (운영자가 고치면 바로 반영). 아래는 연결 전·실패 시 쓰는 기본값.
+  // target: 토익 / 평점 · step: 시험 / 교양과목 / 비교과
+  var GAP_GUIDES = [
+    { target:"토익", step:"시험", name:"TOEIC 정기시험 일정·접수", desc:"한국TOEIC위원회 공식 일정. 매달 2회 안팎 시행 (2027년은 26회, 첫 시험 1/16)", when:"매월", url:"https://exam.toeic.co.kr/receipt/examSchList.php", verified:true },
+    { target:"토익", step:"교양과목", name:"Pronouncing English Like a Native Speaker (06789)", desc:"중핵교양 글로벌·외국어 영역 · 3학점 · 영어 발음·말하기 (LC 대비에 도움)", when:"1·2학기 개설", url:"https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", verified:true },
+    { target:"토익", step:"교양과목", name:"Critical Reading Across the Disciplines (06822)", desc:"중핵교양 글로벌·외국어 영역 · 3학점 · 영어 독해 (RC 대비에 도움)", when:"1·2학기 개설", url:"https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", verified:true },
+    { target:"토익", step:"비교과", name:"Language 배움이음 (Language SOS Class)", desc:"교수학습개발원 · 재학생 튜터와 동료 튜터링 · 영어 회화·문법·독해·토익·토플(ITP) · 13주 · ELP 10점", when:"학기마다 모집 (2026-1: 3/16~6/15 운영, 3/3~3/9 신청)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=268978", verified:true },
+    { target:"토익", step:"비교과", name:"YBM 온라인 모의토익 (평생교육원)", desc:"정기시험과 같은 200문항 · 끝나면 바로 성적 분석 · 1회 4,000원 · 학번으로 가입", when:"월별 응시 (예: 2026-05 5/1~5/31)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270847", verified:true },
+    { target:"평점", step:"비교과", name:"학습클리닉 - 학업 및 대학생활코칭", desc:"교수학습개발원 · 학습 방법·학업 고민 1:1 코칭", when:"2026-2학기 (~11/4 신청)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277225", verified:false },
+    { target:"평점", step:"비교과", name:"AI기반 기초과목 진단 및 맞춤형 학습 프로그램", desc:"교수학습개발원 · 기초과목 진단 후 맞춤 학습", when:"2026-2학기 3차 추가모집 (~11/8)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277198", verified:false },
+    { target:"평점", step:"비교과", name:"Language 배움이음 · CUK 튜터링", desc:"교수학습개발원 동료 튜터링 (AI코디 › MY Activity › CUK 튜터링)", when:"학기마다 모집", url:"https://aicodi.catholic.ac.kr", verified:false }
+  ];
+  var STEP_INFO = {
+    "시험": { ic:"📝", title:"시험 일정 확인" },
+    "교양과목": { ic:"📚", title:"교내 교양과목 수강" },
+    "비교과": { ic:"🏃", title:"교내 비교과 참여" }
   };
+  var QUESTS = {}; try { QUESTS = JSON.parse(localStorage.getItem("cuk_quests") || "{}"); } catch (e) {}
+  function loadGuides() {
+    if (!SHEET_API_URL) return;
+    fetch(SHEET_API_URL + "?action=guides&t=" + Date.now(), { cache: "no-store" })
+      .then(function(r){ return r.json(); })
+      .then(function(list){ if (Array.isArray(list) && list.length) { GAP_GUIDES = list; render(); } })
+      .catch(function(){ /* 기본 가이드 유지 */ });
+  }
 
   var FIELD = {hum:"인문·사회", biz:"경영·경제", sci:"자연·공학", art:"예체능"};
   var STATUS = {enrolled:"재학", leave:"휴학", grad:"졸업생"};
@@ -2793,6 +2870,81 @@
   };
 
   var uid = 0;
+  // 시연: 내 점수를 '토익 750 · 평점 3.3'으로 잠깐 바꿔 갭 보완 화면을 체험 (저장하지 않음)
+  window.tryDemoScores = function() {
+    el("p-toeic").value = "750"; el("p-gpa").value = "3.3";
+    render();
+    updateSavedBadge();
+    showToast("🎮 시연용 점수(토익 750 · 평점 3.3)로 보여 드려요. '전체 보기'로 되돌릴 수 있어요");
+  };
+
+  // ===== 🎯 갭 보완 퀘스트 (게임형) =====
+  function shortTitle(t) {
+    t = String(t || "").replace(/^\s*\[[^\]]*\]\s*/, "").replace(/&#0?39;/g, "'");
+    return t.length > 24 ? t.slice(0, 23) + "…" : t;
+  }
+  function md(dt) { return (dt.getMonth() + 1) + "." + String(dt.getDate()).padStart(2, "0"); }
+  window.gapQuest = function(x, z) {
+    var n = x.n, isT = z.k === "토익";
+    var unit = isT ? "점" : "";
+    var pct = Math.max(5, Math.min(99, Math.round(z.cur / z.need * 100)));
+    var steps = ["시험", "교양과목", "비교과"].map(function(step){
+      var rows = GAP_GUIDES.filter(function(g){ return g.target === z.k && g.step === step; });
+      return { step: step, rows: rows };
+    }).filter(function(st){ return st.rows.length; });
+    // 토익: 마감 전에 성적이 나오려면 언제 시험을 봐야 하는지 (성적 발표까지 보통 2주 안팎)
+    var examTip = "";
+    if (isT) {
+      var lastTest = new Date(x.due.getTime() - 14 * 86400000);
+      examTip = lastTest >= TODAY
+        ? '마감 ' + md(x.due) + '까지 성적을 받으려면 <b>' + md(lastTest) + ' 전 시험</b>에 응시하세요 (성적 발표까지 보통 2주 안팎)'
+        : '이번 마감 전 성적 발표는 어려워요 → <b>다음 회차</b>를 목표로 지금부터 준비하세요';
+    }
+    var qkey = function(i){ return n.id + "|" + z.k + "|" + i; };
+    var done = steps.filter(function(st, i){ return QUESTS[qkey(i)]; }).length;
+    return '<div class="quest" data-qid="' + esc(n.id + "|" + z.k) + '">' +
+      '<div class="quest-head"><span class="quest-badge">🎯 QUEST</span>' +
+        '<b class="quest-goal">' + esc(shortTitle(n.t)) + '까지 ' + (isT ? "TOEIC" : "평점") + ' <em>+' + z.diff + unit + '</em></b></div>' +
+      '<div class="quest-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + z.need + '" aria-valuenow="' + z.cur + '">' +
+        '<div class="quest-fill" style="width:' + pct + '%"></div>' +
+      '</div>' +
+      '<div class="quest-scale"><span>내 점수 <b>' + z.cur + '</b></span><span>목표 <b>' + z.need + '</b> 🏁</span></div>' +
+      '<div class="quest-sub">달성률 <b>' + pct + '%</b> · ' + z.diff + unit + '만 더 채우면 지원 가능! 🏆</div>' +
+      '<div class="quest-how">이렇게 채우면 돼요</div>' +
+      '<ol class="quest-steps">' + steps.map(function(st, i){
+        var info = STEP_INFO[st.step] || { ic:"✅", title: st.step };
+        var on = QUESTS[qkey(i)] ? " checked" : "";
+        return '<li class="qstep' + (on ? " done" : "") + '">' +
+          '<label class="qcheck" title="했어요 체크"><input type="checkbox" data-q="' + esc(qkey(i)) + '"' + on + '><span>' + (i + 1) + '</span></label>' +
+          '<div class="qbody"><div class="qtitle">' + info.ic + ' ' + info.title + '</div>' +
+            (st.step === "시험" && examTip ? '<div class="qtip">' + examTip + '</div>' : '') +
+            '<ul class="qitems">' + st.rows.map(function(g){
+              return '<li><a href="' + esc(g.url) + '" target="_blank" rel="noopener">' + esc(g.name) + ' ↗</a>' +
+                (g.verified === false ? '<span class="qver">검토중</span>' : '') +
+                '<div class="qmeta">' + esc(g.desc || "") + (g.when ? ' · <span class="qwhen">' + esc(g.when) + '</span>' : '') + '</div></li>';
+            }).join("") + '</ul></div></li>';
+      }).join("") + '</ol>' +
+      '<div class="quest-foot">⭐ 퀘스트 <b class="qdone">' + done + '</b>/' + steps.length + ' 완료<span class="qmsg">' +
+        (done === steps.length && steps.length ? ' · 준비 끝! 다음 시험에서 목표 달성을 노려 보세요 💪' : ' · 한 단계씩 체크해 보세요') + '</span></div>' +
+    '</div>';
+  };
+  // 퀘스트 체크: 다시 그리지 않고 그 자리에서 진행도만 갱신 (이 기기에만 저장)
+  document.addEventListener("change", function(e){
+    var cb = e.target;
+    if (!cb.matches || !cb.matches(".quest input[data-q]")) return;
+    var k = cb.getAttribute("data-q");
+    if (cb.checked) QUESTS[k] = 1; else delete QUESTS[k];
+    try { localStorage.setItem("cuk_quests", JSON.stringify(QUESTS)); } catch (err) {}
+    var q = cb.closest(".quest");
+    [].forEach.call(document.querySelectorAll('.quest input[data-q="' + k + '"]'), function(o){ o.checked = cb.checked; o.closest(".qstep").classList.toggle("done", cb.checked); });
+    [].forEach.call(document.querySelectorAll('.quest[data-qid="' + q.getAttribute("data-qid") + '"]'), function(qq){
+      var all = qq.querySelectorAll("input[data-q]").length, d = qq.querySelectorAll("input[data-q]:checked").length;
+      qq.querySelector(".qdone").textContent = d;
+      qq.querySelector(".qmsg").textContent = d === all ? " · 준비 끝! 다음 시험에서 목표 달성을 노려 보세요 💪" : " · 한 단계씩 체크해 보세요";
+    });
+    if (cb.checked) showToast("⭐ 퀘스트 한 단계 완료!");
+  });
+
   // 팀 인원 범위: teamMin~teamMax (없으면 예전 team = 최대 인원)
   function teamRange(n) {
     var max = +n.teamMax || +n.team || 10;
@@ -3209,19 +3361,7 @@
       var dueY = x.due.getFullYear(), dueM = x.due.getMonth(), dueD = x.due.getDate();
 
       var gapHtml = "";
-      if (isGap && x.short) {
-        gapHtml = x.short.map(function(z) {
-          var pct = Math.max(10, Math.min(100, Math.round(z.cur / z.need * 100)));
-          var msg = z.k === "토익" ? "토익 <b>+" + z.diff + "점</b>만 더 채우면 지원 가능 (" + z.cur + " / " + z.need + ")" : "평점 <b>+" + z.diff + "</b>만 더 채우면 지원 가능 (" + z.cur + " / " + z.need + ")";
-          return '<div style="margin-top:6px;">' +
-            '<div style="font-size:13px; color:var(--ink-secondary);">' + msg + '</div>' +
-            '<div class="gap-progress-wrap"><div class="gap-bar-fill" style="width:' + pct + '%;"></div></div>' +
-            '<div class="guide-box"><b>💡 행동 솔루션</b><ul style="padding-left:16px; margin-top:4px;">' +
-              (GUIDE[z.k] || []).map(function(gd){ return "<li><b>" + gd[0] + "</b>: " + esc(gd[1]) + "</li>"; }).join("") +
-            '</ul></div>' +
-          '</div>';
-        }).join("");
-      }
+      if (isGap && x.short && !x.closed) gapHtml = x.short.map(function(z){ return gapQuest(x, z); }).join("");
 
       return '<article class="card' + (x.closed ? ' closed' : '') + '">' +
         (x.closed
@@ -3363,7 +3503,11 @@
       setList("v-feed", buildList(feed, '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 › 표시에서 끄면 검토중 공고도 보여요.</small>' : '') + '</div>'));
     }
     if (skipView !== "v-gap") {
-      setList("v-gap", buildList(gaps, '<div class="empty-state">현재 조건에서 근접한 갭 보완 공고가 없습니다.' + (SHOW.verifiedOnly ? '<br><small>검증된 공고만 보는 중이에요.</small>' : '') + '</div>'));
+      setList("v-gap", buildList(gaps, (gpa === null && toeic === null)
+        ? '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div><b>내 평점·토익 점수를 넣으면</b> 조금만 채우면 지원할 수 있는 공고와 채우는 방법(퀘스트)을 보여 드려요.' +
+          '<div class="ge-btns"><button type="button" class="btn-cond" onclick="openProfile()">👤 내 점수 입력하기</button>' +
+          '<button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🎮 시연용 점수로 체험 (토익 750 · 평점 3.3)</button></div></div>'
+        : '<div class="empty-state">현재 조건에서 근접한 갭 보완 공고가 없습니다.' + (SHOW.verifiedOnly ? '<br><small>검증된 공고만 보는 중이에요.</small>' : '') + '</div>'));
     }
     if (skipView !== "v-bookmark") {
       setList("v-bookmark", buildList(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>'));
@@ -3399,6 +3543,7 @@
     setProfileOpen(el("filter-panel").style.display === "none");
   });
   // 모바일 메뉴 버튼·하단 '내 조건': 조건 패널을 열고 그 위치로 이동
+  window.openProfile = function(){ openProfile(); };
   function openProfile() {
     setProfileOpen(true);
     var card = document.querySelector(".profile-card");
@@ -3896,6 +4041,7 @@
 
   // 처음 열 때 1회
   loadSheet();
+  loadGuides();
 
   // 화면을 보고 있을 때만 주기적으로 갱신
   setInterval(function() {
