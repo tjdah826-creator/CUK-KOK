@@ -1296,6 +1296,219 @@
       .card-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       #v-cal { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
     }
+
+    /* ===================== 보기 메뉴 (탐색기 스타일) ===================== */
+    .view-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .view-toolbar .section-title { margin: 0; }
+    .toolbar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .toolbar-actions .sort-wrap { margin-left: 0; }
+    .content.tab-cal .toolbar-actions { display: none; }
+    .view-menu-wrap { position: relative; }
+    .view-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid var(--line); border-radius: var(--radius-sm);
+      background: var(--surface); color: var(--ink-secondary);
+      font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    }
+    .view-btn:hover, .view-btn[aria-expanded="true"] { background: var(--bg); color: var(--ink); }
+    .view-btn svg, .vm-item svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; flex-shrink: 0; }
+    .view-btn .caret { font-size: 10px; color: var(--muted); }
+    .view-menu {
+      position: absolute; right: 0; top: calc(100% + 6px); z-index: 700;
+      min-width: 230px; padding: 6px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14);
+    }
+    .vm-item {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border: none; border-radius: 6px;
+      background: transparent; color: var(--ink);
+      font: inherit; font-size: 13.5px; text-align: left; cursor: pointer;
+    }
+    .vm-item:hover, .vm-item:focus-visible { background: var(--bg); outline: none; }
+    .vm-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .vm-item[aria-checked="true"] .vm-dot { background: var(--ink); }
+    .vm-item[aria-checked="true"] { font-weight: 700; }
+    .vm-label { flex: 1; }
+    .vm-hint { font-size: 11px; color: var(--muted); }
+    .vm-sep { height: 1px; background: var(--line); margin: 6px 4px; }
+    @media (max-width: 1023px) { .vm-item[data-toggle="preview"] { display: none; } .vm-sep { display: none; } }
+
+    /* 공통: 작은 D-day, 선택 표시, 펼친 상세 */
+    .mini-dday {
+      font-family: var(--font-mono); font-size: 11.5px; font-weight: 700;
+      padding: 2px 7px; border-radius: 6px; white-space: nowrap;
+      color: var(--cuk-accent); background: var(--cuk-soft);
+    }
+    .mini-dday.hot { color: var(--hot); background: var(--hot-soft); }
+    .mini-dday.gap { color: var(--warn); background: var(--warn-soft); }
+    [data-id] { cursor: pointer; }
+    [data-id]:focus-visible { outline: 2px solid var(--cuk-accent); outline-offset: 2px; }
+    .row-open { color: var(--cuk-accent); font-weight: 700; text-decoration: none; padding: 2px 6px; border-radius: 4px; }
+    .row-open:hover { background: var(--cuk-soft); }
+    .expand { grid-column: 1 / -1; padding: 4px 0 8px; cursor: default; }
+
+    /* 큰 카드: 항상 1열 */
+    .content.view-large .card-list:not(#v-cal) { display: flex; flex-direction: column; }
+
+    /* 작은 카드: 타일 */
+    .content.view-small .card-list:not(#v-cal) {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; align-items: stretch;
+    }
+    .tile {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
+      padding: 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .tile:hover { border-color: var(--cuk-primary); box-shadow: var(--shadow-sm); }
+    .tile.selected, .tile.open { border-color: var(--cuk-primary); box-shadow: 0 0 0 2px var(--cuk-soft); }
+    .tile-top { display: flex; align-items: center; justify-content: space-between; }
+    .tile-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tile-title {
+      font-size: 13.5px; font-weight: 700; line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .tile-meta { font-size: 11.5px; color: var(--muted); margin-top: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* 목록: 한 줄씩 */
+    .content.view-list .card-list:not(#v-cal) {
+      display: flex; flex-direction: column; gap: 0;
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden;
+    }
+    .row-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; border-bottom: 1px solid var(--line-subtle); min-width: 0;
+    }
+    .row-item:hover { background: var(--bg); }
+    .row-item.selected, .row-item.open { background: var(--cuk-soft); }
+    .row-title { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .row-due { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .content.view-list .expand { padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--line-subtle); }
+    .content.view-list .card-list > .empty-state { border: none; border-radius: 0; }
+
+    /* 자세히: 표 */
+    .content.view-details .card-list:not(#v-cal) {
+      display: block; overflow-x: auto;
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
+    }
+    .d-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
+    .d-table th {
+      position: sticky; top: 0; background: var(--panel, #F8F8F8);
+      text-align: left; font-size: 12px; font-weight: 700; color: var(--ink-secondary);
+      padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap;
+    }
+    .d-table td { padding: 8px 10px; border-bottom: 1px solid var(--line-subtle); vertical-align: middle; }
+    .d-row:hover td { background: var(--bg); }
+    .d-row.selected td, .d-row.open td { background: var(--cuk-soft); }
+    .d-title { font-weight: 600; min-width: 220px; }
+    .d-benefit { color: var(--ink-secondary); max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .d-num { font-family: var(--font-mono); white-space: nowrap; }
+    .d-table .heart-container { width: 26px; height: 26px; }
+    .exp-row td { background: var(--bg); padding: 10px 12px; }
+    .d-table .tag, .d-table .mini-dday, .d-table td:nth-child(3) { white-space: nowrap; }
+    .d-title .tag { margin-left: 4px; }
+    /* 미리 보기 창을 켜서 표가 좁아지면: 출처·혜택·서류 준비 열은 숨기고 오른쪽 미리 보기에서 확인 */
+    .content.preview-on .d-table { min-width: 0; }
+    .content.preview-on .d-table th:nth-child(3), .content.preview-on .d-table td:nth-child(3),
+    .content.preview-on .d-table th:nth-child(6), .content.preview-on .d-table td:nth-child(6),
+    .content.preview-on .d-table th:nth-child(7), .content.preview-on .d-table td:nth-child(7),
+    .content.preview-on .d-table th:nth-child(8), .content.preview-on .d-table td:nth-child(8) { display: none; }
+    .content.preview-on .d-title { min-width: 0; }
+    .content.preview-on .d-table td, .content.preview-on .d-table th { padding-left: 8px; padding-right: 8px; }
+
+    /* 미리 보기 창 (PC) */
+    .preview-pane { display: none; }
+    @media (min-width: 1024px) {
+      .content.preview-on .list-area { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr); gap: 20px; align-items: start; }
+      .content.preview-on .preview-pane {
+        display: block; position: sticky; top: 100px;
+        max-height: calc(100vh - 116px); overflow-y: auto;
+      }
+      .pp-head { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; margin: 0 2px 8px; }
+      .pp-empty { padding: 40px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius-md); }
+      .preview-pane .card { grid-template-columns: 1fr; }
+      .content.preview-on.view-small .card-list:not(#v-cal) { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .content.view-small .card-list:not(#v-cal) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .row-item { padding: 10px 12px; gap: 8px; }
+      .row-item .tag, .row-item .row-due { display: none; }
+    }
+
+    /* ===================== 교내 / 교외 구분 ===================== */
+    .scope-seg {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px;
+      padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
+    }
+    .scope-btn {
+      height: 44px; border: none; border-radius: 10px; background: transparent;
+      font: inherit; font-size: 15px; font-weight: 700; color: var(--ink-secondary); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;
+    }
+    .scope-btn b { font-family: var(--font-mono); font-size: 12px; padding: 1px 7px; border-radius: 99px; background: var(--line-subtle); }
+    .scope-btn:hover { background: var(--bg); }
+    .scope-btn[aria-selected="true"] { background: var(--cuk-primary); color: #FFFFFF; }
+    .scope-btn[aria-selected="true"] b { background: rgba(255, 255, 255, 0.25); color: #FFFFFF; }
+    @media (min-width: 1024px) {
+      .scope-seg { max-width: 520px; }
+      .scope-btn[aria-selected="true"] { background: var(--cuk-univ); }
+    }
+
+    /* ===================== 셀 맞춤: 칸 크기 고정 + 글자는 칸 안에서 정렬·말줄임 ===================== */
+    /* 태그·D-day: 같은 폭, 가운데 정렬 */
+    .badge-row > .tag:not(.date):not(.demo), .tile-tags .tag:not(.demo), .row-item > .tag, .d-table .tag:not(.demo) {
+      min-width: 58px; text-align: center; white-space: nowrap;
+    }
+    .mini-dday { display: inline-block; min-width: 50px; text-align: center; }
+    .tag.demo { white-space: nowrap; margin-right: 4px; }
+
+    /* 카드: 같은 줄의 카드는 높이를 맞추고, 제목은 2줄 · 혜택/안내/준비는 1줄로 */
+    .card-list { align-items: stretch; }
+    .card { align-content: start; }
+    .card-title {
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      min-height: calc(1.4em * 2);
+    }
+    .content.view-large .card-title { -webkit-line-clamp: unset; display: block; min-height: 0; }
+    .benefit-line, .link-note span:first-child, .prep-box {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+    .prep-box { display: block; }
+    .link-note { flex-wrap: nowrap; min-width: 0; }
+    .link-note a { flex-shrink: 0; }
+
+    /* 작은 카드: 모든 타일 같은 높이 */
+    .tile { height: 172px; }
+    .tile-title { -webkit-line-clamp: 3; min-height: calc(1.4em * 2); }
+
+    /* 목록: 엑셀 행처럼 고정 열 · 고정 높이 */
+    .row-item {
+      display: grid; grid-template-columns: 58px 76px minmax(0, 1fr) 92px 34px 36px;
+      align-items: center; gap: 10px; height: 50px; padding: 0 14px;
+    }
+    .row-item > .tag { justify-self: center; }
+    .row-title { display: block; }
+    .row-due { text-align: right; }
+    .row-open, .row-item .heart-container { justify-self: center; }
+    @media (max-width: 600px) {
+      .row-item { grid-template-columns: 54px minmax(0, 1fr) 30px 34px; gap: 8px; height: 52px; padding: 0 12px; }
+    }
+
+    /* 자세히: 열 너비 고정, 행 높이 고정, 넘치는 글자는 말줄임 */
+    .d-table { table-layout: fixed; min-width: 720px; }
+    .d-table th, .d-table td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 46px; }
+    .d-table th.w-cat { width: 82px; } .d-table th.w-src { width: 54px; } .d-table th.w-due { width: 62px; }
+    .d-table th.w-dday { width: 78px; } .d-table th.w-ben { width: 17%; } .d-table th.w-prep { width: 58px; }
+    .d-table th.w-open { width: 44px; } .d-table th.w-like { width: 46px; }
+    /* 좁은 칸에서는 '시연용 예시'를 '예시'로 짧게 */
+    .d-title .tag.demo, .row-title .tag.demo { font-size: 0; padding: 2px 5px; }
+    .d-title .tag.demo::after, .row-title .tag.demo::after { content: "예시"; font-size: 10.5px; }
+    .d-table th:not(.w-title), .c-center { text-align: center; }
+    .d-table td.c-center, .d-table th:not(.w-title):not(.w-ben) { padding-left: 4px; padding-right: 4px; }
+    .d-title { min-width: 0 !important; }
+    .d-table td.d-benefit { max-width: none; }
+    .content.preview-on .d-table { min-width: 0; }
   </style>
 </head>
 <body>
@@ -1437,7 +1650,27 @@
       <div class="stat-pill-sm">지원 적합: <b id="kpi-available">0건</b></div>
       <div class="stat-pill-sm">장학 혜택: <b id="kpi-scholarship" class="hot">0건</b></div>
     </div>
-    <div class="sort-wrap">
+  </div>
+
+  </aside>
+
+  <!-- 오른쪽(PC) / 아래쪽(모바일): 공고 목록 -->
+  <div class="content" id="content">
+  <!-- 시트 연결 전(또는 실패 시) 코드 안의 예시 데이터를 보여줄 때 표시 -->
+  <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.</div>
+
+  <!-- 교내 / 교외 크게 나눠 보기 -->
+  <div class="scope-seg" role="tablist" aria-label="교내·교외 구분">
+    <button type="button" class="scope-btn" role="tab" data-scope="all">전체 <b id="sc-all">0</b></button>
+    <button type="button" class="scope-btn" role="tab" data-scope="in">🏫 교내 <b id="sc-in">0</b></button>
+    <button type="button" class="scope-btn" role="tab" data-scope="out">🌐 교외 <b id="sc-out">0</b></button>
+  </div>
+
+  <!-- 목록 제목 + 정렬 · 보기 (윈도우 탐색기 스타일) -->
+  <div class="view-toolbar">
+  <h2 class="section-title" id="view-title">바로 지원 <span class="st-count" id="view-count"></span></h2>
+    <div class="toolbar-actions">
+      <div class="sort-wrap">
       <span style="font-size:12px; color:var(--muted); font-weight:600;">정렬:</span>
       <select id="sort-select" class="sort-select">
         <option value="due">마감 임박순</option>
@@ -1445,23 +1678,32 @@
         <option value="prep">서류 준비 빠른순</option>
       </select>
     </div>
+      <div class="view-menu-wrap">
+        <button type="button" class="view-btn" id="view-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="view-menu">
+          <svg viewBox="0 0 20 20"><path d="M3 5h14M3 10h14M3 15h14"/></svg><span>보기</span><span class="caret">▾</span>
+        </button>
+        <div class="view-menu" id="view-menu" role="menu" hidden>
+          <button type="button" class="vm-item" role="menuitemradio" data-view="large" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="13" height="13" rx="2"/></svg><span class="vm-label">큰 카드</span><span class="vm-hint">1열 · 모든 정보</span></button>
+          <button type="button" class="vm-item" role="menuitemradio" data-view="medium" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="5" width="6.5" height="10" rx="1.5"/><rect x="11" y="5" width="6.5" height="10" rx="1.5"/></svg><span class="vm-label">보통 카드</span><span class="vm-hint">기본</span></button>
+          <button type="button" class="vm-item" role="menuitemradio" data-view="small" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="3" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1"/></svg><span class="vm-label">작은 카드</span><span class="vm-hint">타일</span></button>
+          <button type="button" class="vm-item" role="menuitemradio" data-view="list" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><path d="M3 5h2M3 10h2M3 15h2M8 5h9M8 10h9M8 15h9"/></svg><span class="vm-label">목록</span><span class="vm-hint">한 줄씩</span></button>
+          <button type="button" class="vm-item" role="menuitemradio" data-view="details" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><path d="M3 4.5h14M3 8.2h14M3 11.8h14M3 15.5h14"/></svg><span class="vm-label">자세히</span><span class="vm-hint">표로 비교</span></button>
+          <div class="vm-sep" role="separator"></div>
+          <button type="button" class="vm-item" role="menuitemcheckbox" data-toggle="preview" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M11.5 3.5v13"/></svg><span class="vm-label">미리 보기 창</span><span class="vm-hint">PC</span></button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  </aside>
-
-  <!-- 오른쪽(PC) / 아래쪽(모바일): 공고 목록 -->
-  <div class="content">
-  <!-- 시트 연결 전(또는 실패 시) 코드 안의 예시 데이터를 보여줄 때 표시 -->
-  <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.</div>
-
-  <!-- 현재 화면 제목 ("수강과목" 스타일) -->
-  <h2 class="section-title" id="view-title">바로 지원 <span class="st-count" id="view-count"></span></h2>
-
   <!-- 메인 피드 목록 -->
+  <div class="list-area">
   <main id="v-feed" class="card-list"></main>
   <main id="v-gap" class="card-list" style="display:none;"></main>
   <main id="v-bookmark" class="card-list" style="display:none;"></main>
   <main id="v-cal" class="card-list" style="display:none;"></main>
+  <!-- 미리 보기 창: 목록에서 고른 공고를 오른쪽에 자세히 -->
+  <aside class="preview-pane" id="preview-pane" aria-label="미리 보기" hidden></aside>
+  </div>
 
   <!-- 하단 마감 및 필터 제외 안내 -->
   <div id="hid" class="hiddenlist"></div>
@@ -1780,7 +2022,7 @@
             '</div>' +
             '<div class="cal-item-title">' + esc(n.t) + '</div>' +
             (desc ? '<div class="cal-item-desc">' + esc(desc) + '</div>' : '') +
-            '<div class="benefit-line">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
+            '<div class="benefit-line" title="' + esc(n.benefit || "") + '">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
             (n.url ? (linkTypeOf(n) === "직접"
               ? '<a class="cal-link" href="' + esc(n.url) + '" target="_blank" rel="noopener">공고 바로가기 ↗</a>'
               : '<div class="cal-links">' +
@@ -2004,6 +2246,55 @@
       '</div></details>';
   }
 
+  // ===== 보기 방식 (윈도우 탐색기 '보기' 메뉴처럼) — 기기별로 기억 =====
+  var currentTab = "feed";
+  // 교내(학교 공지) / 교외(외부 기관·공공데이터 등) 구분 — 기기별로 기억
+  var SCOPE = "all";
+  try { SCOPE = ["all", "in", "out"].indexOf(localStorage.getItem("cuk_scope")) > -1 ? localStorage.getItem("cuk_scope") : "all"; } catch (e) {}
+  function scopeOf(n) { return String(n.src || "교내") === "교내" ? "in" : "out"; }
+  function srcLabel(n) { return scopeOf(n) === "in" ? "교내" : "교외"; }
+  var VIEW_MODES = ["large", "medium", "small", "list", "details"];
+  var VIEW = "medium", PREVIEW = false;
+  try {
+    VIEW = VIEW_MODES.indexOf(localStorage.getItem("cuk_view")) > -1 ? localStorage.getItem("cuk_view") : "medium";
+    PREVIEW = localStorage.getItem("cuk_preview") === "1";
+  } catch (e) {}
+  var selectedId = null, expandedId = null, lastBuildCard = null, VIEW_ITEMS = {};
+  var wideMQ = window.matchMedia("(min-width: 1024px)");
+
+  // 미리 보기 창: PC 화면 + 작은 카드/목록/자세히 보기에서만 (카드 보기는 이미 모든 정보가 보이므로)
+  function previewActive() {
+    return PREVIEW && wideMQ.matches && ["small", "list", "details"].indexOf(VIEW) > -1 && currentTab !== "cal";
+  }
+  function currentItems() { return VIEW_ITEMS[activeView()] || []; }
+
+  function renderPreview() {
+    var pane = el("preview-pane");
+    var on = previewActive();
+    el("content").classList.toggle("preview-on", on);
+    pane.hidden = !on;
+    if (!on || !lastBuildCard) return;
+    var items = currentItems();
+    var x = items.filter(function(i){ return i.n.id === selectedId; })[0] || items[0];
+    if (!x) { pane.innerHTML = '<div class="pp-empty">목록에서 공고를 고르면 여기에 자세히 보여줘요.</div>'; return; }
+    selectedId = x.n.id;
+    [].forEach.call(document.querySelectorAll("[data-id]"), function(r){
+      r.classList.toggle("selected", r.getAttribute("data-id") === selectedId);
+    });
+    pane.innerHTML = '<div class="pp-head">미리 보기</div>' + lastBuildCard(x, x.isGap);
+  }
+
+  function applyViewClasses() {
+    var c = el("content");
+    VIEW_MODES.forEach(function(v){ c.classList.toggle("view-" + v, v === VIEW); });
+    c.classList.toggle("tab-cal", currentTab === "cal");
+    [].forEach.call(document.querySelectorAll(".vm-item[data-view]"), function(b){
+      b.setAttribute("aria-checked", b.getAttribute("data-view") === VIEW ? "true" : "false");
+    });
+    var pv = document.querySelector('.vm-item[data-toggle="preview"]');
+    pv.setAttribute("aria-checked", PREVIEW ? "true" : "false");
+  }
+
   // skipView: 다시 그리지 않을 목록 id (찜 애니메이션 보존용)
   function render(skipView) {
     uid = 0;
@@ -2075,6 +2366,7 @@
       if (toeic !== null && n.toeic && toeic < n.toeic) short.push({ k:"토익", cur:toeic, need:n.toeic, diff:n.toeic - toeic, big:(n.toeic - toeic) > 200 });
 
       x.short = short;
+      x.isGap = short.length > 0;
       if (!short.length) feed.push(x);
       else if (!short.some(function(z){ return z.big; })) gaps.push(x);
       else hide("조건 차이가 큼");
@@ -2098,6 +2390,20 @@
     sortItems(feed);
     sortItems(gaps);
     sortItems(bookmarked);
+
+    // 교내/교외 건수 (다른 조건은 모두 적용한 뒤) → 선택한 구분만 남기기
+    var sc = { in: 0, out: 0 };
+    feed.concat(gaps).forEach(function(x){ sc[scopeOf(x.n)]++; });
+    el("sc-all").textContent = sc.in + sc.out;
+    el("sc-in").textContent = sc.in;
+    el("sc-out").textContent = sc.out;
+    [].forEach.call(document.querySelectorAll(".scope-btn"), function(b){
+      b.setAttribute("aria-selected", b.getAttribute("data-scope") === SCOPE ? "true" : "false");
+    });
+    if (SCOPE !== "all") {
+      var keep = function(x){ return scopeOf(x.n) === SCOPE; };
+      feed = feed.filter(keep); gaps = gaps.filter(keep); bookmarked = bookmarked.filter(keep);
+    }
 
     var schCount = feed.filter(function(x){ return x.n.cat === "장학"; }).length;
     el("n-feed").textContent = feed.length;
@@ -2159,7 +2465,7 @@
         '<div class="card-content">' +
           '<div class="badge-row">' +
             '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
-            '<span class="tag">' + esc(n.src || "교내") + '</span>' +
+            '<span class="tag">' + srcLabel(n) + '</span>' +
             '<span class="tag date">마감 ' + fmt(x.due) + '</span>' +
             demoTag(n) +
             '<div class="action-btns">' +
@@ -2168,14 +2474,74 @@
               '<button class="btn-icon" onclick="downloadICS(\'' + esc(n.t) + '\', ' + dueY + ', ' + dueM + ', ' + dueD + ')">📅 캘린더</button>' +
             '</div>' +
           '</div>' +
-          '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a></h3>' +
+          '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener" title="' + esc(n.t) + '">' + esc(n.t) + ' ↗</a></h3>' +
           linkNote(n) +
-          '<div class="benefit-line">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
+          '<div class="benefit-line" title="' + esc(n.benefit || "") + '">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
           '<div class="prep-box">' + prepText + '</div>' +
           gapHtml +
           summaryCard(n) +
         '</div>' +
       '</article>';
+    }
+
+    lastBuildCard = buildCard;
+    VIEW_ITEMS = { "v-feed": feed, "v-gap": gaps, "v-bookmark": bookmarked };
+
+    // ----- 보기 방식별 마크업 -----
+    function miniDday(x) {
+      var cls = x.left <= 3 ? " hot" : (x.isGap ? " gap" : "");
+      return '<span class="mini-dday' + cls + '">' + (x.left === 0 ? "오늘" : "D-" + x.left) + '</span>';
+    }
+    function catTag(n) { return '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>'; }
+    function selCls(n) { return (previewActive() && n.id === selectedId) ? " selected" : ""; }
+    function expand(x, wrapTag) {
+      if (previewActive() || expandedId !== x.n.id) return "";
+      return wrapTag === "tr"
+        ? '<tr class="exp-row"><td colspan="9"><div class="expand">' + buildCard(x, x.isGap) + '</div></td></tr>'
+        : '<div class="expand">' + buildCard(x, x.isGap) + '</div>';
+    }
+    function buildTile(x) {
+      var n = x.n;
+      return '<article class="tile' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
+        '<div class="tile-top">' + miniDday(x) + heartButton(n.id, bookmarks.indexOf(n.id) > -1) + '</div>' +
+        '<div class="tile-tags">' + catTag(n) + demoTag(n) + '</div>' +
+        '<div class="tile-title" title="' + esc(n.t) + '">' + esc(n.t) + '</div>' +
+        '<div class="tile-meta" title="' + esc(n.benefit || "") + '">마감 ' + fmt(x.due) + (n.benefit ? ' · ' + esc(n.benefit) : '') + '</div>' +
+      '</article>' + expand(x);
+    }
+    function buildRow(x) {
+      var n = x.n;
+      return '<div class="row-item' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
+        miniDday(x) + catTag(n) +
+        '<span class="row-title" title="' + esc(n.t) + '">' + demoTag(n) + esc(n.t) + '</span>' +
+        '<span class="row-due">' + fmt(x.due) + ' 마감</span>' +
+        '<a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a>' +
+        heartButton(n.id, bookmarks.indexOf(n.id) > -1) +
+      '</div>' + expand(x);
+    }
+    function buildDetailsRow(x) {
+      var n = x.n, prep = n.prep || 0;
+      return '<tr class="d-row' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
+        '<td class="c-center">' + catTag(n) + '</td>' +
+        '<td class="d-title" title="' + esc(n.t) + '">' + demoTag(n) + esc(n.t) + '</td>' +
+        '<td class="c-center">' + srcLabel(n) + '</td>' +
+        '<td class="d-num c-center">' + fmt(x.due) + '</td>' +
+        '<td class="c-center">' + miniDday(x) + '</td>' +
+        '<td class="d-benefit" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</td>' +
+        '<td class="d-num c-center">' + (prep === 0 ? "즉시" : prep + "일") + '</td>' +
+        '<td class="c-center"><a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a></td>' +
+        '<td class="c-center">' + heartButton(n.id, bookmarks.indexOf(n.id) > -1) + '</td>' +
+      '</tr>' + expand(x, "tr");
+    }
+    function buildList(arr, emptyHtml) {
+      if (!arr.length) return emptyHtml;
+      if (VIEW === "small") return arr.map(buildTile).join("");
+      if (VIEW === "list") return arr.map(buildRow).join("");
+      if (VIEW === "details") {
+        return '<table class="d-table"><thead><tr><th class="w-cat">분야</th><th class="w-title">공고명</th><th class="w-src">구분</th><th class="w-due">마감</th><th class="w-dday">남은 날</th><th class="w-ben">혜택</th><th class="w-prep" title="서류 준비 기간">준비</th><th class="w-open">원문</th><th class="w-like">찜</th></tr></thead><tbody>' +
+          arr.map(buildDetailsRow).join("") + '</tbody></table>';
+      }
+      return arr.map(function(x){ return buildCard(x, x.isGap); }).join("");   // 큰 카드 · 보통 카드
     }
 
     // 목록을 다시 그려도 펼쳐 둔 "핵심 요약" 패널은 그대로 열려 있도록 유지
@@ -2187,14 +2553,15 @@
     }
 
     if (skipView !== "v-feed") {
-      setList("v-feed", feed.length ? feed.map(function(x){ return buildCard(x, false); }).join("") : '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)</div>');
+      setList("v-feed", buildList(feed, '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)</div>'));
     }
     if (skipView !== "v-gap") {
-      setList("v-gap", gaps.length ? gaps.map(function(x){ return buildCard(x, true); }).join("") : '<div class="empty-state">현재 조건에서 근접한 갭 보완 공고가 없습니다.</div>');
+      setList("v-gap", buildList(gaps, '<div class="empty-state">현재 조건에서 근접한 갭 보완 공고가 없습니다.</div>'));
     }
     if (skipView !== "v-bookmark") {
-      setList("v-bookmark", bookmarked.length ? bookmarked.map(function(x){ return buildCard(x, false); }).join("") : '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>');
+      setList("v-bookmark", buildList(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>'));
     }
+    renderPreview();
   }
 
   // 실시간 검색 이벤트
@@ -2319,7 +2686,7 @@
   var vCal = el("v-cal");
 
   var TAB_TITLE = { feed:"바로 지원", gap:"갭 보완", bookmark:"보관함", cal:"마감 달력" };
-  var currentTab = "feed";
+  currentTab = "feed";
   window.updateViewTitle = function() {
     el("view-title").firstChild.nodeValue = TAB_TITLE[currentTab] + " ";
     var c = el("n-" + (currentTab === "cal" ? "cal" : currentTab)).textContent;
@@ -2340,11 +2707,69 @@
     vGap.style.display = which === "gap" ? "" : "none";
     vBookmark.style.display = which === "bookmark" ? "" : "none";
     vCal.style.display = which === "cal" ? "" : "none";
+    expandedId = null;
+    applyViewClasses();
+    renderPreview();
   }
   tabFeed.addEventListener("click", function(){ showTab("feed"); });
   tabGap.addEventListener("click", function(){ showTab("gap"); });
   tabBookmark.addEventListener("click", function(){ showTab("bookmark"); });
   tabCal.addEventListener("click", function(){ showTab("cal"); });
+
+  // ----- 교내/교외 버튼 -----
+  [].forEach.call(document.querySelectorAll(".scope-btn"), function(b){
+    b.addEventListener("click", function(){
+      SCOPE = b.getAttribute("data-scope");
+      try { localStorage.setItem("cuk_scope", SCOPE); } catch (e) {}
+      expandedId = null;
+      render();
+    });
+  });
+
+  // ----- 보기 메뉴 열기/닫기 -----
+  var viewBtn = el("view-btn"), viewMenu = el("view-menu");
+  function setMenu(open) {
+    viewMenu.hidden = !open;
+    viewBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) { var f = viewMenu.querySelector('[aria-checked="true"]') || viewMenu.querySelector(".vm-item"); f && f.focus(); }
+  }
+  viewBtn.addEventListener("click", function(e){ e.stopPropagation(); setMenu(viewMenu.hidden); });
+  document.addEventListener("click", function(e){ if (!viewMenu.hidden && !viewMenu.contains(e.target)) setMenu(false); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !viewMenu.hidden) { setMenu(false); viewBtn.focus(); } });
+  viewMenu.addEventListener("click", function(e){
+    var b = e.target.closest(".vm-item");
+    if (!b) return;
+    if (b.getAttribute("data-toggle") === "preview") {
+      PREVIEW = !PREVIEW;
+      try { localStorage.setItem("cuk_preview", PREVIEW ? "1" : "0"); } catch (err) {}
+      if (PREVIEW && ["large", "medium"].indexOf(VIEW) > -1) VIEW = "list";   // 미리 보기는 목록형 보기에서 동작
+      if (PREVIEW && !wideMQ.matches) showToast("미리 보기 창은 PC 화면에서 보여요");
+    } else {
+      VIEW = b.getAttribute("data-view");
+    }
+    try { localStorage.setItem("cuk_view", VIEW); } catch (err) {}
+    expandedId = null;
+    applyViewClasses();
+    render();
+    setMenu(false);
+  });
+
+  // ----- 목록 항목 클릭: 미리 보기 창이 켜져 있으면 오른쪽에, 아니면 그 자리에서 펼치기 -----
+  function onPick(target) {
+    var row = target.closest("[data-id]");
+    if (!row || !el("content").contains(row) || el("preview-pane").contains(row)) return;
+    if (target.closest("a, button, input, label, summary, select, .heart-container, .expand")) return;
+    var id = row.getAttribute("data-id");
+    if (previewActive()) { selectedId = id; renderPreview(); return; }
+    if (["small", "list", "details"].indexOf(VIEW) < 0) return;
+    expandedId = expandedId === id ? null : id;
+    render();
+  }
+  el("content").addEventListener("click", function(e){ onPick(e.target); });
+  el("content").addEventListener("keydown", function(e){
+    if ((e.key === "Enter" || e.key === " ") && e.target.matches("[data-id]")) { e.preventDefault(); onPick(e.target); }
+  });
+  wideMQ.addEventListener("change", function(){ applyViewClasses(); render(); });
 
   // 하단 내비게이션
   [].forEach.call(document.querySelectorAll(".bn-item"), function(b){
@@ -2357,6 +2782,7 @@
   });
 
   // 초기 렌더링
+  applyViewClasses();
   render();
   showTab("feed");
 
