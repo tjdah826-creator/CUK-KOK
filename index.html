@@ -1274,7 +1274,8 @@
       .section-title { font-size: 21px; margin-top: 0; }
 
       /* 공고 카드 2열 */
-      .card-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+      /* 카드 폭이 330px보다 좁아지지 않게: 화면이 넓을수록 열이 늘어남 (2열 → 3열 …) */
+      .card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 16px; align-items: start; }
       .card { grid-template-columns: 64px 1fr; padding: 18px; border-radius: var(--radius-md); }
       .card:hover { transform: none; border-color: var(--cuk-univ); box-shadow: 0 6px 20px rgba(11, 43, 92, 0.08); }
 
@@ -1290,7 +1291,7 @@
     /* 아주 넓은 화면: 공고 3열 */
     @media (min-width: 1500px) {
       .topbar-inner, .header-inner, .wrap { max-width: 1440px; }
-      .card-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .card-list { grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
       #v-cal { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
     }
 
@@ -1741,6 +1742,7 @@
     .similar-link:hover { background: var(--cuk-soft); }
     @media (max-width: 600px) { .bn-label { font-size: 10.5px; letter-spacing: -0.03em; } .bn-item { min-width: 0; } }
 
+    .view-menu { z-index: 8700; }   /* 보기 메뉴가 오른쪽 아래 ?·💬 버튼보다 위에 오도록 */
     .fab-wrap { position: fixed; right: 20px; bottom: 24px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; z-index: 8500; }
     .fab {
       width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; font: inherit; font-size: 21px; font-weight: 800;
@@ -1828,6 +1830,52 @@
     .cmt-count { font-size: 11px; color: var(--muted); text-align: right; margin-top: -4px; }
     .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
     @media (max-width: 600px) { .cmt-nick { width: 92px; } }
+
+    /* ===================== 해상도 맞춤: 카드 폭에 따라 글꼴·여백 자동 조정 =====================
+       각 카드를 기준(container)으로 삼아, 카드가 좁아지면 글자와 버튼이 함께 작아지고
+       아주 좁으면 버튼은 아이콘만 남겨서 '공/유', '캘린/더'처럼 글자가 꺾이지 않게 함 */
+    .card { container-type: inline-size; container-name: card; grid-template-columns: auto minmax(0, 1fr); gap: clamp(10px, 3.5cqw, 16px); }
+    .card .dday-box { width: clamp(52px, 15cqi, 72px); box-sizing: border-box; }
+    .card .dday-num { font-size: clamp(13px, 4.2cqi, 15px); white-space: nowrap; }
+    .card .dday-sub { font-size: clamp(9.5px, 3cqi, 10.5px); white-space: nowrap; }
+    .card .card-title { font-size: clamp(14px, 4.6cqi, 16px); }
+    .card .benefit-line, .card .link-note { font-size: clamp(11.5px, 3.6cqi, 13px); }
+    .card .prep-box { font-size: clamp(11px, 3.5cqi, 12.5px); }
+    .card .tag { font-size: clamp(10px, 3.1cqi, 11px); white-space: nowrap; }
+    .card .tag.date { font-size: clamp(10.5px, 3.2cqi, 11.5px); }
+    .card .badge-row > .tag:not(.date):not(.demo) { min-width: clamp(40px, 14cqi, 58px); padding-left: 5px; padding-right: 5px; }
+    .card .action-btns { flex-wrap: nowrap; gap: clamp(3px, 1.4cqi, 6px); }
+    .card .btn-icon { white-space: nowrap; flex-shrink: 0; font-size: clamp(10.5px, 3.3cqi, 11.5px); padding: 4px clamp(5px, 2cqi, 8px); }
+    .card details { padding: clamp(8px, 2.6cqi, 10px) clamp(10px, 3.6cqi, 14px); }
+    .card summary { font-size: clamp(11.5px, 3.7cqi, 13px); gap: 6px; }
+    .card summary > span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card .similar-link { font-size: clamp(11px, 3.5cqi, 12.5px); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+    /* 카드가 좁을 때: 버튼은 아이콘만, 요약 제목은 짧게 */
+    @media (min-width: 601px) {
+      @container card (max-width: 380px) {
+        .card .btn-icon .bl { display: none; }
+        .card .sl-long { display: none; }
+      }
+    }
+    /* 헤더도 화면 폭에 맞춰: 학교 표기·부제·메뉴 글자가 두 줄로 꺾이지 않게 */
+    @media (min-width: 601px) {
+      .univ-tag { white-space: nowrap; font-size: clamp(9.5px, 0.85vw, 12px); }
+      .header-sub { white-space: nowrap; font-size: clamp(11px, 1.05vw, 13.5px); }
+      .brand-wrap h1 { font-size: clamp(22px, 2.3vw, 30px); white-space: nowrap; }
+      .brand-wrap { min-width: 0; }
+      .tab-btn { white-space: nowrap; font-size: clamp(13px, 1.25vw, 16px); padding-left: clamp(8px, 1.1vw, 18px); padding-right: clamp(8px, 1.1vw, 18px); }
+      .tabs-wrapper { gap: clamp(0px, 0.4vw, 8px); }
+    }
+    /* 휴대폰: 카드가 한 줄 전체를 쓰므로 원래 크기 유지 */
+    @media (max-width: 600px) {
+      .card { grid-template-columns: 1fr; }
+      .card .dday-box { width: auto; }
+      .card .card-title { font-size: 15.5px; }
+      .card .benefit-line, .card .link-note, .card summary { font-size: 13px; }
+      .card .prep-box { font-size: 12.5px; }
+      .card .btn-icon { font-size: 11.5px; padding: 4px 8px; }
+      .card .tag { font-size: 11px; }
+    }
   </style>
 </head>
 <body>
@@ -1971,7 +2019,7 @@
   <!-- 오른쪽(PC) / 아래쪽(모바일): 공고 목록 -->
   <div class="content" id="content">
   <!-- 시트 연결 전(또는 실패 시) 코드 안의 예시 데이터를 보여줄 때 표시 -->
-  <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.</div>
+  <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.<span id="demo-why"></span></div>
 
   <!-- 공고 분류: 1단계 대분류(교내/교외) + 2단계 중분류(분야) — 본문 위 가운데 -->
   <nav class="nav-filter" aria-label="공고 분류">
@@ -2806,7 +2854,7 @@
       (sub.kind === "off" || sub.kind === "both" ? '<span class="submit-warn">⚠️ 우편 소인일·방문 마감 시각 유의</span>' : '') +
       (sub.guessed && sub.kind !== "unknown" ? '<span class="submit-guess">서류·원문에서 추정</span>' : '');
 
-    return '<details data-key="' + esc(id) + '"><summary><span>핵심 요약 & 서류 체크 (' + checkedCount + '/' + docsList.length + ' 완료)</span></summary>' +
+    return '<details data-key="' + esc(id) + '"><summary><span><span class="sl-long">핵심 요약 & </span>서류 체크 (' + checkedCount + '/' + docsList.length + ' 완료)</span></summary>' +
       '<div class="doc-progress-bar"><div class="doc-progress-fill" style="width:' + pct + '%;"></div></div>' +
       '<div class="sum-content">' +
         '<div class="ai-note">🤖 <b>AI 요약은 참고용이에요.</b> AI(Claude)가 원문을 읽고 정리한 내용이라 틀릴 수 있으니 마감일·자격 조건은 꼭 원문 공고에서 확인하세요.</div>' +
@@ -3191,9 +3239,9 @@
             demoTag(n) +
             '<div class="action-btns">' +
               heartButton(n.id, isBookmarked) +
-              '<button class="btn-icon" onclick="openShare(\'' + esc(n.id) + '\')">🔗 공유</button>' +
+              '<button class="btn-icon" onclick="openShare(\'' + esc(n.id) + '\')" title="공유" aria-label="공유">🔗<span class="bl"> 공유</span></button>' +
               cmtButton(n) +
-              (x.closed ? '' : '<button class="btn-icon" onclick="openCalSheet(\'' + esc(n.id) + '\')">📅 캘린더</button>') +
+              (x.closed ? '' : '<button class="btn-icon" onclick="openCalSheet(\'' + esc(n.id) + '\')" title="캘린더에 추가" aria-label="캘린더에 추가">📅<span class="bl"> 캘린더</span></button>') +
             '</div>' +
           '</div>' +
           '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener" title="' + esc(n.t) + '">' + esc(n.t) + ' ↗</a></h3>' +
@@ -3707,6 +3755,7 @@
     viewMenu.hidden = !open;
     if (!open && el("vm-sub")) { el("vm-sub").hidden = true; el("vm-show-btn").setAttribute("aria-expanded", "false"); subPinned = false; cancelSubClose(); }
     viewBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open && !el("fab-bubble").hidden) hideHelpBubble();
     if (open) { var f = viewMenu.querySelector('[aria-checked="true"]') || viewMenu.querySelector(".vm-item"); f && f.focus(); }
   }
   viewBtn.addEventListener("click", function(e){ e.stopPropagation(); setMenu(viewMenu.hidden); });
@@ -3818,9 +3867,14 @@
     loading = true;
     lastFetch = Date.now();
     fetch(SHEET_API_URL + "?t=" + Date.now(), { cache: "no-store" })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (!Array.isArray(data) || !data.length) return;
+      .then(function(res) { return res.text(); })
+      .then(function(txt) {
+        var data;
+        try { data = JSON.parse(txt); }
+        catch (e) { throw new Error(/<html|<!DOCTYPE/i.test(txt) ? "웹앱이 데이터 대신 구글 안내 페이지를 보냈어요 (배포 권한·버전 확인 필요)" : "웹앱 응답을 읽을 수 없어요"); }
+        if (data && data.error) throw new Error("웹앱 오류: " + data.error);
+        if (!Array.isArray(data)) throw new Error("웹앱 응답 형식이 달라요");
+        if (!data.length) throw new Error("시트에서 보여 줄 공고가 0건이에요 (AI 정리·마감일 확인 필요)");
         var json = JSON.stringify(data);
         if (json === lastJSON) return;   // 바뀐 게 없으면 화면을 건드리지 않음
         lastJSON = json;
@@ -3832,6 +3886,10 @@
       })
       .catch(function(err) {
         console.warn("시트 API 연동 실패 (기존 데이터 유지):", err);
+        if (usingFallback) {
+          var why = el("demo-why");
+          if (why) why.textContent = " (이유: " + (err && err.message && !/Failed to fetch|NetworkError|Load failed/i.test(err.message) ? err.message : "웹앱에 연결하지 못했어요") + ")";
+        }
       })
       .then(function() { loading = false; });
   }
