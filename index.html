@@ -56,14 +56,14 @@
       --panel: #F8F8F8;         /* 일정 목록 회색 패널 */
       --ink: #222222;
       --ink-secondary: #555555;
-      --muted: #999999;
+      --muted: #686868;         /* 흰 배경 대비 5.4:1 (WCAG AA) */
       --line: #DDDFE3;
       --line-subtle: #F1F2F4;
-      --hot: #E0563B;           /* N 배지 레드 */
+      --hot: #B83A1E;           /* N 배지 레드 (대비 5.7:1) */
       --hot-soft: #FDEEE9;
-      --warn: #D46519;          /* '2학기' 오렌지 */
+      --warn: #A64B0E;          /* '2학기' 오렌지 (대비 5.8:1) */
       --warn-soft: #FFF1E6;
-      --ok: #3F8A24;            /* 일정 표시 그린 점 */
+      --ok: #2E7019;            /* 일정 표시 그린 점 (대비 6.1:1) */
       --ok-soft: #EEF7E8;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.02);
       --shadow-hover: 0 8px 24px rgba(0, 37, 85, 0.09);
@@ -83,7 +83,7 @@
         --surface: #18202C;
         --ink: #F2F4F8;
         --ink-secondary: #B0B8C6;
-        --muted: #6B7684;
+        --muted: #9AA4B2;
         --line: #263040;
         --line-subtle: #1E2634;
         --cuk-primary: #6E8FB8;
@@ -726,6 +726,20 @@
     .site-footer a { color: var(--cuk-accent); text-decoration: none; }
     .site-footer ul { padding-left: 16px; }
 
+    .hid-sum { line-height: 1.5; }
+    .excl { margin-top: 8px; }
+    .excl summary { cursor: pointer; color: var(--cuk-accent); font-weight: 600; font-size: 13px; padding: 6px 0; min-height: 32px; }
+    .excl-note { margin: 4px 0 8px; font-size: 12px; color: var(--muted); }
+    .excl-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .excl-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+    .excl-list a { color: var(--ink); font-weight: 600; text-decoration: none; font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
+    .excl-list a:hover { text-decoration: underline; }
+    .excl-meta { font-size: 11.5px; color: var(--muted); }
+    .excl-why { flex-basis: 100%; font-size: 12px; color: #B45309; }
+    :root[data-theme="dark"] .excl-why { color: #FCD34D; }
+    .excl-banner { font-size: 13px; padding: 10px 12px; border-radius: 10px; background: var(--cuk-soft); color: var(--ink); margin-bottom: 10px; line-height: 1.5; }
+    .link-btn { background: none; border: none; padding: 0 2px; font: inherit; color: var(--cuk-accent); font-weight: 700; text-decoration: underline; cursor: pointer; }
+    .due-bad { color: #B45309; }
     .hiddenlist {
       padding: 12px 16px;
       font-size: 12.5px;
@@ -1343,6 +1357,7 @@
     .mini-dday.gap { color: var(--warn); background: var(--warn-soft); }
     [data-id] { cursor: pointer; }
     [data-id]:focus-visible { outline: 2px solid var(--cuk-accent); outline-offset: 2px; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--cuk-accent); outline-offset: 2px; }
     .row-open { color: var(--cuk-accent); font-weight: 700; text-decoration: none; padding: 2px 6px; border-radius: 4px; }
     .row-open:hover { background: var(--cuk-soft); }
     .expand { grid-column: 1 / -1; padding: 4px 0 8px; cursor: default; }
@@ -1827,6 +1842,8 @@
     .cmt-input-row textarea:focus, .cmt-nick:focus { outline: none; border-color: var(--cuk-accent); }
     .cmt-send { flex: 0 0 auto; padding: 0 16px; border: none; border-radius: 10px; background: var(--cuk-accent); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
     .cmt-send:disabled { opacity: .6; cursor: default; }
+    .cmt-mask-warn { font-size: 12px; line-height: 1.5; color: #B45309; background: #FEF3C7; border-radius: 8px; padding: 6px 10px; }
+    :root[data-theme="dark"] .cmt-mask-warn { background: #3A3016; color: #FCD34D; }
     .cmt-count { font-size: 11px; color: var(--muted); text-align: right; margin-top: -4px; }
     .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
     @media (max-width: 600px) { .cmt-nick { width: 92px; } }
@@ -1973,11 +1990,20 @@
     :root[data-theme="dark"] .cmt-type.t-후기 { background: #143324; color: #86EFAC; }
     :root[data-theme="dark"] .cmt-type.t-팁 { background: #3A3016; color: #FCD34D; }
     :root[data-theme="dark"] .fab.help { background: #2F4A7A; }
+    /* 어두운 화면: 밝은 강조색 위 글자는 어둡게 (명도 대비 4.5:1 이상) */
+    :root[data-theme="dark"] .sum-block-title i,
+    :root[data-theme="dark"] .cat-chips .chip:has(input:checked),
+    :root[data-theme="dark"] .d5-chip[aria-pressed="true"],
+    :root[data-theme="dark"] .btn-cond:not(.ghost) { color: #0F141C; }
+    :root[data-theme="dark"] .fab-bubble { background: #2A3546; color: #F2F4F8; }
+    :root[data-theme="dark"] .fab-bubble::after { border-top-color: #2A3546; }
+    :root[data-theme="dark"] .fab-bubble button { color: #F2F4F8; }
     :root[data-theme="dark"] .card.closed { background: var(--surface); }
     :root[data-theme="dark"] .site-header { background: var(--surface) !important; border-bottom-color: var(--line) !important; }
     :root[data-theme="dark"] .site-header h1, :root[data-theme="dark"] .univ-tag { color: var(--ink) !important; }
     :root[data-theme="dark"] .tab-btn { color: var(--ink-secondary); }
     :root[data-theme="dark"] .tab-btn[aria-selected="true"] { color: var(--ink); }
+    .tag.team { background: var(--ok-soft, #E7F6EC); color: var(--ok, #15803D); border-color: transparent; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -2331,6 +2357,7 @@
         <dt>⏰ D-5 마감 임박만</dt><dd>5일 안에 마감되는 공고만 남겨요.</dd>
         <dt>정렬</dt><dd>마감 임박순 · 장학금 우선순 · 서류 준비 빠른순.</dd>
         <dt>🔍 검색</dt><dd>공고명·혜택·자격 문구로 바로 찾아요.</dd>
+        <dt>🔎 추천에서 빠진 공고</dt><dd>내 조건과 달라 추천에서 뺀 공고는 목록 아래 <b>추천에서 빠진 공고 보기</b>에서 빠진 이유와 함께 볼 수 있어요. 팀 구성·연령 같은 세부 자격은 거르지 않고 상세의 <b>필수 자격</b>에 보여 드려요.</dd>
         <dt>✓ 검증 / 검토중</dt><dd>'검증'은 운영자가 원문과 대조한 공고예요. 보기 › 표시 › <b>검증된 공고만 보기</b>로 검증된 것만 볼 수 있어요.</dd>
       </dl>
     </details>
@@ -2381,7 +2408,7 @@
     <button type="button" class="modal-x" onclick="closeComments()" aria-label="닫기">✕</button>
   </div>
   <div class="modal-body">
-    <div class="cmt-rule">🙏 서로 돕는 공간이에요. <b>이름·연락처·학번</b> 같은 개인정보는 적지 마세요. 부적절한 글은 신고하면 숨겨져요.</div>
+    <div class="cmt-rule">🙏 로그인 없이 <b>닉네임</b>으로 500자까지 쓸 수 있어요. <b>이름·연락처·학번</b>은 적지 마세요 (연락처·이메일·학번 모양은 자동으로 가려져요). 내 글은 <b>이 기기에서</b> 지울 수 있고, 신고가 3번 쌓인 글은 자동으로 숨겨져요.</div>
     <div class="cmt-list" id="cmt-list" aria-live="polite"></div>
   </div>
   <form class="cmt-form" id="cmt-form" autocomplete="off">
@@ -2397,11 +2424,12 @@
       <button type="button" data-ex="실제로 참여해 보니 어떤가요? 준비 기간은 얼마나 걸렸나요?">실제로 해 보니 어때요?</button>
       <button type="button" data-ex="팀원 구하고 있어요. 관심 있는 분은 댓글 남겨 주세요!">팀원 구해요</button>
     </div>
-    <input type="text" name="website" class="hp" tabindex="-1" aria-hidden="true">
+    <input type="text" name="website" class="hp" tabindex="-1" aria-hidden="true" aria-label="비워 두세요" autocomplete="off">
     <div class="cmt-input-row">
       <textarea id="cmt-text" maxlength="500" rows="2" placeholder="질문이나 경험, 준비 팁을 나눠 주세요 (500자 이내)"></textarea>
       <button type="submit" class="cmt-send" id="cmt-send">등록</button>
     </div>
+    <div class="cmt-mask-warn" id="cmt-mask-warn" role="status" hidden></div>
     <div class="cmt-count"><span id="cmt-len">0</span>/500</div>
   </form>
 </div>
@@ -2796,6 +2824,21 @@
     closeCalSheet();
   });
 
+  // .ics 규칙 (RFC 5545): 글자 이스케이프 + 한 줄 75바이트마다 접기 + CRLF
+  function icsEsc(t) { return String(t == null ? "" : t).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
+  function icsFold(line) {
+    var out = [], cur = "", bytes = 0;
+    Array.from(line).forEach(function(ch){
+      var b = unescape(encodeURIComponent(ch)).length;
+      if (bytes + b > (out.length ? 74 : 75)) { out.push(cur); cur = ""; bytes = 0; }
+      cur += ch; bytes += b;
+    });
+    out.push(cur);
+    return out.join("\r\n ");
+  }
+  function icsJoin(lines) { return lines.filter(Boolean).map(icsFold).join("\r\n") + "\r\n"; }
+  function icsName(t) { return String(t || "공고").replace(/[\\\/:*?"<>|\r\n#%&]+/g, " ").replace(/\s+/g, " ").trim().substring(0, 20) || "공고"; }
+
   window.downloadICS = function(n, due) {
     var next = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
     var title = n.t;
@@ -2806,23 +2849,24 @@
       "BEGIN:VEVENT",
       "UID:" + (n.id || "cuk") + "-" + ymd(due) + "@cuk-kok",
       "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
-      "SUMMARY:[마감] " + title,
+      "SUMMARY:" + icsEsc("[마감] " + title),
       "DTSTART;VALUE=DATE:" + ymd(due),
       "DTEND;VALUE=DATE:" + ymd(next),
-      "DESCRIPTION:" + calDetails(n).replace(/\n/g, "\\n"),
+      "DESCRIPTION:" + icsEsc(calDetails(n)),
       (n.url ? "URL:" + n.url : ""),
-      "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:내일 마감: " + title, "END:VALARM",
+      "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("내일 마감: " + title), "END:VALARM",
       "END:VEVENT",
       "END:VCALENDAR"
-    ].filter(Boolean).join("\r\n");
+    ];
+    icsData = icsJoin(icsData);
 
     var blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = url;
-    a.download = title.substring(0, 15) + "_마감.ics";
-    a.click();
-    URL.revokeObjectURL(url);
+    a.download = icsName(title) + "_마감.ics";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);   // 바로 해제하면 iOS Safari에서 받기가 실패할 수 있음
     showToast("📅 캘린더 파일(.ics)이 다운로드되었습니다.");
   };
 
@@ -2985,17 +3029,18 @@
       var n = x.n, due = x.due, next = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
       lines.push("BEGIN:VEVENT", "UID:" + n.id + "-" + ymd(due) + "@cuk-kok",
         "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
-        "SUMMARY:[마감] " + n.t, "DTSTART;VALUE=DATE:" + ymd(due), "DTEND;VALUE=DATE:" + ymd(next),
-        "DESCRIPTION:" + calDetails(n).replace(/\n/g, "\\n"));
+        "SUMMARY:" + icsEsc("[마감] " + n.t), "DTSTART;VALUE=DATE:" + ymd(due), "DTEND;VALUE=DATE:" + ymd(next),
+        "DESCRIPTION:" + icsEsc(calDetails(n)));
       if (n.url) lines.push("URL:" + n.url);
-      lines.push("BEGIN:VALARM", "TRIGGER:-P3D", "ACTION:DISPLAY", "DESCRIPTION:3일 뒤 마감: " + n.t, "END:VALARM",
-        "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:내일 마감: " + n.t, "END:VALARM", "END:VEVENT");
+      lines.push("BEGIN:VALARM", "TRIGGER:-P3D", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("3일 뒤 마감: " + n.t), "END:VALARM",
+        "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("내일 마감: " + n.t), "END:VALARM", "END:VEVENT");
     });
     lines.push("END:VCALENDAR");
-    var blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+    var blob = new Blob([icsJoin(lines)], { type: "text/calendar;charset=utf-8" });
     var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob); a.download = "CUK-콕_찜한공고_" + items.length + "건.ics"; a.click();
-    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    a.href = URL.createObjectURL(blob); a.download = "CUK-콕_찜한공고_" + items.length + "건.ics";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1500);
     showToast("📅 찜한 공고 " + items.length + "건을 캘린더 파일로 받았어요. 열면 한 번에 등록돼요");
   };
 
@@ -3095,9 +3140,16 @@
   function teamRange(n) {
     var max = +n.teamMax || +n.team || 10;
     var min = +n.teamMin || 1;
-    if (min > max) min = max;
+    if (min > max) { var t = min; min = max; max = t; }   // 최소·최대가 거꾸로 입력된 경우 바로잡음
     return { min: min, max: max };
   }
+  // 공모전 카드의 팀 인원 태그 (제한 없으면 표시 안 함)
+  window.teamTag = function(n) {
+    if (n.cat !== "공모전") return "";
+    var r = teamRange(n);
+    if (r.min === 1 && r.max >= 10) return "";
+    return '<span class="tag team" title="팀 인원 조건: ' + esc(teamText(n)) + '">👥 ' + (r.min === r.max ? r.min + "인" : r.min + "~" + (r.max >= 10 ? "" : r.max) + "인") + '</span>';
+  };
   function teamText(n) {
     var r = teamRange(n);
     if (r.min === 1 && r.max >= 10) return "제한 없음";
@@ -3168,7 +3220,8 @@
           '<ul class="docs-list">' + docsList.map(function(s, i){
           var docKey = id + "-doc-" + i;
           var isChecked = checkedDocs[docKey] ? "checked" : "";
-          return '<li><input type="checkbox" id="' + docKey + '" ' + isChecked + ' onchange="toggleDocCheck(\'' + docKey + '\')"><label for="' + docKey + '">' + esc(s) + '</label></li>';
+          var boxId = docKey + "-" + (uid++);   // 같은 공고가 보관함 등 다른 탭에도 그려지므로 화면 id는 매번 다르게
+          return '<li><input type="checkbox" id="' + esc(boxId) + '" ' + isChecked + ' onchange="toggleDocCheck(\'' + esc(docKey) + '\')"><label for="' + esc(boxId) + '">' + esc(s) + '</label></li>';
         }).join("") + '</ul></div>' +
         '<div class="sum-block"><div class="sum-block-title"><i>5</i>AI 판단 근거 (원문 발췌)</div><div class="quote-box">"' + esc(n.q || n.t) + '"</div></div>' +
       '</div></details>';
@@ -3178,6 +3231,15 @@
   var currentTab = "feed";
   // 교내(학교 공지) / 교외(외부 기관·공공데이터 등) 구분 — 기기별로 기억
   var SCOPE = "all";
+  var EXCL_OPEN = false;   // '추천에서 빠진 공고' 펼침 상태 (다시 그려도 유지)
+  function statusText(arr) { return arr.map(function(k){ return STATUS[k] || k; }).join("·"); }
+  window.showExcluded = function(){
+    EXCL_OPEN = true;
+    var d = el("excl"); if (!d) return;
+    if (el("hid").style.display === "none") el("hid").style.display = "";
+    d.open = true; d.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  document.addEventListener("toggle", function(e){ if (e.target && e.target.id === "excl") EXCL_OPEN = e.target.open; }, true);
   try { SCOPE = ["all", "in", "out"].indexOf(localStorage.getItem("cuk_scope")) > -1 ? localStorage.getItem("cuk_scope") : "all"; } catch (e) {}
   function scopeOf(n) { return String(n.src || "교내") === "교내" ? "in" : "out"; }
   function srcLabel(n) { return scopeOf(n) === "in" ? "교내" : "교외"; }
@@ -3302,6 +3364,9 @@
   // skipView: 다시 그리지 않을 목록 id (찜 애니메이션 보존용)
   function render(skipView) {
     uid = 0;
+    // 화면을 켜 둔 채 자정을 넘겨도 D-day·오늘 마감이 맞도록 매번 오늘 날짜를 다시 계산
+    var nowD = new Date();
+    if (nowD.getDate() !== TODAY.getDate() || nowD - TODAY > 86400000) TODAY = new Date(nowD.getFullYear(), nowD.getMonth(), nowD.getDate());
     CARD = {};
     // "all"(전체)이면 해당 조건으로 거르지 않음
     var gv = el("p-grade").value, g = gv === "all" ? null : +gv;
@@ -3319,7 +3384,8 @@
 
     var ints = [].slice.call(document.querySelectorAll("input[name='interest']:checked")).map(function(x){ return x.value; });
     var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0, pastAll = [];
-    function hide(r){ hidden[r] = (hidden[r] || 0) + 1; }
+    var excluded = [];   // 추천에서 빠진 공고 (이유와 함께) → '추천에서 빠진 공고 보기'로 직접 확인
+    function hide(r, x, why){ hidden[r] = (hidden[r] || 0) + 1; if (x) excluded.push({ x:x, why: why || r }); }
 
     var demoHidden = 0, noDue = [];
     N.forEach(function(n) {
@@ -3338,8 +3404,9 @@
         due = null;
       }
       // 마감일을 읽을 수 없는 공고는 엉뚱한 날짜로 보여주지 않고 숨김
+      // 마감일을 읽을 수 없는 공고: 숨기지 않고 '기한 미기재·확인 필요' 묶음으로 (엉뚱한 날짜로 보여주지는 않음)
       if (!due || isNaN(due.getTime()) || due.getMonth() + 1 !== +(String(n.due).match(/-(\d{1,2})-/) || [0, due.getMonth() + 1])[1]) {
-        hide("마감일 확인 필요");
+        noDue.push(Object.assign({}, n, { dueBad: true }));
         return;
       }
 
@@ -3370,18 +3437,18 @@
       var grades = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
       var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
 
-      if (g !== null && grades.indexOf(g) < 0) { hide("학년 조건"); return; }
+      if (g !== null && grades.indexOf(g) < 0) { hide("학년 조건", x, "학년: " + grades.join("·") + "학년 대상"); return; }
       if (s === "transfer" || s === "intl") s = "enrolled";   // 편입생·외국인 유학생 = 재학생 기준
       if (s === "grad" || s === "delay" || s === "done") {
         // 졸업생: 공고에 졸업생 허용이 있거나, '누구나·일반인·청년' 대상 공고만
         var openText = [n.q || "", n.t || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
         var okWords = s === "grad" ? /(누구나|일반인|청년|졸업생|졸업자|제한 없음)/ : /(누구나|일반인|청년|졸업유예|수료|제한 없음)/;
-        if (status.indexOf(s) < 0 && !okWords.test(openText)) { hide("학적 조건"); return; }
-      } else if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건"); return; }
-      if (f !== "all" && n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
-      if (team !== null) {
+        if (status.indexOf(s) < 0 && !okWords.test(openText)) { hide("학적 조건", x, "학적: " + statusText(status) + " 대상"); return; }
+      } else if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건", x, "학적: " + statusText(status) + " 대상"); return; }
+      if (f !== "all" && n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건", x, "전공 계열: " + n.field.map(function(k){ return FIELD[k] || k; }).join("·") + " 대상"); return; }
+      if (team !== null && n.cat === "공모전") {   // 팀 인원은 공모전에만 적용 (내가 팀 인원을 골랐을 때만)
         var tr = teamRange(n);
-        if (team < tr.min || team > tr.max) { hide("팀 인원 조건 미부합"); return; }
+        if (team < tr.min || team > tr.max) { hide("팀 인원 조건 미부합", x, "팀 인원: " + teamText(n)); return; }
       }
       x.offCat = ints.indexOf(n.cat) < 0;   // 분야 칩은 건수를 센 뒤에 거름
 
@@ -3393,7 +3460,7 @@
       x.isGap = short.length > 0;
       if (!short.length) feed.push(x);
       else if (!short.some(function(z){ return z.big; })) gaps.push(x);
-      else hide("조건 차이가 큼");
+      else hide("조건 차이가 큼", x, short.map(function(z){ return z.k + " " + z.need + " 필요 (내 점수 " + z.cur + ")"; }).join(" · "));
     });
 
     // [UX 6] 정렬 로직
@@ -3498,7 +3565,22 @@
       .concat(demoHidden ? ["시연용 가상 공고 " + demoHidden + "건 (보기 › 표시 › 시연 모드)"] : []);
     var hidTotal = ht + off + unverifiedHidden + d5Hidden + demoHidden;
     el("mode-banner").hidden = !(SHOW.demoMode && !usingFallback);
-    el("hid").textContent = hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음";
+    var exShown = excluded.filter(function(e){
+      if (SCOPE !== "all" && scopeOf(e.x.n) !== SCOPE) return false;
+      if (SHOW.verifiedOnly && e.x.n.verified !== true) return false;
+      return true;
+    }).sort(function(a, b){ return a.x.left - b.x.left; });
+    el("hid").innerHTML = '<div class="hid-sum">' + esc(hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음") + '</div>' +
+      (exShown.length ? '<details class="excl" id="excl"' + (EXCL_OPEN ? ' open' : '') + '><summary>🔎 내 조건과 달라 <b>추천에서 빠진 공고 ' + exShown.length + '건</b> 직접 보기</summary>' +
+        '<p class="excl-note">내 조건(학년·학적·계열·팀 인원·점수)과 맞지 않아 추천에서 뺀 공고예요. 공고마다 예외가 있을 수 있으니 원문을 확인해 보세요.</p><ul class="excl-list">' +
+        exShown.map(function(e){
+          var n = e.x.n;
+          return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
+            '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a>' +
+            '<span class="excl-meta">D-' + e.x.left + ' · ' + srcLabel(n) + (n.verified === true ? '' : ' · 검토중') + '</span>' +
+            '<span class="excl-why">빠진 이유: ' + esc(e.why) + '</span></li>';
+        }).join("") + '</ul></details>' : '');
+    var exQ = query ? exShown.length : 0;
     el("vf-chip").hidden = !SHOW.verifiedOnly;
 
     // 공고 카드 렌더링 함수
@@ -3529,6 +3611,7 @@
           '<div class="badge-row">' +
             '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
             '<span class="tag">' + srcLabel(n) + '</span>' +
+            teamTag(n) +
             verifyTag(n) +
             '<span class="tag date" title="' + esc(dueTip(n)) + '">마감 ' + fmt(x.due) + '</span>' +
             demoTag(n) +
@@ -3663,10 +3746,10 @@
     });
     function noDueHtml() {
       if (!nd.length) return "";
-      return '<section class="nodue"><details data-key="nodue"><summary><span>📌 기한 미기재·상시 공고 <b>' + nd.length + '건</b> — 마감일이 공지에 없어요. 원문에서 확인하세요</span></summary><ul class="nodue-list">' +
+      return '<section class="nodue"><details data-key="nodue"><summary><span>📌 기한 미기재·상시·마감일 확인 필요 공고 <b>' + nd.length + '건</b> — 마감일을 원문에서 확인하세요</span></summary><ul class="nodue-list">' +
         nd.map(function(n){
           return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a>' +
-            '<span class="nodue-meta">' + srcLabel(n) + (n.benefit && !/(원문|없음|확인 필요|미확인)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</span>' + cmtButton(n) + '</li>';
+            '<span class="nodue-meta">' + (n.dueBad ? '<b class="due-bad">마감일 확인 필요</b> · ' : '') + srcLabel(n) + (n.benefit && !/(원문|없음|확인 필요|미확인)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</span>' + cmtButton(n) + '</li>';
         }).join("") + '</ul></details></section>';
     }
     // 갭 보완이 비었을 때 이유 (점수를 넣었는데 0건)
@@ -3679,8 +3762,10 @@
         (usingFallback || SHOW.demoMode ? '' : '<div class="ge-btns"><button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🧪 시연 모드로 퀘스트 체험</button></div>') + '</div>';
     }
 
+    // 검색 중인데 내 조건 때문에 빠진 공고가 있으면 알려 줌
+    var exBanner = exQ ? '<div class="excl-banner">🔎 검색어와 맞는 공고 중 <b>' + exQ + '건</b>은 내 조건과 달라 추천에서 빠졌어요. <button type="button" class="link-btn" onclick="showExcluded()">빠진 공고 보기</button></div>' : '';
     if (skipView !== "v-feed") {
-      setList("v-feed", noDueHtml() + buildList(feed, '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 › 표시에서 끄면 검토중 공고도 보여요.</small>' : '') + '</div>'));
+      setList("v-feed", exBanner + noDueHtml() + buildList(feed, '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 › 표시에서 끄면 검토중 공고도 보여요.</small>' : '') + '</div>'));
     }
     if (skipView !== "v-gap") {
       setList("v-gap", buildList(gaps, (gpa === null && toeic === null)
@@ -3701,9 +3786,12 @@
   // 실시간 검색 이벤트
   var searchInput = el("live-search");
   var searchClear = el("search-clear-btn");
+  // 글자를 칠 때마다 다시 그리면 저사양 휴대폰에서 입력이 끊겨서, 입력이 잠깐 멈췄을 때 한 번만 그림
+  var searchTimer = null;
   searchInput.addEventListener("input", function(){
     searchClear.style.display = this.value ? "flex" : "none";
-    render();
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(render, this.value ? 180 : 0);
   });
   searchClear.addEventListener("click", function(){
     searchInput.value = "";
@@ -3851,7 +3939,29 @@
     if (/참여해 보니|어떤가요/.test(t.value)) el("cmt-form").querySelector('input[value="질문"]').checked = true;
     t.focus(); el("cmt-len").textContent = t.value.length;
   });
-  el("cmt-text").addEventListener("input", function(){ el("cmt-len").textContent = this.value.length; });
+  // 서버(maskPersonal_)와 같은 규칙: 개인정보처럼 보이는 글자를 미리 알려 줌
+  function maskPreview(t) {
+    return String(t)
+      .replace(/[A-Za-z0-9._%+-]+\s?(?:@|＠|\(at\)|\[at\])\s?[A-Za-z0-9-]+(?:\s?\.\s?[A-Za-z0-9-]+)*\s?\.\s?[A-Za-z]{2,}/gi, "(이메일 가림)")
+      .replace(/(?<!\d)(?:\+?82[\s.-]?)?0?1[016789][\s.-]?\d{3,4}[\s.-]?\d{4}(?!\d)/g, "(연락처 가림)")
+      .replace(/(?<!\d)0(?:2|[3-6][1-5]|70)[\s.)-]+\d{3,4}[\s.-]?\d{4}(?!\d)/g, "(연락처 가림)")
+      .replace(/(?<![\d-])(?:19|20)\d{2}[\s.-]?\d{4,6}(?![\d-])/g, function (m) {
+        return m.replace(/\D/g, "").length >= 8 ? "(학번 가림)" : m;
+      });
+  }
+  window.maskPreview = maskPreview;
+  function updateMaskWarn() {
+    var t = el("cmt-text").value + " " + el("cmt-nick").value, kinds = [];
+    var m = maskPreview(t);
+    if (m.indexOf("(연락처 가림)") > -1) kinds.push("연락처");
+    if (m.indexOf("(이메일 가림)") > -1) kinds.push("이메일");
+    if (m.indexOf("(학번 가림)") > -1) kinds.push("학번");
+    var w = el("cmt-mask-warn");
+    w.hidden = !kinds.length;
+    if (kinds.length) w.textContent = "🔒 " + kinds.join("·") + "처럼 보이는 글자가 있어요. 등록하면 자동으로 가려져요. 이름·연락처·학번은 적지 않는 게 안전해요.";
+  }
+  el("cmt-text").addEventListener("input", function(){ el("cmt-len").textContent = this.value.length; updateMaskWarn(); });
+  el("cmt-nick").addEventListener("input", updateMaskWarn);
   el("cmt-form").addEventListener("submit", function(e){
     e.preventDefault();
     if (cmtBusy || !cmtThread) return;
@@ -3869,7 +3979,7 @@
         if (thread === cmtThread) {
           cmtItems.push(res.comment);
           renderComments();
-          el("cmt-text").value = ""; el("cmt-len").textContent = "0";
+          el("cmt-text").value = ""; el("cmt-len").textContent = "0"; updateMaskWarn();
           setReplyTo(null);
           var last = el("cmt-list").querySelector('[data-cid="' + res.comment.id + '"]');
           last && last.scrollIntoView({ block: "nearest" });
@@ -3895,15 +4005,19 @@
       return;
     }
     b.disabled = true;
-    cmtPost({ action: act, cid: cid, key: CMT_KEY })
-      .then(function(){
+    cmtPost({ action: act, cid: cid, key: CMT_KEY, device: DEVICE })
+      .then(function(res){
         if (act === "delete") {
           cmtItems = cmtItems.filter(function(z){ return z.id !== cid && z.parent !== cid; });
           setCmtCount(cmtThread, cmtItems.length);
           showToast("🗑️ 댓글을 지웠어요");
         } else {
           REPORTED.push(cid); lsSet("cuk_reported", JSON.stringify(REPORTED.slice(-300)));
-          showToast("🚩 신고했어요. 신고가 쌓이면 자동으로 숨겨져요");
+          if (res && res.hidden) {
+            cmtItems = cmtItems.filter(function(z){ return z.id !== cid && z.parent !== cid; });
+            setCmtCount(cmtThread, cmtItems.length);
+            showToast("🚩 신고가 쌓여 이 글을 숨겼어요");
+          } else showToast(res && res.already ? "🚩 이미 신고한 글이에요" : "🚩 신고했어요. 신고가 3번 쌓이면 자동으로 숨겨져요");
         }
         renderComments();
       })
@@ -3952,7 +4066,20 @@
     interestBoxes.forEach(function(b){ b.checked = on; });
     render();
   });
-  interestBoxes.forEach(function(b){ b.addEventListener("change", syncInterestAll); });
+  // '전체'가 켜진 상태에서 분야 칩을 누르면 그 분야만 보기 (누른 분야가 빠지는 혼동 방지)
+  // 그 뒤로는 여러 분야를 더하거나 뺄 수 있고, 모두 끄면 다시 '전체'
+  // (capture 단계: 다시 그리는 다른 change 처리보다 먼저 실행)
+  document.querySelector(".cat-chips").addEventListener("change", function(e){
+    var b = e.target;
+    if (!b || b.name !== "interest") return;
+    var others = interestBoxes.filter(function(x){ return x !== b; });
+    if (!b.checked && others.every(function(x){ return x.checked; })) {
+      others.forEach(function(x){ x.checked = false; }); b.checked = true;          // 전체 → 이 분야만
+    } else if (!interestBoxes.some(function(x){ return x.checked; })) {
+      interestBoxes.forEach(function(x){ x.checked = true; });                      // 모두 끔 → 전체
+    }
+    syncInterestAll();
+  }, true);
 
   // ===== 내 조건 저장 (기기·브라우저별, localStorage) =====
   // 처음 방문하면 모든 조건이 "전체". 저장해 두면 다음에 열 때 그 조건으로 시작해요.
@@ -4241,10 +4368,14 @@
   if (useCache()) { setBasisDate(true); render(); }
 
   function loadSheet() {
-    if (!SHEET_API_URL || !SHEET_API_URL.startsWith("https://script.google.com") || loading) return;
+    if (!SHEET_API_URL || !SHEET_API_URL.startsWith("https://script.google.com")) return;
+    if (loading && Date.now() - lastFetch < 60 * 1000) return;   // 앞 요청이 1분 넘게 멈춰 있으면 새로 시도
     loading = true;
     lastFetch = Date.now();
-    fetch(SHEET_API_URL + "?t=" + Date.now(), { cache: "no-store" })
+    // 응답이 20초 안에 없으면 끊고 다음 갱신 때 다시 시도 (멈춘 요청 때문에 자동 갱신이 막히지 않게)
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 20000);
+    fetch(SHEET_API_URL + "?t=" + Date.now(), { cache: "no-store", signal: ctrl ? ctrl.signal : undefined })
       .then(function(res) { return res.text(); })
       .then(function(txt) {
         var data;
@@ -4269,10 +4400,10 @@
         if (!usingFallback && cacheAt) cacheNote(true);
         if (usingFallback) {
           var why = el("demo-why");
-          if (why) why.textContent = " (이유: " + (err && err.message && !/Failed to fetch|NetworkError|Load failed/i.test(err.message) ? err.message : "웹앱에 연결하지 못했어요") + ")";
+          if (why) why.textContent = " (이유: " + (err && err.name === "AbortError" ? "웹앱 응답이 20초 넘게 없어요" : err && err.message && !/Failed to fetch|NetworkError|Load failed/i.test(err.message) ? err.message : "웹앱에 연결하지 못했어요") + ")";
         }
       })
-      .then(function() { loading = false; });
+      .then(function() { clearTimeout(timer); loading = false; });
   }
 
   // 처음 열 때 1회
@@ -4281,7 +4412,9 @@
 
   // 화면을 보고 있을 때만 주기적으로 갱신
   setInterval(function() {
-    if (!document.hidden) loadSheet();
+    if (document.hidden) return;
+    if (new Date().getDate() !== TODAY.getDate()) render();   // 자정이 지나면 D-day 다시 계산
+    loadSheet();
   }, REFRESH_MS);
 
   // 다른 앱/탭에 갔다가 돌아오면 30초 이상 지났을 때 바로 갱신
