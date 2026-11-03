@@ -726,6 +726,36 @@
     .site-footer a { color: var(--cuk-accent); text-decoration: none; }
     .site-footer ul { padding-left: 16px; }
 
+    .res { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px; container-type: inline-size; }
+    .res-head h3 { font-size: 17px; margin-bottom: 4px; }
+    .res-head p { font-size: 13px; color: var(--ink-secondary); line-height: 1.5; }
+    .res-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 12px 0 8px; padding-bottom: 2px; }
+    .res-tab { flex: 0 0 auto; min-height: 36px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-secondary); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .res-tab b { color: var(--muted); font-weight: 700; margin-left: 2px; }
+    .res-tab[aria-pressed="true"] { background: var(--cuk-accent); border-color: var(--cuk-accent); color: #fff; }
+    .res-tab[aria-pressed="true"] b { color: #fff; }
+    :root[data-theme="dark"] .res-tab[aria-pressed="true"], :root[data-theme="dark"] .res-tab[aria-pressed="true"] b { color: #0F141C; }
+    .res-note { font-size: 12.5px; line-height: 1.55; background: var(--cuk-soft); border-radius: 10px; padding: 8px 12px; margin-bottom: 10px; }
+    .res-group { margin-top: 12px; }
+    .res-gtitle { font-size: 13px; font-weight: 700; color: var(--ink-secondary); margin-bottom: 6px; }
+    .res-gtitle span { color: var(--muted); font-weight: 600; }
+    .res-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 8px; }
+    @container (min-width: 640px) { .res-list { grid-template-columns: 1fr 1fr; } }
+    .res-item { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); min-width: 0; }
+    .res-top { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+    .res-top a { color: var(--ink); font-weight: 700; font-size: 13.5px; text-decoration: none; overflow-wrap: anywhere; }
+    .res-top a:hover { text-decoration: underline; }
+    .res-st { font-size: 11.5px; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--line-subtle); color: var(--ink-secondary); white-space: nowrap; }
+    .res-st.open { background: var(--ok-soft); color: var(--ok); }
+    .res-st.always { background: var(--cuk-soft); color: var(--cuk-accent); }
+    .res-st.past { background: var(--line-subtle); color: var(--muted); }
+    .res-desc { font-size: 12.5px; color: var(--ink-secondary); margin-top: 4px; line-height: 1.5; overflow-wrap: anywhere; }
+    .res-meta { font-size: 12px; color: var(--muted); margin-top: 4px; display: flex; flex-direction: column; gap: 2px; line-height: 1.45; }
+    .res-memo { color: var(--muted); }
+    .res-past { margin-top: 14px; }
+    .res-past summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--ink-secondary); min-height: 36px; display: flex; align-items: center; }
+    .res-past .res-list { margin-top: 8px; opacity: .85; }
+    .res-empty { font-size: 13px; color: var(--muted); padding: 12px 0; }
     .hid-sum { line-height: 1.5; }
     .excl { margin-top: 8px; }
     .excl summary { cursor: pointer; color: var(--cuk-accent); font-weight: 600; font-size: 13px; padding: 6px 0; min-height: 32px; }
@@ -2333,6 +2363,7 @@
       <dl class="help-dl">
         <dt>✨ 바로 지원</dt><dd>내 조건을 모두 만족하는 접수 중인 공고예요.</dd>
         <dt>🎯 갭 보완</dt><dd>평점·토익이 <b>조금만</b> 모자란 공고예요. 아래 <b>🎯 갭 보완 퀘스트</b>에서 자세히 설명해요.</dd>
+        <dt>📚 스펙 보완 자료실</dt><dd>갭 보완 탭 아래에 교양과목·비교과·ELP 인정 항목을 모았어요. 신청 마감이 지나면 '지난 운영 사례'로 자동으로 옮겨지고, ELP는 학과별 기준이라 소속 학과 목록을 꼭 확인하세요.</dd>
         <dt>💗 보관함</dt><dd>하트(찜)를 누른 공고만 모아 봐요. <b>📅 찜한 공고 모두 캘린더에 담기</b>를 누르면 마감 3일 전·1일 전 알림까지 한 번에 내 캘린더에 들어가요.</dd>
         <dt>📅 마감 달력</dt><dd>날짜별 마감 건수를 달력으로 보여 줘요. 날짜를 누르면 그날 마감 공고와 바로가기가 나와요. 하단 메뉴의 숫자는 <b>오늘 마감</b> 건수예요.</dd>
         <dt>📦 지난 공고</dt><dd>마감된 공고를 1년 동안 모아 둬요. 작년 주제·혜택·서류를 보고 다음 회차를 미리 준비하세요.</dd>
@@ -2521,15 +2552,69 @@
   // ===== 갭 보완 행동 가이드 =====
   // 시트 「갭 보완 가이드」 탭에서 불러와요 (운영자가 고치면 바로 반영). 아래는 연결 전·실패 시 쓰는 기본값.
   // target: 토익 / 평점 · step: 시험 / 교양과목 / 비교과
+  // 갭 보완 가이드 · 스펙 보완 자료실 (시트 「갭 보완 가이드」와 같은 내용 — 웹앱 연결이 안 될 때 쓰는 기본값, 2026-11-03 기준)
   var GAP_GUIDES = [
-    { target:"토익", step:"시험", name:"TOEIC 정기시험 일정·접수", desc:"한국TOEIC위원회 공식 일정. 매달 2회 안팎 시행 (2027년은 26회, 첫 시험 1/16)", when:"매월", url:"https://exam.toeic.co.kr/receipt/examSchList.php", verified:true },
-    { target:"토익", step:"교양과목", name:"Pronouncing English Like a Native Speaker (06789)", desc:"중핵교양 글로벌·외국어 영역 · 3학점 · 영어 발음·말하기 (LC 대비에 도움)", when:"1·2학기 개설", url:"https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", verified:true },
-    { target:"토익", step:"교양과목", name:"Critical Reading Across the Disciplines (06822)", desc:"중핵교양 글로벌·외국어 영역 · 3학점 · 영어 독해 (RC 대비에 도움)", when:"1·2학기 개설", url:"https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", verified:true },
-    { target:"토익", step:"비교과", name:"Language 배움이음 (Language SOS Class)", desc:"교수학습개발원 · 재학생 튜터와 동료 튜터링 · 영어 회화·문법·독해·토익·토플(ITP) · 13주 · ELP 10점", when:"학기마다 모집 (2026-1: 3/16~6/15 운영, 3/3~3/9 신청)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=268978", verified:true },
-    { target:"토익", step:"비교과", name:"YBM 온라인 모의토익 (평생교육원)", desc:"정기시험과 같은 200문항 · 끝나면 바로 성적 분석 · 1회 4,000원 · 학번으로 가입", when:"월별 응시 (예: 2026-05 5/1~5/31)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270847", verified:true },
-    { target:"평점", step:"비교과", name:"학습클리닉 - 학업 및 대학생활코칭", desc:"교수학습개발원 · 학습 방법·학업 고민 1:1 코칭", when:"2026-2학기 (~11/4 신청)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277225", verified:false },
-    { target:"평점", step:"비교과", name:"AI기반 기초과목 진단 및 맞춤형 학습 프로그램", desc:"교수학습개발원 · 기초과목 진단 후 맞춤 학습", when:"2026-2학기 3차 추가모집 (~11/8)", url:"https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277198", verified:false },
-    { target:"평점", step:"비교과", name:"Language 배움이음 · CUK 튜터링", desc:"교수학습개발원 동료 튜터링 (AI코디 › MY Activity › CUK 튜터링)", when:"학기마다 모집", url:"https://aicodi.catholic.ac.kr", verified:false }
+    {"target": "토익", "step": "시험", "kind": "시험 일정", "name": "TOEIC 정기시험 일정·접수", "desc": "한국TOEIC위원회 공식 일정. 매달 2회 안팎 시행 (2027년은 26회, 첫 시험 1/16)", "when": "매월", "url": "https://exam.toeic.co.kr/receipt/examSchList.php", "verified": true, "memo": "2027년 일정: 뉴스1 2026-11-02 보도", "status": "상시", "deadline": ""},
+    {"target": "토익", "step": "교양과목", "kind": "교양과목", "name": "Pronouncing English Like a Native Speaker (06789)", "desc": "중핵교양 글로벌·외국어 영역 · 3학점 · 영어 발음·말하기 (LC 대비에 도움)", "when": "1·2학기 개설", "url": "https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", "verified": true, "memo": "2026 중핵교양선택필수 표 기준. 매 학기 실제 개설 여부는 수강편람 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "토익", "step": "교양과목", "kind": "교양과목", "name": "Critical Reading Across the Disciplines (06822)", "desc": "중핵교양 글로벌·외국어 영역 · 3학점 · 영어 독해 (RC 대비에 도움)", "when": "1·2학기 개설", "url": "https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", "verified": true, "memo": "옛 과목명 Academic Reading", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "토익", "step": "비교과", "kind": "학습 지원", "name": "Language 배움이음 (Language SOS Class)", "desc": "교수학습개발원 · 재학생 튜터와 동료 튜터링 · 영어 회화·문법·독해·토익·토플(ITP) · 13주 · ELP 10점", "when": "학기마다 모집 (2026-1: 3/16~6/15 운영, 3/3~3/9 신청)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=268978", "verified": true, "memo": "신청: 트리니티 → AI코디 → MY Activity → CUK 튜터링. 2026-2 모집 공지는 못 찾음", "status": "학기별 공지 확인", "deadline": ""},
+    {"target": "토익", "step": "비교과", "kind": "영어", "name": "YBM 온라인 모의토익 (평생교육원)", "desc": "정기시험과 같은 200문항 · 끝나면 바로 성적 분석 · 1회 4,000원 · 학번으로 가입", "when": "월별 응시 (예: 2026-05 5/1~5/31)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270847", "verified": true, "memo": "유료(4,000원). 모의토익스피킹 20,000원", "status": "상시", "deadline": ""},
+    {"target": "평점", "step": "비교과", "kind": "학습 지원", "name": "학습클리닉 - 학업 및 대학생활코칭", "desc": "교수학습개발원 · 학습 방법·학업 고민 1:1 코칭", "when": "2026-2학기 (~11/4 신청)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277225", "verified": false, "memo": "공지 본문 세부 내용 확인 필요", "status": "모집 중", "deadline": "2026-11-04"},
+    {"target": "평점", "step": "비교과", "kind": "학습 지원", "name": "AI 기반 기초과목 진단 및 맞춤형 학습", "desc": "교수학습개발원 · AI 진단평가 후 취약 영역별 추천 문제·개념 영상·AI 튜터 제공 · 수학(미적분·통계·선형대수), 과학(물리·화학·생물), 영어(토익·토플), 국어(문해력)", "when": "2026-3차 신청 10/28~11/8, 학습 11/10~12/20", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277198&mode=view", "verified": true, "memo": "2026-11-03 기준 신청 기간 중. 공인시험 점수나 학점 직접 부여 과정은 아님", "status": "모집 중", "deadline": "2026-11-08"},
+    {"target": "토익", "step": "비교과", "kind": "학습 지원", "name": "AI 기반 기초과목 진단 및 맞춤형 학습", "desc": "교수학습개발원 · AI 진단평가 후 취약 영역별 추천 문제·개념 영상·AI 튜터 제공 · 수학(미적분·통계·선형대수), 과학(물리·화학·생물), 영어(토익·토플), 국어(문해력)", "when": "2026-3차 신청 10/28~11/8, 학습 11/10~12/20", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277198&mode=view", "verified": true, "memo": "2026-11-03 기준 신청 기간 중. 공인시험 점수나 학점 직접 부여 과정은 아님", "status": "모집 중", "deadline": "2026-11-08"},
+    {"target": "평점", "step": "비교과", "kind": "학습 지원", "name": "Language 배움이음 · CUK 튜터링", "desc": "교수학습개발원 동료 튜터링 (AI코디 › MY Activity › CUK 튜터링)", "when": "학기마다 모집", "url": "https://aicodi.catholic.ac.kr", "verified": false, "memo": "평점 보완용 튜터링 과목 범위 확인 필요", "status": "학기별 공지 확인", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "AI 활용 IT 응용프로그램 실습(상시)", "desc": "컴퓨터 활용·데이터 관리·분석·보고서·프레젠테이션 실습 · 엑셀, 파워포인트, 포토샵, 일러스트, SPSS, Python, R", "when": "연중 수시 / 단기형 또는 중장기형", "url": "https://ctl.catholic.ac.kr/ctl/learning-support/call.do", "verified": true, "memo": "개별 강좌 일정과 신청 여부는 AI코디·공지에서 확인", "status": "상시", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "AI 활용 엑셀 기초 실습", "desc": "엑셀 기초 기능과 AI 활용 사례 실습 · 2026년 4월 28일·30일, 총 6시간", "when": "2026-1학기 운영 완료", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=270547&mode=view", "verified": true, "memo": "과거 운영 사례. 차기 개설 여부 확인", "status": "과거 운영 사례", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "AI 활용 엑셀 심화 실습", "desc": "엑셀 심화 기능 학습 · 2026년 4월 공지", "when": "2026-1학기 운영 사례", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=270897&mode=view", "verified": true, "memo": "과거 운영 사례. 차기 개설 여부 확인", "status": "과거 운영 사례", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "포토샵과 AI로 배우는 콘텐츠 제작", "desc": "포토샵 기초, AI 이미지 생성·합성·보정, 포스터·썸네일·이모티콘 제작. GTQ 기출 기반 기초 포함 · 2026년 5월 운영 사례", "when": "2026-1학기 운영 완료", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=271032&mode=view", "verified": true, "memo": "과거 운영 사례. 차기 개설 여부 확인", "status": "과거 운영 사례", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "AI 활용 파이썬(기초)", "desc": "파이썬 기초 및 데이터 분석 입문 실습 · 2026년 7월 운영 사례", "when": "2026-여름 운영 완료", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273042&mode=view", "verified": true, "memo": "과거 운영 사례. 차기 개설 여부 확인", "status": "과거 운영 사례", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "AI 활용 파이썬(데이터분석)", "desc": "데이터 분석·시각화·전처리 및 AI 활용 실습 · 2026년 7월 운영 사례", "when": "2026-여름 운영 완료", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273043&mode=view", "verified": true, "memo": "과거 운영 사례. 차기 개설 여부 확인", "status": "과거 운영 사례", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "AI·IT 실습", "name": "AI 활용 IT 응용프로그램 실습 8차(애프터이펙트)", "desc": "애프터이펙트 영상 편집 실습 · 2026년 11월 10~20일, 3시간씩 6차시(총 18시간)", "when": "신청 10/23~11/8 / 운영 예정", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277006&mode=view", "verified": true, "memo": "2026-11-03 기준 신청 기간 중. 6차시 모두 참여 조건", "status": "모집 중", "deadline": "2026-11-08"},
+    {"target": "평점", "step": "비교과", "kind": "학습 지원", "name": "보충학습 튜터링 프로그램", "desc": "교과목 학습을 보충하는 튜터링 활동 · ELP 목록에 학습자 1개 과목당 10시간 기준 기재", "when": "학기별 운영 여부 확인", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": false, "memo": "ELP 목록 기준. 현재 모집 공고·참여 대상 확인 필요", "status": "학기별 공지 확인", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "취업 특강", "name": "취업특강·초청강연", "desc": "취업지원팀 주관 취업 관련 특강 및 초청강연 · 학기 단위 운영으로 ELP 목록에 기재", "when": "학기별 공지 확인", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "특강별 주제와 ELP 인정 방식 별도 확인", "status": "학기별 공지 확인", "deadline": ""},
+    {"target": "공통", "step": "비교과", "kind": "취업 특강", "name": "찾아가는 학과 취업특강", "desc": "전공·계열 특성을 반영한 맞춤형 진로·취업 정보 제공 · 2026년 10월 26일~11월 13일 운영 안내", "when": "2026-2학기 운영 기간", "url": "https://english.catholic.ac.kr/english/community/notice.do?articleNo=276671&mode=view", "verified": false, "memo": "영어영문학부 공지 기준. 전체 학생 대상 여부 확인", "status": "운영 중", "deadline": "2026-11-13"},
+    {"target": "토익", "step": "비교과", "kind": "영어", "name": "가톨릭대학교 블라방 토익 특강", "desc": "수준별 토익 강의. 과거 550·650·750·850점 과정 운영 사례 · 2026년 11월 모집은 10/29 마감 공지 사례", "when": "차기 모집 공지 확인", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=276821&mode=view", "verified": true, "memo": "과거 모집 사례. 현재 신청 가능 과정으로 표시하지 말 것", "status": "과거 운영 사례", "deadline": ""},
+    {"target": "토익", "step": "비교과", "kind": "영어", "name": "중앙 영어동아리 A.L.A", "desc": "토익·토플·영어회화 중심의 소규모 영어 스터디 · 정기 모임으로 소개된 바 있음", "when": "모집·운영 일정 확인", "url": "https://www.catholic.ac.kr/ko/campuslife/club.do", "verified": false, "memo": "동아리 운영 및 신규 부원 모집 여부 확인", "status": "모집 확인 필요", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "자기개발과진로선택 (04115)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "학교 취업교육 페이지에 게시된 과목. 실제 개설 학기는 개설과목 조회에서 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "취업준비와 사회진출 (04116)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "학교 취업교육 페이지에 게시된 과목. 실제 개설 학기는 개설과목 조회에서 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "성공취업전략 (04629)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "학교 취업교육 페이지에 게시된 과목. 실제 개설 학기는 개설과목 조회에서 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "글로벌리더십 (04631)", "desc": "자유선택교양 · 3학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "기업실무1-마케팅/영업 (04797)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "기업실무2-인사/경영지원 (04798)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "기업실무3-유통/물류 (04799)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "기업실무4-금융 (04800)", "desc": "자유선택교양 · 2학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "생애진로와 경력개발 (05019)", "desc": "자유선택교양 · 1학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "대학생진로지도프로그램(CDP-C) (05035)", "desc": "자유선택교양 · 2학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "중견기업의 이해 (05411)", "desc": "자유선택교양 · 2학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "청년취업아카데미 (05412)", "desc": "자유선택교양 · 2학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "NCS직업기초역량실무 (05762)", "desc": "중핵교양필수 · 3학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "자유선택교양이 아니라 중핵교양필수로 게시됨", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "여성커리어와 리더십 (05763)", "desc": "중핵교양필수 · 3학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "직업의 이해 (05764)", "desc": "중핵교양필수 · 3학점 · 최근 2년 미개설", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "직무교육개론 (05777)", "desc": "중핵교양필수 · 3학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "자유선택교양이 아니라 중핵교양필수로 게시됨", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "생애진로와 커리어디자인 (06175)", "desc": "기초교양필수 · 1학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "자유선택교양이 아니라 기초교양필수로 게시됨", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "퍼스널브랜딩과성공취업 (06347)", "desc": "자유선택교양 · 3학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "취업정보분석과 취업전략수립 (06452)", "desc": "자유선택교양 · 3학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "핵심취업전략 (06566)", "desc": "자유선택교양 · 1학점", "when": "정규학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "실제 개설 학기·수강 대상 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "취업준비실무 (05413)", "desc": "자유선택교양 · 2학점", "when": "계절학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "계절학기 과목. 실제 개설 여부 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "인문사회계열취·창업을 위한 웹디자인 기초 (05679)", "desc": "자유선택교양 · 3학점", "when": "계절학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "계절학기 과목. 실제 개설 여부 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "인문사회계열취·창업을 위한 웹프로그래밍 기초 (05680)", "desc": "자유선택교양 · 3학점", "when": "계절학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "계절학기 과목. 실제 개설 여부 확인", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "인문사회계열취·창업을 위한 웹서버프레임워크 (05759)", "desc": "자유선택교양 · 3학점 · 최근 2년 미개설", "when": "계절학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "교양과목", "kind": "취업 교과목", "name": "인문사회계열취·창업을 위한 웹프로그래밍 고급 (05760)", "desc": "자유선택교양 · 3학점 · 최근 2년 미개설", "when": "계절학기", "url": "https://www.catholic.ac.kr/ko/campuslife/career1.do", "verified": true, "memo": "과목명 앞 별표(*)는 최근 2년간 미개설 표시", "status": "개설 학기 확인", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "식품기사 자격증", "desc": "식품영양학과 목록에 자격증 사본 제출 항목으로 기재", "when": "자격 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "식품영양학과 기준. 타 학과 인정 여부 확인 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "IT 자격증", "desc": "IT 관련 자격 취득 후 자격증 사본 제출 항목", "when": "자격 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 ELP 목록. 학교가 자격증 강의를 직접 운영한다는 뜻은 아님", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "한자능력", "desc": "한자능력 관련 자격증 사본 제출 항목", "when": "자격 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "식품영양학과 목록에 기재. 한국사능력검정과는 다른 항목 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 외국어 성적", "name": "제2외국어능력", "desc": "제2외국어 능력 관련 자격증 사본 제출 항목", "when": "자격 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 인정 시험 확인 필요", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "사회조사분석사", "desc": "사회학과 ELP 비교과 목록에 자격 항목으로 기재", "when": "자격 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "사회학과 기준. 학교 주관 강좌 여부 별도 확인 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "원산지관리사", "desc": "국제학부 ELP 비교과 목록에 자격 항목으로 기재", "when": "수시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "국제학부 기준. 전교생 공통 인정 여부 확인 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "외환전문역", "desc": "국제학부 ELP 비교과 목록에 자격 항목으로 기재", "when": "수시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "국제학부 기준. 학교 주관 강좌 여부 별도 확인 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 외국어 성적", "name": "JLPT N1", "desc": "일어일본문화학과 ELP 목록에 일본어 공인 성적 항목으로 기재", "when": "연 2회로 기재", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 인정 항목. 최신 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 외국어 성적", "name": "IELTS", "desc": "영어영문학부 ELP 목록에 공인 영어 성적 항목으로 기재", "when": "성적 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 인정 항목", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 외국어 성적", "name": "OPIc", "desc": "영어영문학부 ELP 목록에 공인 영어 성적 항목으로 기재", "when": "성적 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 인정 항목", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 외국어 성적", "name": "TOEIC·TEPS", "desc": "일부 학과 ELP 목록에서 공인 영어 성적표 제출 항목으로 기재", "when": "연중 또는 성적 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 인정 항목. 전교생 공통 인정으로 해석 금지", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 외국어 성적", "name": "DELF", "desc": "프랑스어문화학과 ELP 목록에 프랑스어 공인 성적 항목으로 기재", "when": "성적 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 인정 항목", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 자격증", "name": "화학 관련 기사·산업기사 자격증", "desc": "화학과 ELP 목록에 관련 자격증 사본 제출 항목으로 기재", "when": "자격 취득 시", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "화학과 기준. 인정 자격 확인 필요 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 대회·실적", "name": "교내 경진대회·공모전", "desc": "학술·문제해결 관련 교내 경진대회 및 공모전 실적", "when": "학기 말 연 2회로 기재된 사례", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "학과별 ELP 점수 인정 항목", "status": "학과별 인정 기준", "deadline": ""},
+    {"target": "공통", "step": "ELP", "kind": "ELP 대회·실적", "name": "교외 학술·문제해결 대회 수상", "desc": "전공별 교외 대회 수상 실적을 문제해결능력 분야로 인정", "when": "매 학기 말", "url": "https://catholic-college.catholic.ac.kr/catholic_college/elp/non_curricular_area.do", "verified": true, "memo": "전공별 확인 후 입력 / 학과별 ELP 인정 기준 확인", "status": "학과별 인정 기준", "deadline": ""}
   ];
   var STEP_INFO = {
     "시험": { ic:"📝", title:"시험 일정 확인" },
@@ -2537,11 +2622,97 @@
     "비교과": { ic:"🏃", title:"교내 비교과 참여" }
   };
   var QUESTS = {}; try { QUESTS = JSON.parse(localStorage.getItem("cuk_quests") || "{}"); } catch (e) {}
+  // ===== 📚 스펙 보완 자료실 (교양과목 · 비교과 · ELP) =====
+  // 운영 상태: 과거 운영 사례 · 신청 마감일이 지난 것은 '지난 운영 사례'로 (현재 신청 가능한 것처럼 보이지 않게)
+  function isoDay(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function guidePast(g) {
+    if (/과거 운영|운영 완료/.test(g.status || "")) return true;
+    return !!(g.deadline && g.deadline < isoDay(TODAY));
+  }
+  function guideOpen(g) { return !guidePast(g) && /모집 중|운영 중|상시/.test(g.status || ""); }
+  var RES_FILTER = "all";
+  try { RES_FILTER = localStorage.getItem("cuk_res") || "all"; } catch (e) {}
+  var RES_TABS = [
+    { k:"all",  label:"전체" },
+    { k:"open", label:"🟢 지금 신청·이용 가능" },
+    { k:"교양과목", label:"🎓 교양과목" },
+    { k:"비교과", label:"🧩 비교과" },
+    { k:"ELP", label:"🏅 ELP 인정 항목" }
+  ];
+  var RES_NOTE = {
+    "교양과목": "목록에 있어도 이번 학기에 열린다는 뜻은 아니에요. <b>개설과목 조회·수강편람</b>에서 개설 학기와 수강 대상을 확인하세요. '최근 2년 미개설'은 학교 목록의 별표(*) 표시예요.",
+    "ELP": "ELP⁺(Ethical Leaders rearing Program) 인정 항목은 <b>학과·전공별 기준</b>이에요. 모든 학생에게 똑같이 인정되지 않으니 소속 학과 목록을 꼭 확인하세요.",
+    "비교과": "운영이 끝난 프로그램은 아래 <b>지난 운영 사례</b>로 따로 모았어요. 다음 개설 공지를 참고하세요.",
+    "open": "신청 기간 중이거나 상시로 이용할 수 있는 것만 모았어요. 신청 마감일이 지나면 자동으로 '지난 운영 사례'로 옮겨져요."
+  };
+  function resStatus(g) {
+    if (guidePast(g)) return '<span class="res-st past">' + (g.deadline && g.deadline < isoDay(TODAY) && !/과거/.test(g.status) ? "신청 마감" : "지난 운영 사례") + '</span>';
+    var cls = /모집 중|운영 중/.test(g.status) ? "open" : /상시/.test(g.status) ? "always" : "check";
+    var dd = "";
+    if (g.deadline) {
+      var p = g.deadline.split("-"), left = days(new Date(+p[0], +p[1] - 1, +p[2]), TODAY);
+      dd = " · ~" + (+p[1]) + "/" + (+p[2]) + " (" + (left === 0 ? "오늘 마감" : "D-" + left) + ")";
+    }
+    return '<span class="res-st ' + cls + '">' + esc(g.status || "확인 필요") + dd + '</span>';
+  }
+  function resItem(g) {
+    return '<li class="res-item">' +
+      '<div class="res-top"><a href="' + esc(g.url) + '" target="_blank" rel="noopener">' + esc(g.name) + ' ↗</a>' + resStatus(g) +
+        (g.verified === false ? '<span class="qver">검토중</span>' : '') + '</div>' +
+      (g.desc ? '<div class="res-desc">' + esc(g.desc) + '</div>' : '') +
+      '<div class="res-meta">' + (g.when ? '🗓 ' + esc(g.when) : '') + (g.memo ? '<span class="res-memo">ℹ️ ' + esc(g.memo) + '</span>' : '') + '</div>' +
+    '</li>';
+  }
+  function resourceHtml() {
+    var seen = {}, all = GAP_GUIDES.filter(function(g){
+      if (g.step === "시험") return false;                       // 시험 일정은 퀘스트에서 안내
+      var k = g.name + "|" + g.url; if (seen[k]) return false; seen[k] = 1; return true;
+    });
+    if (!all.length) return "";
+    var count = function(k){ return all.filter(function(g){ return k === "all" ? true : k === "open" ? guideOpen(g) : g.step === k; }).length; };
+    var list = all.filter(function(g){ return RES_FILTER === "all" ? true : RES_FILTER === "open" ? guideOpen(g) : g.step === RES_FILTER; });
+    var now = list.filter(function(g){ return !guidePast(g); }), past = list.filter(guidePast);
+    // 구분별로 묶고, 신청 가능한 것을 먼저
+    var rank = function(g){ return guideOpen(g) ? 0 : 1; };
+    var groups = {}, order = [];
+    now.sort(function(a, b){ return rank(a) - rank(b); }).forEach(function(g){
+      var k = g.kind || g.step; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(g);
+    });
+    return '<section class="res" id="res" aria-labelledby="res-title">' +
+      '<div class="res-head"><h3 id="res-title">📚 스펙 보완 자료실</h3>' +
+        '<p>점수 말고도 채울 수 있는 <b>교양과목 · 비교과 · ELP 인정 항목</b>을 모았어요. 학교 공식 페이지 기준이며, 신청 전 원문을 확인하세요.</p></div>' +
+      '<div class="res-tabs" role="group" aria-label="자료실 분류">' + RES_TABS.map(function(t){
+        return '<button type="button" class="res-tab" data-res="' + t.k + '" aria-pressed="' + (RES_FILTER === t.k) + '">' + t.label + ' <b>' + count(t.k) + '</b></button>';
+      }).join("") + '</div>' +
+      (RES_NOTE[RES_FILTER] ? '<div class="res-note">' + RES_NOTE[RES_FILTER] + '</div>' : '') +
+      (order.length ? order.map(function(k){
+        return '<div class="res-group"><div class="res-gtitle">' + esc(k) + ' <span>' + groups[k].length + '</span></div><ul class="res-list">' + groups[k].map(resItem).join("") + '</ul></div>';
+      }).join("") : '<div class="res-empty">지금 이 분류에서 신청할 수 있는 항목이 없어요.</div>') +
+      (past.length ? '<details class="res-past" data-key="res-past"><summary>📦 지난 운영 사례 ' + past.length + '건 · 다음 개설 참고용</summary><ul class="res-list">' + past.map(resItem).join("") + '</ul></details>' : '') +
+    '</section>';
+  }
+  // 자료실은 분류·날짜·자료가 바뀔 때만 다시 만들고, 갭 보완 목록 뒤에 붙여 둠 (매번 다시 그리면 저사양 폰에서 느려짐)
+  var resNode = null, resKey = "", guidesVer = 0;
+  function mountRes() {
+    var key = RES_FILTER + "|" + isoDay(TODAY) + "|" + guidesVer;
+    if (!resNode) resNode = document.createElement("div");
+    if (key !== resKey) { resNode.innerHTML = resourceHtml(); resKey = key; }
+    el("v-gap").appendChild(resNode);
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest("[data-res]");
+    if (!b) return;
+    RES_FILTER = b.getAttribute("data-res");
+    try { localStorage.setItem("cuk_res", RES_FILTER); } catch (err) {}
+    render();
+    var r = el("res"); if (r) { var t = r.querySelector('[data-res="' + RES_FILTER + '"]'); if (t) t.focus(); }
+  });
+
   function loadGuides() {
     if (!SHEET_API_URL) return;
     fetch(SHEET_API_URL + "?action=guides&t=" + Date.now(), { cache: "no-store" })
       .then(function(r){ return r.json(); })
-      .then(function(list){ if (Array.isArray(list) && list.length) { GAP_GUIDES = list; render(); } })
+      .then(function(list){ if (Array.isArray(list) && list.length) { GAP_GUIDES = list; guidesVer++; render(); } })
       .catch(function(){ /* 기본 가이드 유지 */ });
   }
 
@@ -3080,7 +3251,7 @@
     var unit = isT ? "점" : "";
     var pct = Math.max(5, Math.min(99, Math.round(z.cur / z.need * 100)));
     var steps = ["시험", "교양과목", "비교과"].map(function(step){
-      var rows = GAP_GUIDES.filter(function(g){ return g.target === z.k && g.step === step; });
+      var rows = GAP_GUIDES.filter(function(g){ return g.target === z.k && g.step === step && !guidePast(g); });
       return { step: step, rows: rows };
     }).filter(function(st){ return st.rows.length; });
     // 토익: 마감 전에 성적이 나오려면 언제 시험을 봐야 하는지 (성적 발표까지 보통 2주 안팎)
@@ -3773,6 +3944,7 @@
           '<div class="ge-btns"><button type="button" class="btn-cond" onclick="openProfile()">👤 내 점수 입력하기</button>' +
           '<button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🧪 시연 모드로 체험 (토익 750 · 평점 3.3)</button></div></div>'
         : gapWhy()));
+      mountRes();
     }
     if (skipView !== "v-bookmark") {
       setList("v-bookmark", (bookmarked.length ? '<div class="bm-actions"><button type="button" class="btn-cond" onclick="exportBookmarks()">📅 찜한 공고 ' + bookmarked.length + '건 모두 캘린더에 담기</button><span>마감 3일 전·1일 전 알림이 함께 들어가요 (아이폰·구글·아웃룩 캘린더)</span></div>' : '') + buildList(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>'));
