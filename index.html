@@ -2196,7 +2196,7 @@
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="wrap" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">텍스트 줄 바꿈 (자세히)</span></button>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="hid" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">숨긴 공고 안내</span></button>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="demoMode" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🧪 시연 모드 (가상 공고 포함)</span></button>
-              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="dark" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🌙 어두운 화면 (기기 설정 따름)</span></button>
+              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="darkMode" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🌙 어두운 화면 (켜면 기기 설정을 따름)</span></button>
             </div>
           </div>
         </div>
@@ -2347,7 +2347,7 @@
     </details>
     <details class="help-sec"><summary>🪟 보기 방식 바꾸기</summary>
       <p>오른쪽 위 <b>보기</b>에서 윈도우 탐색기처럼 아주 큰 카드 · 큰 카드 · 보통/작은 카드 · 목록 · 자세히(표) · 타일 · 내용을 고를 수 있어요. PC에서는 <b>세부 정보 창</b>을 켜면 목록 옆에 공고 정보가 함께 보여요. 고른 보기는 이 기기에 기억돼요.</p>
-      <p>기기가 어두운 화면(다크 모드)이면 CUK-콕도 어둡게 바뀌어요. 싫으면 보기 › 표시 › <b>어두운 화면</b>을 끄세요.</p>
+      <p>기본은 밝은 화면이에요. 보기 › 표시 › <b>어두운 화면</b>을 켜면, 기기가 다크 모드일 때 CUK-콕도 어둡게 바뀌어요.</p>
       <p>화면 크기에 맞춰 카드 열 수와 글자 크기가 자동으로 바뀌어요. 휴대폰과 좁은 카드에서는 공유·캘린더 버튼이 아이콘(🔗 📅)만 보이고, 누르는 곳은 손가락 크기(44px)로 넓어요. 두 손가락으로 확대할 수도 있어요.</p>
       <p>웹앱 연결이 잠깐 끊겨도 이 기기에 마지막으로 받은 실제 공고(7일 이내)를 보여 줘요.</p>
     </details>
@@ -3002,7 +3002,7 @@
   // ===== 🌙 어두운 화면: 기기 설정을 따름 (보기 › 표시에서 끌 수 있음) =====
   var darkMQ = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   function applyTheme() {
-    var on = SHOW.dark && darkMQ && darkMQ.matches;
+    var on = SHOW.darkMode && darkMQ && darkMQ.matches;
     if (on) document.documentElement.setAttribute("data-theme", "dark"); else document.documentElement.removeAttribute("data-theme");
   }
   if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener("change", applyTheme);
@@ -3184,7 +3184,7 @@
   // xl=아주 큰 카드(1열) · large=큰 카드(기본) · medium=보통 카드 · small=작은 카드 · list=목록 · details=자세히 · tiles=타일 · content=내용
   var VIEW_MODES = ["xl", "large", "medium", "small", "list", "details", "tiles", "content"];
   var VIEW = "large", PANE = "none";
-  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false, demoMode: false, dark: true };
+  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false, demoMode: false, darkMode: false };   // darkMode: 기본은 밝은 화면
   try {
     var v2 = localStorage.getItem("cuk_view2");
     if (VIEW_MODES.indexOf(v2) > -1) VIEW = v2;
