@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CUK-콕">
   <meta name="theme-color" content="#456A94">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
 
   <!-- 앱 아이콘 (홈 화면에 추가 · 브라우저 탭) — 이 HTML과 같은 폴더에 이미지 파일을 올려두세요 -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -1927,6 +1927,57 @@
     .qver { margin-left: 6px; font-size: 10.5px; font-weight: 700; color: var(--muted); background: var(--line-subtle); border-radius: 4px; padding: 0 5px; }
     .quest-foot { margin-top: 10px; font-size: 12px; color: var(--ink-secondary); border-top: 1px dashed #F5C26B; padding-top: 8px; }
     .quest-foot b { color: #B45309; }
+
+    /* ===================== RFP 반영: 점수 직접 입력 · 시연 모드 · 기한 미기재 · 터치 44px · 다크 ===================== */
+    .ff-hint { font-weight: 500; color: var(--muted); font-size: 11px; margin-left: 4px; }
+    .ff-num { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0 10px; font: inherit; font-size: 14px; background: var(--surface); color: var(--ink); }
+    .ff-num:focus { outline: none; border-color: var(--cuk-accent); }
+    .ff-num:disabled { opacity: .5; }
+    .ff-row { display: flex; gap: 8px; align-items: center; }
+    .ff-row .ff-num { flex: 1; min-width: 0; }
+    .ff-chk { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; white-space: nowrap; cursor: pointer; }
+    .mode-banner, .campus-note, .cache-banner { font-size: 12.5px; border-radius: var(--radius-sm); padding: 8px 12px; line-height: 1.5; }
+    .mode-banner { background: var(--warn-soft); color: var(--warn); }
+    .mode-banner button { margin-left: 6px; border: 1px solid currentColor; background: transparent; color: inherit; border-radius: 99px; padding: 2px 10px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .campus-note { background: var(--cuk-soft); color: var(--ink-secondary); }
+    .cache-banner { background: var(--line-subtle); color: var(--ink-secondary); }
+    .nodue, .bm-actions { grid-column: 1 / -1; }
+    .nodue details { background: var(--surface); border: 1px dashed var(--line); }
+    .nodue summary b { color: var(--cuk-accent); }
+    .nodue-list { list-style: none; padding: 0 !important; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .nodue-list li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; padding: 6px 0; border-top: 1px solid var(--line-subtle); }
+    .nodue-list a { color: var(--ink); font-weight: 600; text-decoration: none; flex: 1 1 220px; min-width: 0; }
+    .nodue-list a:hover { color: var(--cuk-accent); }
+    .nodue-meta { font-size: 12px; color: var(--muted); }
+    .bm-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 10px 14px; }
+    .bm-actions .btn-cond { flex: 0 0 auto; }
+    .bm-actions span { font-size: 12px; color: var(--muted); }
+    /* 휴대폰: 누르는 곳은 44px 이상 (잘못 눌림 방지) */
+    @media (max-width: 600px) {
+      .card .btn-icon { min-height: 44px; min-width: 44px; justify-content: center; padding: 0 10px; }
+      .card .btn-icon .bl { display: none; }   /* 휴대폰: 버튼은 아이콘만 (이름은 길게 누르면 보임) */
+      .card .heart-container { width: 44px; height: 44px; }
+      .qcheck { padding: 9px; margin: -9px; }
+      .link-note a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
+      .card summary { min-height: 44px; }
+      .nodue-list .btn-icon { min-height: 44px; }
+      .similar-link { min-height: 44px; }
+      .cmt-acts button { min-height: 36px; padding: 0 6px; }
+    }
+    /* 어두운 화면: 새로 넣은 부분의 밝은 색 보정 */
+    :root[data-theme="dark"] .quest { background: linear-gradient(180deg, #2A2412 0%, var(--surface) 70%); border-color: #6B5320; }
+    :root[data-theme="dark"] .qtip { background: #3A3016; color: var(--ink-secondary); }
+    :root[data-theme="dark"] .quest-foot { border-top-color: #6B5320; }
+    :root[data-theme="dark"] .help-sec.tips { background: #2A2412; border-color: #6B5320; }
+    :root[data-theme="dark"] .submit-tag.off, :root[data-theme="dark"] .submit-tag.both { background: #3D2412; color: #FDBA74; }
+    :root[data-theme="dark"] .cmt-type.t-후기 { background: #143324; color: #86EFAC; }
+    :root[data-theme="dark"] .cmt-type.t-팁 { background: #3A3016; color: #FCD34D; }
+    :root[data-theme="dark"] .fab.help { background: #2F4A7A; }
+    :root[data-theme="dark"] .card.closed { background: var(--surface); }
+    :root[data-theme="dark"] .site-header { background: var(--surface) !important; border-bottom-color: var(--line) !important; }
+    :root[data-theme="dark"] .site-header h1, :root[data-theme="dark"] .univ-tag { color: var(--ink) !important; }
+    :root[data-theme="dark"] .tab-btn { color: var(--ink-secondary); }
+    :root[data-theme="dark"] .tab-btn[aria-selected="true"] { color: var(--ink); }
   </style>
 </head>
 <body>
@@ -2028,19 +2079,30 @@
           <option value="all" selected>전체 (재학·휴학)</option>
           <option value="enrolled">재학</option>
           <option value="leave">휴학</option>
+          <option value="delay">졸업유예</option>
+          <option value="done">수료</option>
+          <option value="transfer">편입생</option>
+          <option value="intl">외국인 유학생</option>
           <option value="grad">졸업생</option>
         </select>
       </label>
-      <label class="filter-field">직전학기 평점
-        <select id="p-gpa">
-          <option value="all" selected>전체 (평점 무관)</option><option value="2.5">2.5 이상</option><option value="2.8">2.8 이상</option><option value="3.0">3.0 이상</option><option value="3.3">3.3 이상</option><option value="3.5">3.5 이상</option><option value="4.0">4.0 이상</option>
+      <label class="filter-field">캠퍼스
+        <select id="p-campus">
+          <option value="all" selected>전체 캠퍼스</option>
+          <option value="sungsim">성심교정 (부천)</option>
+          <option value="sungui">성의교정 (서울·의대/간호)</option>
+          <option value="sungsin">성신교정 (서울·신학)</option>
         </select>
       </label>
-      <label class="filter-field">어학 (TOEIC)
-        <select id="p-toeic">
-          <option value="all" selected>전체 (어학 무관)</option><option value="0">미보유</option><option>600</option><option>750</option><option>800</option><option>900</option>
-        </select>
+      <label class="filter-field">직전학기 평점 <small class="ff-hint">4.5 만점 · 비우면 무관</small>
+        <input type="number" id="p-gpa" class="ff-num" inputmode="decimal" min="0" max="4.5" step="0.01" placeholder="예: 3.45">
       </label>
+      <div class="filter-field">어학 (TOEIC) <small class="ff-hint">비우면 무관</small>
+        <div class="ff-row">
+          <input type="number" id="p-toeic" class="ff-num" inputmode="numeric" min="10" max="990" step="5" placeholder="예: 765" aria-label="토익 점수">
+          <label class="ff-chk"><input type="checkbox" id="p-toeic-none">없음</label>
+        </div>
+      </div>
       <label class="filter-field">공모전 팀 인원
         <select id="p-team">
           <option value="all" selected>전체 (인원 무관)</option><option value="1">1명(개인)</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option><option value="5">5명</option><option value="6">6명 이상</option>
@@ -2070,6 +2132,9 @@
   <!-- 오른쪽(PC) / 아래쪽(모바일): 공고 목록 -->
   <div class="content" id="content">
   <!-- 시트 연결 전(또는 실패 시) 코드 안의 예시 데이터를 보여줄 때 표시 -->
+  <div class="mode-banner" id="mode-banner" hidden>🧪 <b>시연 모드</b> · 시연용 가상 공고([시연])가 함께 보여요. 실제 모집이 아니에요. <button type="button" onclick="setDemoMode(false)">시연 모드 끄기</button></div>
+  <div class="campus-note" id="campus-note" hidden></div>
+  <div class="cache-banner" id="cache-banner" hidden></div>
   <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.<span id="demo-why"></span></div>
 
   <!-- 공고 분류: 1단계 대분류(교내/교외) + 2단계 중분류(분야) — 본문 위 가운데 -->
@@ -2130,7 +2195,8 @@
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="side" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">조건 사이드바 (PC)</span></button>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="wrap" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">텍스트 줄 바꿈 (자세히)</span></button>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="hid" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">숨긴 공고 안내</span></button>
-              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="demo" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">'시연용 예시' 표시</span></button>
+              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="demoMode" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🧪 시연 모드 (가상 공고 포함)</span></button>
+              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="dark" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🌙 어두운 화면 (기기 설정 따름)</span></button>
             </div>
           </div>
         </div>
@@ -2232,7 +2298,7 @@
   <div class="modal-body help-body">
     <details class="help-sec" open><summary>🚀 처음이라면 이렇게 시작하세요</summary>
       <ol class="help-steps">
-        <li><b>내 조건 설정</b> — 왼쪽(모바일은 하단 ⚙️ 내 조건)에서 학년·학적·평점·토익·팀 인원을 고르고 <b>💾 이 조건 저장</b>을 누르세요. 다음에 열 때도 그대로예요.</li>
+        <li><b>내 조건 설정</b> — 왼쪽(모바일은 하단 ⚙️ 내 조건)에서 학년·학적·캠퍼스·팀 인원을 고르고, 평점(예: 3.45)과 토익(예: 765)은 <b>숫자 그대로</b> 적으세요. 토익이 없으면 '없음'에 체크. <b>💾 이 조건 저장</b>을 누르면 다음에도 그대로예요.</li>
         <li><b>바로 지원</b> 탭에서 지금 지원할 수 있는 공고를 마감 임박순으로 확인하세요.</li>
         <li>마음에 드는 공고는 <b>♡ 찜</b>, 마감일은 <b>📅 캘린더</b>로 내 일정에 넣어 두세요.</li>
       </ol>
@@ -2241,14 +2307,14 @@
       <dl class="help-dl">
         <dt>✨ 바로 지원</dt><dd>내 조건을 모두 만족하는 접수 중인 공고예요.</dd>
         <dt>🎯 갭 보완</dt><dd>평점·토익이 <b>조금만</b> 모자란 공고예요. 아래 <b>🎯 갭 보완 퀘스트</b>에서 자세히 설명해요.</dd>
-        <dt>💗 보관함</dt><dd>하트(찜)를 누른 공고만 모아 봐요. 이 기기에만 저장돼요.</dd>
+        <dt>💗 보관함</dt><dd>하트(찜)를 누른 공고만 모아 봐요. <b>📅 찜한 공고 모두 캘린더에 담기</b>를 누르면 마감 3일 전·1일 전 알림까지 한 번에 내 캘린더에 들어가요.</dd>
         <dt>📅 마감 달력</dt><dd>날짜별 마감 건수를 달력으로 보여 줘요. 날짜를 누르면 그날 마감 공고와 바로가기가 나와요. 하단 메뉴의 숫자는 <b>오늘 마감</b> 건수예요.</dd>
         <dt>📦 지난 공고</dt><dd>마감된 공고를 1년 동안 모아 둬요. 작년 주제·혜택·서류를 보고 다음 회차를 미리 준비하세요.</dd>
       </dl>
     </details>
     <details class="help-sec"><summary>🎯 갭 보완 퀘스트 활용법</summary>
       <ol class="help-steps">
-        <li><b>내 점수 넣기</b> — 내 조건에서 <b>직전학기 평점</b>과 <b>어학(TOEIC)</b>을 고르세요. 점수를 넣어야 갭 보완 공고가 나와요. 먼저 둘러보려면 갭 보완 탭의 <b>🎮 시연용 점수로 체험</b>(토익 750 · 평점 3.3)을 누르세요.</li>
+        <li><b>내 점수 넣기</b> — 내 조건에서 <b>직전학기 평점</b>과 <b>토익</b>을 숫자로 적으세요 (예: 3.45 · 765). 점수를 넣어야 갭 보완 공고가 나와요. 먼저 둘러보려면 갭 보완 탭의 <b>🧪 시연 모드로 체험</b>(토익 750 · 평점 3.3)을 누르세요.</li>
         <li><b>게이지 보기</b> — "교환학생까지 TOEIC +50점"처럼 남은 점수와 달성률이 보여요. 차이가 너무 크면(토익 200점·평점 0.5 초과) 목록에 나오지 않아요.</li>
         <li><b>이렇게 채우면 돼요</b> — ① 📝 시험 일정(마감 전에 성적이 나오려면 언제 시험을 봐야 하는지) ② 📚 교내 교양과목 ③ 🏃 교내 비교과를 링크와 함께 알려 줘요.</li>
         <li><b>퀘스트 체크</b> — 한 단계를 마치면 번호 동그라미를 눌러 ✓로 바꾸세요. "퀘스트 1/3 완료"처럼 진행도가 이 기기에 저장돼요.</li>
@@ -2275,12 +2341,15 @@
         <dt>📮 오프라인 접수</dt><dd>우편·방문 접수는 주황 경고가 붙어요. 우편은 <b>소인 날짜</b>, 방문은 <b>마감 시각</b>을 꼭 확인하세요.</dd>
         <dt>🔗 공유 · 💬 댓글</dt><dd>카카오톡·문자·메일로 공유하고, 공고마다 질문·후기·팁을 남길 수 있어요.</dd>
         <dt>🏠 기관 홈페이지 링크</dt><dd>공고로 바로 가지 않는 링크는 '공고 검색' 버튼으로 찾아갈 수 있어요.</dd>
-        <dt>🧪 시연용 예시</dt><dd>제목에 <b>[시연]</b>이 붙거나 주황색 '시연용 예시' 태그가 있는 공고는 기능 시연용 <b>가상 공고</b>예요. 실제로 모집하지 않아요.</dd>
+        <dt>🧪 시연 모드</dt><dd>제목에 <b>[시연]</b>이 붙은 공고는 기능 시연용 <b>가상 공고</b>예요. 평소에는 숨겨져 있고, 보기 › 표시 › <b>시연 모드</b>를 켤 때만 보여요.</dd>
+        <dt>📌 기한 미기재·상시</dt><dd>학교 공지 중 마감일이 적혀 있지 않은 글은 바로 지원 맨 위 묶음에 모아 둬요. 원문에서 기한을 확인하세요.</dd>
       </dl>
     </details>
     <details class="help-sec"><summary>🪟 보기 방식 바꾸기</summary>
       <p>오른쪽 위 <b>보기</b>에서 윈도우 탐색기처럼 아주 큰 카드 · 큰 카드 · 보통/작은 카드 · 목록 · 자세히(표) · 타일 · 내용을 고를 수 있어요. PC에서는 <b>세부 정보 창</b>을 켜면 목록 옆에 공고 정보가 함께 보여요. 고른 보기는 이 기기에 기억돼요.</p>
-      <p>화면 크기에 맞춰 카드 열 수와 글자 크기가 자동으로 바뀌어요. 카드가 좁으면 공유·캘린더 버튼은 아이콘(🔗 📅)만 보여요. 휴대폰에서는 두 손가락으로 확대할 수 있어요.</p>
+      <p>기기가 어두운 화면(다크 모드)이면 CUK-콕도 어둡게 바뀌어요. 싫으면 보기 › 표시 › <b>어두운 화면</b>을 끄세요.</p>
+      <p>화면 크기에 맞춰 카드 열 수와 글자 크기가 자동으로 바뀌어요. 휴대폰과 좁은 카드에서는 공유·캘린더 버튼이 아이콘(🔗 📅)만 보이고, 누르는 곳은 손가락 크기(44px)로 넓어요. 두 손가락으로 확대할 수도 있어요.</p>
+      <p>웹앱 연결이 잠깐 끊겨도 이 기기에 마지막으로 받은 실제 공고(7일 이내)를 보여 줘요.</p>
     </details>
     <details class="help-sec"><summary>💬 댓글 · 정보 공유방</summary>
       <p>공고 카드의 <b>💬 댓글</b>에서 "참여해 보신 분 계신가요?" 같은 질문이나 후기·팁을 남길 수 있어요. 오른쪽 아래 💬 버튼은 공고와 상관없는 <b>자유 정보 공유방</b>이에요.</p>
@@ -2449,7 +2518,7 @@
   }
 
   var FIELD = {hum:"인문·사회", biz:"경영·경제", sci:"자연·공학", art:"예체능"};
-  var STATUS = {enrolled:"재학", leave:"휴학", grad:"졸업생"};
+  var STATUS = {enrolled:"재학", leave:"휴학", grad:"졸업생", delay:"졸업유예", done:"수료", transfer:"편입생", intl:"외국인 유학생"};
 
   // 하트 SVG (Uiverse heart-container 마크업)
   var HEART_PATH_OUTLINE = "M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z";
@@ -2885,12 +2954,74 @@
   };
 
   var uid = 0;
-  // 시연: 내 점수를 '토익 750 · 평점 3.3'으로 잠깐 바꿔 갭 보완 화면을 체험 (저장하지 않음)
+  // ===== 내 점수 읽기 (직접 입력: 평점 0.01 · 토익 5점 단위) =====
+  function readGpa() {
+    var v = String(el("p-gpa").value || "").trim();
+    if (v === "") return null;
+    var g = parseFloat(v);
+    return isFinite(g) ? Math.max(0, Math.min(4.5, g)) : null;
+  }
+  function readToeic() {
+    if (el("p-toeic-none").checked) return 0;            // 토익 없음
+    var v = String(el("p-toeic").value || "").trim();
+    if (v === "") return null;                           // 비우면 무관
+    var t = parseInt(v, 10);
+    return isFinite(t) ? Math.max(0, Math.min(990, t)) : null;
+  }
+
+  // ===== 🧪 시연 모드: 가상 공고([시연])는 이 모드에서만 =====
+  window.setDemoMode = function(on) {
+    SHOW.demoMode = !!on;
+    saveViewState(); applyViewClasses(); render();
+    showToast(on ? "🧪 시연 모드: 가상 공고가 함께 보여요" : "시연 모드를 껐어요. 실제 공고만 보여요");
+  };
+
+  // ===== 📅 찜한 공고 한 번에 캘린더로 (.ics, 마감 3일 전·1일 전 알림) =====
+  window.exportBookmarks = function() {
+    var items = bookmarks.map(function(id){ return CARD[id]; }).filter(function(x){ return x && !x.closed; });
+    if (!items.length) { showToast("캘린더에 담을 찜 공고가 없어요"); return; }
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CUK-KOK//Bookmarks//KO", "X-WR-CALNAME:CUK-콕 찜한 공고 마감"];
+    items.forEach(function(x){
+      var n = x.n, due = x.due, next = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
+      lines.push("BEGIN:VEVENT", "UID:" + n.id + "-" + ymd(due) + "@cuk-kok",
+        "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
+        "SUMMARY:[마감] " + n.t, "DTSTART;VALUE=DATE:" + ymd(due), "DTEND;VALUE=DATE:" + ymd(next),
+        "DESCRIPTION:" + calDetails(n).replace(/\n/g, "\\n"));
+      if (n.url) lines.push("URL:" + n.url);
+      lines.push("BEGIN:VALARM", "TRIGGER:-P3D", "ACTION:DISPLAY", "DESCRIPTION:3일 뒤 마감: " + n.t, "END:VALARM",
+        "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:내일 마감: " + n.t, "END:VALARM", "END:VEVENT");
+    });
+    lines.push("END:VCALENDAR");
+    var blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "CUK-콕_찜한공고_" + items.length + "건.ics"; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    showToast("📅 찜한 공고 " + items.length + "건을 캘린더 파일로 받았어요. 열면 한 번에 등록돼요");
+  };
+
+  // ===== 🌙 어두운 화면: 기기 설정을 따름 (보기 › 표시에서 끌 수 있음) =====
+  var darkMQ = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function applyTheme() {
+    var on = SHOW.dark && darkMQ && darkMQ.matches;
+    if (on) document.documentElement.setAttribute("data-theme", "dark"); else document.documentElement.removeAttribute("data-theme");
+  }
+  if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener("change", applyTheme);
+
+  // ===== 캠퍼스 안내: 성의·성신교정 전용 공지는 아직 수집 전 =====
+  function updateCampusNote() {
+    var c = el("p-campus").value, box = el("campus-note");
+    var name = { sungui: "성의교정", sungsin: "성신교정" }[c];
+    box.hidden = !name;
+    if (name) box.innerHTML = "🏫 <b>" + name + "</b> 전용 게시판 공지는 아직 모으지 않아요. 지금은 <b>학교 공통 공지</b>와 외부 공고만 보여요.";
+  }
+
+  // 시연: 시연 모드를 켜고 내 점수를 '토익 750 · 평점 3.3'으로 잠깐 바꿔 갭 보완 화면을 체험 (저장하지 않음)
   window.tryDemoScores = function() {
-    el("p-toeic").value = "750"; el("p-gpa").value = "3.3";
+    el("p-toeic").value = "750"; el("p-toeic-none").checked = false; el("p-gpa").value = "3.3";
+    SHOW.demoMode = true; saveViewState(); applyViewClasses();
     render();
     updateSavedBadge();
-    showToast("🎮 시연용 점수(토익 750 · 평점 3.3)로 보여 드려요. '전체 보기'로 되돌릴 수 있어요");
+    showToast("🧪 시연 모드 + 시연용 점수(토익 750 · 평점 3.3)로 보여 드려요. '전체 보기'로 되돌릴 수 있어요");
   };
 
   // ===== 🎯 갭 보완 퀘스트 (게임형) =====
@@ -3053,7 +3184,7 @@
   // xl=아주 큰 카드(1열) · large=큰 카드(기본) · medium=보통 카드 · small=작은 카드 · list=목록 · details=자세히 · tiles=타일 · content=내용
   var VIEW_MODES = ["xl", "large", "medium", "small", "list", "details", "tiles", "content"];
   var VIEW = "large", PANE = "none";
-  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false };
+  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false, demoMode: false, dark: true };
   try {
     var v2 = localStorage.getItem("cuk_view2");
     if (VIEW_MODES.indexOf(v2) > -1) VIEW = v2;
@@ -3121,6 +3252,7 @@
     el("page-wrap").classList.toggle("no-side", !SHOW.side);
     el("hid").style.display = SHOW.hid ? "" : "none";
     document.body.classList.toggle("hide-demo", !SHOW.demo);
+    applyTheme();
   }
 
   // 세부 정보 창 내용: 공고의 속성을 표처럼 정리 (탐색기 '세부 정보 창'처럼)
@@ -3175,8 +3307,7 @@
     var gv = el("p-grade").value, g = gv === "all" ? null : +gv;
     var f = el("p-field").value;
     var s = el("p-status").value;
-    var gpaV = el("p-gpa").value, gpa = gpaV === "all" ? null : +gpaV;
-    var toeicV = el("p-toeic").value, toeic = toeicV === "all" ? null : +toeicV;
+    var gpa = readGpa(), toeic = readToeic();
     var teamV = el("p-team").value, team = teamV === "all" ? null : +teamV;
     var query = (el("live-search").value || "").trim().toLowerCase();
     var sortOpt = el("sort-select").value;
@@ -3190,7 +3321,12 @@
     var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0, pastAll = [];
     function hide(r){ hidden[r] = (hidden[r] || 0) + 1; }
 
+    var demoHidden = 0, noDue = [];
     N.forEach(function(n) {
+      // 시연용 가상 공고: 시연 모드에서만 (웹앱에 연결 못 해 예시 데이터만 있을 때는 그대로 보여 줌)
+      if (n.demo === true && !SHOW.demoMode && !usingFallback) { demoHidden++; return; }
+      // 기한 미기재·상시 공고: 따로 묶어서 보여 줌
+      if (n.noDue) { noDue.push(n); return; }
       // 날짜 안전 파싱
       var due;
       if (Array.isArray(n.due) && n.due.length >= 3) {
@@ -3235,10 +3371,12 @@
       var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
 
       if (g !== null && grades.indexOf(g) < 0) { hide("학년 조건"); return; }
-      if (s === "grad") {
+      if (s === "transfer" || s === "intl") s = "enrolled";   // 편입생·외국인 유학생 = 재학생 기준
+      if (s === "grad" || s === "delay" || s === "done") {
         // 졸업생: 공고에 졸업생 허용이 있거나, '누구나·일반인·청년' 대상 공고만
         var openText = [n.q || "", n.t || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
-        if (status.indexOf("grad") < 0 && !/(누구나|일반인|청년|졸업생|졸업자|제한 없음)/.test(openText)) { hide("학적 조건"); return; }
+        var okWords = s === "grad" ? /(누구나|일반인|청년|졸업생|졸업자|제한 없음)/ : /(누구나|일반인|청년|졸업유예|수료|제한 없음)/;
+        if (status.indexOf(s) < 0 && !okWords.test(openText)) { hide("학적 조건"); return; }
       } else if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건"); return; }
       if (f !== "all" && n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건"); return; }
       if (team !== null) {
@@ -3248,7 +3386,7 @@
       x.offCat = ints.indexOf(n.cat) < 0;   // 분야 칩은 건수를 센 뒤에 거름
 
       var short = [];
-      if (gpa !== null && n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(1), big:(n.gpa - gpa) > 0.5 });
+      if (gpa !== null && n.gpa && gpa < n.gpa) short.push({ k:"평점", cur:gpa, need:n.gpa, diff:+(n.gpa - gpa).toFixed(2), big:(n.gpa - gpa) > 0.5 });
       if (toeic !== null && n.toeic && toeic < n.toeic) short.push({ k:"토익", cur:toeic, need:n.toeic, diff:n.toeic - toeic, big:(n.toeic - toeic) > 200 });
 
       x.short = short;
@@ -3356,8 +3494,10 @@
     var hidParts = Object.keys(hidden).map(function(k){ return k + " " + hidden[k] + "건"; })
       .concat(off ? ["관심 분야 밖 " + off + "건"] : [])
       .concat(unverifiedHidden ? ["검토중이라 숨김 " + unverifiedHidden + "건"] : [])
-      .concat(d5Hidden ? ["D-5 밖 " + d5Hidden + "건"] : []);
-    var hidTotal = ht + off + unverifiedHidden + d5Hidden;
+      .concat(d5Hidden ? ["D-5 밖 " + d5Hidden + "건"] : [])
+      .concat(demoHidden ? ["시연용 가상 공고 " + demoHidden + "건 (보기 › 표시 › 시연 모드)"] : []);
+    var hidTotal = ht + off + unverifiedHidden + d5Hidden + demoHidden;
+    el("mode-banner").hidden = !(SHOW.demoMode && !usingFallback);
     el("hid").textContent = hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음";
     el("vf-chip").hidden = !SHOW.verifiedOnly;
 
@@ -3514,18 +3654,43 @@
       [].forEach.call(box.querySelectorAll("details"), function(d){ if (open[d.getAttribute("data-key")]) d.open = true; });
     }
 
+    // 기한 미기재·상시 공고 (검색·구분·분야·검증 조건만 적용)
+    var nd = noDue.filter(function(n){
+      if (query && (n.t + " " + (n.benefit || "") + " " + (n.cat || "")).toLowerCase().indexOf(query) === -1) return false;
+      if (SCOPE !== "all" && scopeOf(n) !== SCOPE) return false;
+      if (SHOW.verifiedOnly && n.verified !== true) return false;
+      return ints.indexOf(n.cat) > -1;
+    });
+    function noDueHtml() {
+      if (!nd.length) return "";
+      return '<section class="nodue"><details data-key="nodue"><summary><span>📌 기한 미기재·상시 공고 <b>' + nd.length + '건</b> — 마감일이 공지에 없어요. 원문에서 확인하세요</span></summary><ul class="nodue-list">' +
+        nd.map(function(n){
+          return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a>' +
+            '<span class="nodue-meta">' + srcLabel(n) + (n.benefit && !/(원문|없음|확인 필요|미확인)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</span>' + cmtButton(n) + '</li>';
+        }).join("") + '</ul></details></section>';
+    }
+    // 갭 보완이 비었을 때 이유 (점수를 넣었는데 0건)
+    function gapWhy() {
+      var withReq = N.filter(function(n){ return !n.noDue && !n.demo && ((gpa !== null && n.gpa) || (toeic !== null && n.toeic)); }).length;
+      var bigN = hidden["조건 차이가 큼"] || 0;
+      return '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div>지금 공고 중 <b>평점·토익 조건이 있는 공고는 ' + withReq + '건</b>이에요.<br>' +
+        (bigN ? '그중 <b>' + bigN + '건</b>은 차이가 커서(토익 200점·평점 0.5 초과) 숨겼어요. ' : '') +
+        '조금만 모자란 공고가 생기면 여기에 퀘스트로 보여 드려요.' +
+        (usingFallback || SHOW.demoMode ? '' : '<div class="ge-btns"><button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🧪 시연 모드로 퀘스트 체험</button></div>') + '</div>';
+    }
+
     if (skipView !== "v-feed") {
-      setList("v-feed", buildList(feed, '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 › 표시에서 끄면 검토중 공고도 보여요.</small>' : '') + '</div>'));
+      setList("v-feed", noDueHtml() + buildList(feed, '<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 › 표시에서 끄면 검토중 공고도 보여요.</small>' : '') + '</div>'));
     }
     if (skipView !== "v-gap") {
       setList("v-gap", buildList(gaps, (gpa === null && toeic === null)
         ? '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div><b>내 평점·토익 점수를 넣으면</b> 조금만 채우면 지원할 수 있는 공고와 채우는 방법(퀘스트)을 보여 드려요.' +
           '<div class="ge-btns"><button type="button" class="btn-cond" onclick="openProfile()">👤 내 점수 입력하기</button>' +
-          '<button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🎮 시연용 점수로 체험 (토익 750 · 평점 3.3)</button></div></div>'
-        : '<div class="empty-state">현재 조건에서 근접한 갭 보완 공고가 없습니다.' + (SHOW.verifiedOnly ? '<br><small>검증된 공고만 보는 중이에요.</small>' : '') + '</div>'));
+          '<button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🧪 시연 모드로 체험 (토익 750 · 평점 3.3)</button></div></div>'
+        : gapWhy()));
     }
     if (skipView !== "v-bookmark") {
-      setList("v-bookmark", buildList(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>'));
+      setList("v-bookmark", (bookmarked.length ? '<div class="bm-actions"><button type="button" class="btn-cond" onclick="exportBookmarks()">📅 찜한 공고 ' + bookmarked.length + '건 모두 캘린더에 담기</button><span>마감 3일 전·1일 전 알림이 함께 들어가요 (아이폰·구글·아웃룩 캘린더)</span></div>' : '') + buildList(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>'));
     }
     if (skipView !== "v-past") {
       setList("v-past", buildList(past, '<div class="empty-state">고른 분야·구분에 마감된 공고가 아직 없어요.<br><small>공고는 마감 후 1년 동안 이곳에 모여요.</small></div>'));
@@ -3761,6 +3926,22 @@
     showToast(SHOW.d5 ? "⏰ 마감 5일 이내 공고만 보여요" : "전체 마감 일정으로 돌아왔어요");
   });
 
+  // 점수 칸: 입력하면 잠깐 기다렸다가 다시 그림 · 범위를 벗어나면 맞춰 줌
+  var numTimer = null;
+  ["p-gpa", "p-toeic"].forEach(function(id){
+    el(id).addEventListener("input", function(){ clearTimeout(numTimer); numTimer = setTimeout(function(){ render(); updateSavedBadge(); }, 300); });
+    el(id).addEventListener("change", function(){
+      var v = String(this.value || "").trim(); if (v === "") return;
+      var max = id === "p-gpa" ? 4.5 : 990, num = parseFloat(v);
+      if (!isFinite(num) || num < 0 || num > max) { this.value = isFinite(num) ? Math.max(0, Math.min(max, num)) : ""; showToast(id === "p-gpa" ? "평점은 0~4.5 사이로 적어 주세요" : "토익은 10~990 사이로 적어 주세요"); render(); }
+    });
+  });
+  el("p-toeic-none").addEventListener("change", function(){
+    el("p-toeic").disabled = this.checked; if (this.checked) el("p-toeic").value = "";
+    render(); updateSavedBadge();
+  });
+  el("p-campus").addEventListener("change", updateCampusNote);
+
   // 분야 "전체" 칩: 누르면 모든 분야를 켜거나 끔 / 개별 분야가 모두 켜지면 자동으로 체크
   var interestBoxes = [].slice.call(document.querySelectorAll("input[name='interest']"));
   function syncInterestAll() {
@@ -3775,21 +3956,34 @@
 
   // ===== 내 조건 저장 (기기·브라우저별, localStorage) =====
   // 처음 방문하면 모든 조건이 "전체". 저장해 두면 다음에 열 때 그 조건으로 시작해요.
-  var PROFILE_IDS = ["p-grade", "p-field", "p-status", "p-gpa", "p-toeic", "p-team"];
+  var PROFILE_IDS = ["p-grade", "p-field", "p-status", "p-campus", "p-gpa", "p-toeic", "p-team"];
   var PROFILE_KEY = "cuk_profile";
 
   function currentProfile() {
     var p = {};
     PROFILE_IDS.forEach(function(id){ p[id] = el(id).value; });
+    // 점수: 비우면 "all"(무관), 토익 없음이면 "0"
+    p["p-gpa"] = String(el("p-gpa").value || "").trim() || "all";
+    p["p-toeic"] = el("p-toeic-none").checked ? "0" : (String(el("p-toeic").value || "").trim() || "all");
     p.interests = interestBoxes.filter(function(b){ return b.checked; }).map(function(b){ return b.value; });
     return p;
   }
   function applyProfile(p) {
     PROFILE_IDS.forEach(function(id){
       var sel = el(id);
+      if (!p || p[id] == null) return;
+      if (id === "p-gpa" || id === "p-toeic") return;   // 숫자 칸은 아래에서
       // 저장된 값이 지금 선택지에 있을 때만 적용 (선택지가 바뀌어도 오류 없이)
-      if (p && p[id] != null && [].some.call(sel.options, function(o){ return o.value === String(p[id]); })) sel.value = String(p[id]);
+      if ([].some.call(sel.options, function(o){ return o.value === String(p[id]); })) sel.value = String(p[id]);
     });
+    if (p) {
+      var g = p["p-gpa"], t = p["p-toeic"];
+      el("p-gpa").value = g != null && g !== "all" ? g : "";
+      el("p-toeic-none").checked = String(t) === "0";
+      el("p-toeic").value = t != null && t !== "all" && String(t) !== "0" ? t : "";
+      el("p-toeic").disabled = el("p-toeic-none").checked;
+    }
+    updateCampusNote();
     if (p && Array.isArray(p.interests)) {
       interestBoxes.forEach(function(b){ b.checked = p.interests.indexOf(b.value) > -1; });
     }
@@ -3821,7 +4015,9 @@
     showToast("👤 저장한 조건으로 보여줘요");
   });
   el("btn-cond-all").addEventListener("click", function(){
-    PROFILE_IDS.forEach(function(id){ el(id).value = "all"; });
+    PROFILE_IDS.forEach(function(id){ if (id !== "p-gpa" && id !== "p-toeic") el(id).value = "all"; });
+    el("p-gpa").value = ""; el("p-toeic").value = ""; el("p-toeic-none").checked = false; el("p-toeic").disabled = false;
+    updateCampusNote();
     interestBoxes.forEach(function(b){ b.checked = true; });
     syncInterestAll();
     render();
@@ -4022,6 +4218,28 @@
   var lastFetch = 0;
   var loading = false;
 
+  // 웹앱 연결이 잠깐 끊겨도 마지막으로 받은 실제 데이터를 보여 줌 (이 기기에만, 7일까지)
+  var CACHE_KEY = "cuk_cache_v1", cacheAt = 0;
+  function useCache() {
+    try {
+      var c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+      if (!c || !Array.isArray(c.data) || !c.data.length || Date.now() - c.t > 7 * 86400000) return false;
+      N = c.data; usingFallback = false; cacheAt = c.t; lastJSON = JSON.stringify(c.data);
+      el("demo-banner").style.display = "none";
+      return true;
+    } catch (e) { return false; }
+  }
+  function cacheNote(on) {
+    var b = el("cache-banner");
+    if (!b) return;
+    b.hidden = !on;
+    if (on) {
+      var h = Math.max(1, Math.round((Date.now() - cacheAt) / 3600000));
+      b.textContent = "📦 웹앱에 연결하지 못해, " + (h < 24 ? h + "시간" : Math.round(h / 24) + "일") + " 전에 받은 실제 공고를 보여 주고 있어요.";
+    }
+  }
+  if (useCache()) { setBasisDate(true); render(); }
+
   function loadSheet() {
     if (!SHEET_API_URL || !SHEET_API_URL.startsWith("https://script.google.com") || loading) return;
     loading = true;
@@ -4041,11 +4259,14 @@
         N = data;
         usingFallback = false;
         el("demo-banner").style.display = "none";
+        cacheAt = Date.now(); cacheNote(false);
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: cacheAt, data: data })); } catch (e) {}
         setBasisDate(true);
         render();
       })
       .catch(function(err) {
         console.warn("시트 API 연동 실패 (기존 데이터 유지):", err);
+        if (!usingFallback && cacheAt) cacheNote(true);
         if (usingFallback) {
           var why = el("demo-why");
           if (why) why.textContent = " (이유: " + (err && err.message && !/Failed to fetch|NetworkError|Load failed/i.test(err.message) ? err.message : "웹앱에 연결하지 못했어요") + ")";
