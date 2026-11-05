@@ -693,6 +693,8 @@
       color: var(--muted);
     }
     /* 시연 데이터 · AI 안내 · 출처 */
+    .src-note { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+    .src-note a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
     .tag.demo { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
     .demo-banner {
       font-size: 12.5px;
@@ -2281,7 +2283,7 @@
   <!-- 서비스 정보: AI 활용 · 데이터 출처 · 오픈소스 라이선스 -->
   <footer class="site-footer">
     <h4>⚠️ AI 요약 안내</h4>
-    공고 요약·자격 조건·필요 서류·마감일은 AI가 원문을 읽고 자동으로 정리한 내용이라 틀릴 수 있어요. 지원 전에 반드시 원문 공고를 확인하세요.
+    <b>AI가 정리한 정보이니 원문을 꼭 확인하세요.</b> 공고 요약·자격 조건·필요 서류·마감일은 AI가 원문을 읽고 자동으로 정리한 내용이라 틀릴 수 있어요.
     추천은 지원 자격을 바탕으로 한 <b>참고 정보</b>이며 선발을 보장하지 않아요. 최종 판단은 원문 공고를 보고 직접 해 주세요.
     <h4>🤖 AI 활용</h4>
     <ul>
@@ -2290,7 +2292,8 @@
     </ul>
     <h4>📂 데이터 출처</h4>
     <ul>
-      <li>가톨릭대학교 공지사항 공개 게시판 (제목·링크만 저장, 원문으로 연결)</li>
+      <li>가톨릭대학교 공지사항 공개 게시판 — 제목·링크·마감일과 AI 요약을 제공하고, 공고마다 "출처: 가톨릭대학교 공지사항"과 원문 링크를 함께 표시해요 (교수학습개발원 활용 확인, 2026.11.5)</li>
+      <li>학교 공지 수집 원칙: 하루 1회, 요청 사이 간격 유지 · 수집할 때마다 <a href="https://www.catholic.ac.kr/robots.txt" target="_blank" rel="noopener">robots.txt</a>를 다시 확인하고 제한된 경로(/_attach/, /_custom/, /_res/ 등)는 가져오지 않음 · 명단 등 개인정보가 담긴 부분은 AI에 넣지 않고 요약에도 보여 주지 않음</li>
       <li>국가기관 공지 게시판 (문화체육관광부·고용노동부·보건복지부 등, 공공저작물 · 제목·링크만 저장, 원문으로 연결)</li>
       <li><a href="https://www.data.go.kr/data/15028252/fileData.do" target="_blank" rel="noopener">한국장학재단_학자금지원정보(대학생)</a> · 공공데이터포털 (이용허락범위 제한 없음)</li>
       <li>'시연용 예시' 표시가 붙은 공고는 서비스 시연을 위해 만든 가상 데이터예요</li>
@@ -2910,7 +2913,7 @@
       var sd = new Date(+p[0], +p[1], +p[2]);
       var items = byDay[calSel];
       detail = '<div class="cal-detail-title">' + (sd.getMonth() + 1) + '월 ' + sd.getDate() + '일 (' + WD[sd.getDay()] + ') 마감 · ' + items.length + '건</div>' +
-        '<div class="ai-note" style="margin-bottom:8px;">🤖 요약은 AI가 정리한 참고용이에요. 지원 전 원문 공고를 꼭 확인하세요.</div>' +
+        '<div class="ai-note" style="margin-bottom:8px;">🤖 AI가 정리한 정보이니 원문을 꼭 확인하세요.</div>' +
         items.map(function(it) {
           var n = it.x.n;
           var desc = (Array.isArray(n.sum) && n.sum.length) ? n.sum[0] : (n.q || "");
@@ -2931,6 +2934,7 @@
                   '<a class="cal-link" href="' + esc(searchUrl(n)) + '" target="_blank" rel="noopener">🔎 공고 검색</a>' +
                   '<a class="cal-link ghost" href="' + esc(n.url) + '" target="_blank" rel="noopener">기관 홈페이지 ↗</a>' +
                 '</div>') : '') +
+            srcNote(n) +
           '</div>';
         }).join("");
     } else {
@@ -3388,7 +3392,9 @@
     return '<details data-key="' + esc(id) + '"><summary><span><span class="sl-long">핵심 요약 & </span>서류 체크 (' + checkedCount + '/' + docsList.length + ' 완료)</span></summary>' +
       '<div class="doc-progress-bar"><div class="doc-progress-fill" style="width:' + pct + '%;"></div></div>' +
       '<div class="sum-content">' +
-        '<div class="ai-note">🤖 <b>AI 요약은 참고용이에요.</b> AI(Claude)가 원문을 읽고 정리한 내용이라 틀릴 수 있으니 마감일·자격 조건은 꼭 원문 공고에서 확인하세요. 추천은 선발을 보장하지 않아요.</div>' +
+        '<div class="ai-note">🤖 <b>AI가 정리한 정보이니 원문을 꼭 확인하세요.</b> AI(Claude)가 원문을 읽고 정리한 내용이라 틀릴 수 있어요. 마감일·자격 조건은 원문 공고에서 확인하세요. 추천은 선발을 보장하지 않아요.' +
+          (n.url ? ' <a href="' + esc(n.url) + '" target="_blank" rel="noopener">원문 공고 ↗</a>' : '') + '</div>' +
+        srcNote(n) +
         '<div class="sum-block"><div class="sum-block-title"><i>1</i>3줄 핵심 요약 · AI 생성</div><ul>' + sumList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' +
         '<div class="sum-block req"><div class="sum-block-title"><i>2</i>필수 지원 자격 <em>못 갖추면 지원 불가</em></div><ul class="req-list">' +
           reqList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") +
@@ -3424,6 +3430,15 @@
   try { SCOPE = ["all", "in", "out"].indexOf(localStorage.getItem("cuk_scope")) > -1 ? localStorage.getItem("cuk_scope") : "all"; } catch (e) {}
   function scopeOf(n) { return String(n.src || "교내") === "교내" ? "in" : "out"; }
   function srcLabel(n) { return scopeOf(n) === "in" ? "교내" : "교외"; }
+  // 학교 홈페이지(catholic.ac.kr) 공지에서 가져온 공고인지 — 교수학습개발원 회신(2026.11.5)에 따라 출처·원문 링크를 함께 표시
+  function isCukNotice(n) {
+    var m = /^https?:\/\/([^\/?#]+)/i.exec(String(n && n.url || ""));
+    return !!m && /(^|\.)catholic\.ac\.kr$/i.test(m[1]);
+  }
+  function srcNote(n) {
+    if (!isCukNotice(n)) return "";
+    return '<div class="src-note">출처: 가톨릭대학교 공지사항 · <a href="' + esc(n.url) + '" target="_blank" rel="noopener">원문 보기 ↗</a></div>';
+  }
   // xl=아주 큰 카드(1열) · large=큰 카드(기본) · medium=보통 카드 · small=작은 카드 · list=목록 · details=자세히 · tiles=타일 · content=내용
   var VIEW_MODES = ["xl", "large", "medium", "small", "list", "details", "tiles", "content"];
   var VIEW = "large", PANE = "none";
@@ -3538,7 +3553,8 @@
         (lt !== "직접" ? '<a class="cal-link ghost" href="' + esc(searchUrl(n)) + '" target="_blank" rel="noopener">🔎 공고 검색</a>' : '') +
         '<button type="button" class="cal-link ghost" onclick="openComments(\'' + esc(n.id) + '\')">💬 댓글 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>' +
       '</div>' +
-      '<div class="ai-note">🤖 AI가 정리한 정보예요. 지원 전 원문 공고를 꼭 확인하세요.</div>' +
+      '<div class="ai-note">🤖 AI가 정리한 정보이니 원문을 꼭 확인하세요.</div>' +
+      srcNote(n) +
     '</div>';
   }
 
