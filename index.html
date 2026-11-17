@@ -2593,6 +2593,70 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
 }
 :root[data-theme="dark"] body.p3 .cal-day.sel { color: #0F1215; }
 :root[data-theme="dark"] body.p3 .cal-day.sel .cal-cnt, :root[data-theme="dark"] body.p3 .cal-day.sel .cal-st { color: #0F1215; }
+
+/* ===== 11.18 수정: 내 조건 화면 전환 · 왼쪽 메뉴 잘림 · 자료실 폭 ===== */
+body.p3.prof-on #hero-slot, body.p3.prof-on[data-tab] #hero-slot, body.p3.prof-on .content { display: none !important; }
+body.p3.prof-on .side { display: block !important; }
+body.p3 .site-header { overflow-x: hidden; }
+body.p3 .site-header * { max-width: 100%; }
+body.p3 .basis-date { white-space: normal; display: inline-flex; flex-wrap: wrap; gap: 2px 4px; line-height: 1.4; padding: 4px 8px; }
+#v-gap > .res-wrap, #v-gap > .empty-state, #v-gap > .gap-empty { grid-column: 1 / -1; }
+.res-wrap .res { margin-top: 0; }
+@container (min-width: 1000px) { .res-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  body.p3:not(.vplan)[data-tab="feed"] #hero-slot { display: grid; grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr); grid-template-areas: "hero stats" "week stats"; gap: 16px; }
+  body.p3.prof-on .side { max-width: 860px; }
+  body.p3.prof-on .side .filter-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  body.p3 .site-header .header-inner { width: 232px !important; max-width: 232px !important; box-sizing: border-box; overflow: hidden; }
+  body.p3 .site-header .gnb, body.p3 .site-header .tabs-wrapper, body.p3 .site-header .tab-btn, body.p3 .site-header .menu-btn, body.p3 .rail-prof { box-sizing: border-box; width: 100% !important; min-width: 0 !important; max-width: 100% !important; }
+  body.p3 .site-header .brand-wrap { min-width: 0; max-width: 100%; }
+  body.p3 .site-header .basis-date, body.p3 .site-header .basis-date * { white-space: normal !important; overflow-wrap: anywhere; }
+  body.p3 .site-header .basis-date { max-width: 100%; box-sizing: border-box; }
+}
+
+body.p3.prof-on .tab-btn[aria-selected="true"] { background: transparent !important; color: #C9CCD4 !important; }
+body.p3.prof-on .tab-btn[aria-selected="true"] .tab-badge { background: #2A2F3A !important; color: #E3E5EA !important; }
+
+/* ===== 크로스 체크 반영 (디자이너 5 · 개발자 4, 11.18) ===== */
+.bn-badge { background: #C5302A !important; }
+.wd-m, .cal-st, .cal-cnt, body.p3 .cal-cnt { font-size: 11px !important; }
+.quest-badge, .tag, .tag.reviewing, .tag.verified, .tag.demo, .tag.date { font-size: 11px !important; }
+.profile-card .saved-badge, .profile-card [class*="badge"], .ok-badge { font-size: 11px !important; }
+body.p3 .cal-wd.sun, body.p3 .cal-day.sun .cal-num { color: #B23A1A; }
+body.p3 .cal-wd.sat, body.p3 .cal-day.sat .cal-num { color: #2546C4; }
+:root[data-theme="dark"] body.p3 .cal-wd.sun, :root[data-theme="dark"] body.p3 .cal-day.sun .cal-num { color: #FF8A6B; }
+:root[data-theme="dark"] body.p3 .cal-wd.sat, :root[data-theme="dark"] body.p3 .cal-day.sat .cal-num { color: #9DB4FF; }
+body.p3 .cal-day.sel .cal-num { color: inherit !important; }
+body.p3 .cal-arrow, body.p3 .cal-today-btn { min-width: 40px; min-height: 40px; border-radius: 10px; }
+body.p3 .cal-day { min-height: 44px; }
+.wstrip { gap: 0; padding: 2px; }
+#fsheet .chip, #fsheet .scope-btn, #fsheet .d5-chip, #fsheet .sort-select, #fsheet .view-btn { min-height: 44px !important; }
+.filter-panel select, .filter-panel input[type="text"], .filter-panel input[type="number"], .filter-panel input:not([type]) { min-height: 44px; }
+#btn-toggle-profile { min-height: 40px; }
+.rail-prof-edit { min-height: 40px !important; padding: 0 14px !important; }
+.res-tab { min-height: 40px; }
+.mode-banner button, .demo-banner button { min-height: 40px; }
+.past-link, .cmp-link, a.orig-link, .card .link-row a, .card a.src-open { min-height: 40px; display: inline-flex; align-items: center; }
+.similar-link { min-height: 40px; }
+.src-note a { display: inline-flex; align-items: center; min-height: 40px; }
+.qver, .sum-block-title em, .view-btn .caret { font-size: 11px !important; }
+.sum-block-title i { font-size: 11px !important; min-width: 18px; min-height: 18px; }
+.similar-link { min-height: 40px !important; }
+#btn-toggle-profile { min-height: 40px !important; padding-left: 12px !important; padding-right: 12px !important; }
+#filter-panel select, #filter-panel input:not([type="checkbox"]) { min-height: 44px !important; }
+details > summary { min-height: 44px; }
+.card details > summary, .ds-sum details > summary { display: flex; align-items: center; }
+body.p3 .cal-day.past { opacity: 1 !important; }
+body.p3 .cal-day.past .cal-num { color: #6B7280 !important; }
+:root[data-theme="dark"] body.p3 .cal-day.past .cal-num { color: #8B93A0 !important; }
+body.p3 .cal-day.other .cal-num { color: #6B7280; }
+body.p3 .cal-day.other { opacity: 1 !important; }
+body.p3 .cal-day.other .cal-num { color: #6B7280 !important; opacity: 1 !important; }
+:root[data-theme="dark"] body.p3 .cal-day.other .cal-num { color: #8B93A0 !important; }
+#btn-toggle-label { min-height: 40px; display: inline-flex; align-items: center; padding: 0 12px; }
 </style>
 </head>
 <body>
@@ -3280,7 +3344,7 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
   var resNode = null, resKey = "", guidesVer = 0;
   function mountRes() {
     var key = RES_FILTER + "|" + isoDay(TODAY) + "|" + guidesVer;
-    if (!resNode) resNode = document.createElement("div");
+    if (!resNode) { resNode = document.createElement("div"); resNode.className = "res-wrap"; }
     if (key !== resKey) { resNode.innerHTML = resourceHtml(); resKey = key; }
     el("v-gap").appendChild(resNode);
   }
@@ -4060,6 +4124,7 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
       if (old === "wrap") SHOW.wrap = true;
       if (localStorage.getItem("cuk_preview") === "1") PANE = "preview";
     }
+    if (!localStorage.getItem("cuk_p3")) { VIEW = "plan"; localStorage.setItem("cuk_p3", "1"); localStorage.setItem("cuk_view2", "plan"); }   // 3안 첫 적용: 한 번만 계획 보드로
     var p2 = localStorage.getItem("cuk_pane");
     if (["none", "info", "preview"].indexOf(p2) > -1) PANE = p2;
     var sh = JSON.parse(localStorage.getItem("cuk_show") || "null");
@@ -4103,6 +4168,7 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
   function applyViewClasses() {
     var c = el("content");
     VIEW_MODES.forEach(function(v){ c.classList.toggle("view-" + v, v === VIEW); });
+    document.body.classList.toggle("vplan", VIEW === "plan");
     c.classList.toggle("tab-cal", currentTab === "cal");
     [].forEach.call(document.querySelectorAll(".vm-item[data-view]"), function(b){
       b.setAttribute("aria-checked", b.getAttribute("data-view") === VIEW ? "true" : "false");
@@ -5130,12 +5196,13 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
     if (g && g !== "all") bits.push(g + "학년");
     if (f && f !== "all" && FIELD[f]) bits.push(FIELD[f]);
     var gb = window.GAP_BEST, title;
-    if (currentTab === "feed") title = VIEW === "plan" && window.P3_TODAY != null ? "오늘 시작할 일 " + window.P3_TODAY : "오늘 시작할 일";
+    if (document.body.classList.contains("prof-on")) title = "내 조건";
+    else if (currentTab === "feed") title = VIEW === "plan" && window.P3_TODAY != null ? "오늘 시작할 일 " + window.P3_TODAY : "오늘 시작할 일";
     else if (currentTab === "gap") title = gb ? (gb.k === "토익" ? "토익 " + gb.need + "점이면" : "평점 " + gb.need + "이면") + " 문이 열려요" : "조금만 채우면 되는 공고";
     else if (currentTab === "bookmark") title = "보관함";
     else if (currentTab === "past") title = "지난 공고";
     else title = "계획 달력";
-    if (currentTab === "feed") bits.push("지원 가능 " + el("n-feed").textContent + " · 갭 보완 " + el("n-gap").textContent + " · 보관 " + el("n-bookmark").textContent);
+    if (currentTab === "feed" && !document.body.classList.contains("prof-on")) bits.push("지원 가능 " + el("n-feed").textContent + " · 갭 보완 " + el("n-gap").textContent + " · 보관 " + el("n-bookmark").textContent);
     var nf = (SCOPE !== "all" ? 1 : 0) + (SHOW.d5 ? 1 : 0) + (SHOW.verifiedOnly ? 1 : 0) + (el("live-search").value.trim() ? 1 : 0);
     box.innerHTML = '<div class="mh-text"><p class="mh-sub">' + esc(bits.join(" · ")) + '</p><h1 class="mh-title">' + esc(title) + '</h1></div>' +
       '<div class="mh-btns"><button type="button" class="mh-search" aria-label="공고 검색" onclick="openFilters(true)"><svg class="ic" aria-hidden="true"><use href="#i-search"></use></svg></button>' +
@@ -5204,6 +5271,8 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
     var first = document.querySelector("#v-feed .tk");
     if (first) openDetail(first.getAttribute("data-tk"), true);
   };
+  // 창을 좁히면(1280 미만) 오른쪽에 붙어 있던 상세 창이 목록을 덮지 않게 닫기
+  if (dockMQ.addEventListener) dockMQ.addEventListener("change", function(e){ if (!e.matches && detailId && window.closeDetail) window.closeDetail(true); });
   window.bcolToggle = function(btn, more) {
     var col = btn.parentNode, on = col.classList.toggle("all");
     btn.textContent = on ? "접기" : more + "건 더";
@@ -5576,7 +5645,7 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.18-p3";
+  var APP_VERSION = "2026.11.18-p3.1";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
@@ -5628,6 +5697,17 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
     if (ret && ret.focus) ret.focus();
   }
   window.openFilters = openF; window.closeFilters = closeF;
+  // 어디서 '내 조건'을 열어도(갭 보완의 '내 점수 입력하기' 등) 조건 화면으로 넘어가게
+  var baseOpenProfile = window.openProfile;
+  window.openProfile = function(){
+    closeF();
+    if (window.closeDetail && !document.getElementById("dsheet").hidden && !(window.matchMedia("(min-width: 1280px)").matches)) window.closeDetail();
+    document.body.classList.add("prof-on");
+    document.querySelectorAll(".bn-item").forEach(function(x){ x.classList.toggle("active", x.getAttribute("data-tab") === "profile"); });
+    if (baseOpenProfile) baseOpenProfile();
+    if (window.updateViewTitle) window.updateViewTitle();
+    setTimeout(function(){ window.scrollTo({ top: 0, behavior: "smooth" }); var f = document.getElementById("p-grade"); if (f) f.focus({ preventScroll: true }); }, 60);
+  };
   bd.addEventListener("click", closeF);
   sh.querySelector(".fs-x").addEventListener("click", closeF);
   sh.querySelector(".fs-done").addEventListener("click", closeF);
@@ -5637,10 +5717,13 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
     var b = e.target.closest && e.target.closest(".bn-item, .tab-btn, #menu-btn, .rail-prof-edit, .bm-seg button");
     if (!b) return;
     var prof = b.id === "menu-btn" || b.classList.contains("rail-prof-edit") || b.getAttribute("data-tab") === "profile";
+    var dsh = document.getElementById("dsheet");
+    if (dsh && !dsh.hidden && window.closeDetail && !b.closest(".bm-seg")) window.closeDetail();   // 탭을 바꾸면 상세 창은 닫기
     document.body.classList.toggle("prof-on", prof);
+    if (!prof) setTimeout(function(){ if (window.updateViewTitle) window.updateViewTitle(); }, 0);
     if (prof) {
       document.querySelectorAll(".bn-item").forEach(function(x){ x.classList.toggle("active", x.getAttribute("data-tab") === "profile"); });
-      if (b.classList.contains("rail-prof-edit") && window.openProfile) window.openProfile();
+      if (window.openProfile) window.openProfile();
       setTimeout(function(){ window.scrollTo({ top: 0, behavior: "smooth" }); }, 30);
     }
   }, true);
@@ -5650,6 +5733,7 @@ body.p3 .cal-day.today .cal-num { background: transparent; color: var(--b-blue) 
     setTimeout(function(){
       if (!document.body.classList.contains("prof-on")) return;
       document.body.classList.remove("prof-on");
+      if (window.updateViewTitle) window.updateViewTitle();
       var t = document.body.getAttribute("data-tab") || "feed";
       document.querySelectorAll(".bn-item").forEach(function(x){ x.classList.toggle("active", x.getAttribute("data-tab") === (t === "past" ? "bookmark" : t)); });
       window.scrollTo({ top: 0 });
