@@ -2657,6 +2657,9 @@ body.p3 .cal-day.other { opacity: 1 !important; }
 body.p3 .cal-day.other .cal-num { color: #6B7280 !important; opacity: 1 !important; }
 :root[data-theme="dark"] body.p3 .cal-day.other .cal-num { color: #8B93A0 !important; }
 #btn-toggle-label { min-height: 40px; display: inline-flex; align-items: center; padding: 0 12px; }
+
+/* p3.3: 달력 목록 링크 버튼 터치 44px */
+body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 </style>
 </head>
 <body>
@@ -5645,7 +5648,7 @@ body.p3 .cal-day.other .cal-num { color: #6B7280 !important; opacity: 1 !importa
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.18-p3.1";
+  var APP_VERSION = "2026.11.18-p3.3";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
