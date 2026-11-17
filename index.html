@@ -2705,6 +2705,18 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 .tk-hero .tk-cmt { background: rgba(255,255,255,.18); color: inherit; }
 :root[data-theme="dark"] .tk-cmt { background: rgba(200,240,106,.16); color: #C8F06A; }
 :root[data-theme="dark"] .tk-hero .tk-cmt { background: rgba(15,18,21,.14); color: inherit; }
+
+/* p3.10: 상세 위 댓글 버튼 · 달력 목록에서 상세 */
+#ds-cmt { display: inline-flex; }
+#ds-heart { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+#ds-heart .heart-container .checkbox { inset: 0; width: 100%; height: 100%; }
+.ds-cmt-btn { min-width: 44px; min-height: 44px; padding: 0 10px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; border-radius: 12px; cursor: pointer; }
+.ds-cmt-btn:hover { background: var(--b-soft, #E8ECFA); }
+.ds-cmt-btn .ic { width: 20px; height: 20px; }
+.cal-open { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 4px 0; font: inherit; font-weight: 700; color: var(--ink); cursor: pointer; min-height: 44px; }
+.cal-open:hover { color: var(--b-blue, #2546C4); text-decoration: underline; }
+.cal-acts { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 6px; }
+.cal-acts .cal-link { min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--line); cursor: pointer; font: inherit; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -3199,7 +3211,7 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 <div id="cal-backdrop" class="share-backdrop" onclick="closeCalSheet()"></div>
 <div id="ds-backdrop" class="ds-backdrop" onclick="closeDetail()" hidden></div>
 <div id="dsheet" class="dsheet" role="dialog" aria-modal="true" aria-labelledby="ds-title" aria-hidden="true" hidden>
-  <div class="ds-bar"><button type="button" class="ds-back" onclick="closeDetail()" aria-label="뒤로"><svg class="ic" aria-hidden="true"><use href="#i-back"></use></svg></button><span class="ds-bar-t">공고 상세</span><span id="ds-heart"></span></div>
+  <div class="ds-bar"><button type="button" class="ds-back" onclick="closeDetail()" aria-label="뒤로"><svg class="ic" aria-hidden="true"><use href="#i-back"></use></svg></button><span class="ds-bar-t">공고 상세</span><span id="ds-heart"></span><span id="ds-cmt"></span></div>
   <div class="ds-body" id="ds-body"></div>
   <div class="ds-foot" id="ds-foot"></div>
 </div>
@@ -3612,7 +3624,7 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
     var detail = "";
     var stList = calSel && stDay[calSel] ? stDay[calSel] : [];
     var stHtml = stList.length ? '<div class="cal-st-box"><div class="cal-detail-title">이날 준비 시작 · ' + stList.length + '건</div>' +
-      stList.map(function(it){ var n = it.x.n; return '<button type="button" class="cal-st-row" onclick="openDetail(\'' + esc(n.id) + '\')"><span>' + esc(n.t) + '</span><b class="mono">' + fmt(it.x.due) + ' 마감 · D-' + it.x.left + '</b></button>'; }).join("") + '</div>' : '';
+      stList.map(function(it){ var n = it.x.n; return '<button type="button" class="cal-st-row" onclick="openDetail(\'' + esc(n.id) + '\')"><span>' + esc(n.t) + '</span><b class="mono">' + fmt(it.x.due) + ' 마감 · D-' + it.x.left + (n.demo === true || usingFallback ? '' : ' · 💬 ' + (n.cmt || 0)) + '</b></button>'; }).join("") + '</div>' : '';
     if (calSel && !byDay[calSel] && stList.length) {
       detail = stHtml;
     } else if (calSel && byDay[calSel]) {
@@ -3632,7 +3644,8 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
               verifyTag(n) +
               demoTag(n) +
             '</div>' +
-            '<div class="cal-item-title">' + esc(n.t) + '</div>' +
+            '<button type="button" class="cal-item-title cal-open" onclick="openDetail(\'' + esc(n.id) + '\')">' + esc(n.t) + '</button>' +
+            '<div class="cal-acts"><button type="button" class="cal-link" onclick="openDetail(\'' + esc(n.id) + '\')">📋 상세 보기</button>' + (n.demo === true || usingFallback ? '' : '<button type="button" class="cal-link ghost" onclick="openComments(\'' + esc(n.id) + '\')">💬 댓글 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>') + '</div>' +
             (desc ? '<div class="cal-item-desc">' + esc(desc) + '</div>' : '') +
             '<div class="benefit-line" title="' + esc(n.benefit || "") + '">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
             (n.url ? (linkTypeOf(n) === "직접"
@@ -5442,6 +5455,14 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
       dsTalk(n) +
       '<div class="ds-sum">' + summaryCard(n).replace("<details ", "<details " + (VIEW === "plan" ? "" : "open ")) + '</div>';
   }
+  // p3.10: 상세 위쪽 하트 오른쪽 댓글 버튼 · 정보 오류 제보 칸
+  function dsCmtBtn(n) {
+    if (n.demo === true || usingFallback) return "";
+    return '<button type="button" class="ds-cmt-btn" onclick="openComments(\'' + esc(n.id) + '\')" aria-label="이 공고 댓글 · 정보 공유 ' + (n.cmt || 0) + '개" title="이 공고 댓글 · 정보 공유"><svg class="ic" aria-hidden="true"><use href="#i-chat"></use></svg><span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>';
+  }
+  function dsReport(n) {
+    return (n.demo === true || usingFallback) ? '' : '<div class="ds-report" id="ds-report"><button type="button" class="link-btn" onclick="toggleReport(\'' + esc(n.id) + '\')">⚠️ 원문과 정보가 달라요</button></div>';
+  }
   // p3.9: 모든 공고 카드에 댓글 수(0 포함) — 누르면 그 공고 정보 공유가 바로 열림
   function tkCmt(n) {
     if (n.demo === true || usingFallback || !n.id) return "";
@@ -5473,8 +5494,8 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
     if (!x) { window.goCard(id); return; }
     detailId = id; detailReturn = document.activeElement;
     var sh = el("dsheet");
-    el("ds-body").innerHTML = detailHtml(x) + (x.n.demo === true || usingFallback ? '' : '<div class="ds-report" id="ds-report"><button type="button" class="link-btn" onclick="toggleReport(\'' + esc(x.n.id) + '\')">⚠️ 원문과 정보가 달라요</button></div>');
-    el("ds-heart").innerHTML = heartButton(x.n.id, bookmarks.indexOf(x.n.id) > -1);
+    el("ds-body").innerHTML = detailHtml(x) + dsReport(x.n);
+    el("ds-heart").innerHTML = heartButton(x.n.id, bookmarks.indexOf(x.n.id) > -1); el("ds-cmt").innerHTML = dsCmtBtn(x.n);
     if (x.n.demo === true) { el("ds-foot").innerHTML = '<p class="ds-demo">🧪 시연용 <b>가상 공고</b>라 실제로 신청하거나 캘린더에 담을 수 없어요</p>'; } else
     el("ds-foot").innerHTML = (x.n.url ? '<a class="ds-src" href="' + esc(x.n.url) + '" target="_blank" rel="noopener">원문 공고</a>' : '') +
       (x.closed ? '' : '<button type="button" class="ds-cal" onclick="openCalSheet(\'' + esc(id) + '\')">계획을 캘린더로</button>');
@@ -5504,8 +5525,8 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
     if (!detailId) return;
     var x = CARD[detailId]; if (!x) return;
     var body = el("ds-body"), top = body.scrollTop;
-    body.innerHTML = detailHtml(x);
-    el("ds-heart").innerHTML = heartButton(x.n.id, bookmarks.indexOf(x.n.id) > -1);
+    body.innerHTML = detailHtml(x) + dsReport(x.n);
+    el("ds-heart").innerHTML = heartButton(x.n.id, bookmarks.indexOf(x.n.id) > -1); el("ds-cmt").innerHTML = dsCmtBtn(x.n);
     if (window.iconize) window.iconize(el("dsheet"));
     body.scrollTop = top;
   };
@@ -5804,7 +5825,7 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.18-p3.9";
+  var APP_VERSION = "2026.11.18-p3.10";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
