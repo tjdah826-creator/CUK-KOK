@@ -2701,7 +2701,10 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 .ds-talk-t b { font-size: 14.5px; }
 .ds-talk-t small { font-size: 12.5px; color: var(--ink-secondary); }
 .ds-talk-b { flex: none; min-height: 44px; white-space: nowrap; }
-.tk-cmt { white-space: nowrap; }
+.tk-cmt { white-space: nowrap; display: inline-flex; align-items: center; gap: 2px; padding: 0 6px; margin-left: 4px; font-size: 11.5px; line-height: 1.35; border-radius: 999px; background: var(--b-soft, #E8ECFA); color: var(--b-blue, #2546C4); font-weight: 700; }
+.tk-hero .tk-cmt { background: rgba(255,255,255,.18); color: inherit; }
+:root[data-theme="dark"] .tk-cmt { background: rgba(200,240,106,.16); color: #C8F06A; }
+:root[data-theme="dark"] .tk-hero .tk-cmt { background: rgba(15,18,21,.14); color: inherit; }
 </style>
 </head>
 <body>
@@ -4730,16 +4733,16 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
       var pct = Math.round(done / docs.length * 100);
       var ver = n.verified === true ? '<span class="tk-ok">검증</span>' : '<span>검토중</span>';
       if (o.hero) {
-        return '<button type="button" class="tk tk-hero" data-tk="' + esc(n.id) + '" onclick="openDetail(\'' + esc(n.id) + '\')">' +
+        return '<button type="button" class="tk tk-hero" data-tk="' + esc(n.id) + '" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' +
           '<span class="tk-k">1순위 · 서류 준비 약 ' + (n.prep || 2) + '일<span class="tk-dd">' + dd + '</span></span>' +
           '<b class="tk-t">' + demoTag(n) + esc(n.t) + '</b>' +
-          '<span class="tk-m">' + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + ' · <b>' + (startOf(x) < 0 ? '빠듯해요 · 오늘 바로' : startOf(x) === 0 ? '오늘 시작해야 해요' : fmt(sd) + ' 시작') + '</b>' + (n.cmt ? ' · <span class="tk-cmt">💬 <span data-cmt="' + esc(n.id) + '">' + n.cmt + '</span></span>' : '') + '</span>' +
+          '<span class="tk-m">' + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + ' · <b>' + (startOf(x) < 0 ? '빠듯해요 · 오늘 바로' : startOf(x) === 0 ? '오늘 시작해야 해요' : fmt(sd) + ' 시작') + '</b>' + tkCmt(n) + '</span>' +
           '<span class="tk-go">계획 보기</span></button>';
       }
-      return '<button type="button" class="tk' + (!x.closed && x.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(n.id) + '" onclick="openDetail(\'' + esc(n.id) + '\')">' +
-        '<span class="tk-k">' + esc(n.cat) + ' · ' + srcLabel(n) + ' · ' + ver + '<span class="tk-dd">' + dd + '</span></span>' +
+      return '<button type="button" class="tk' + (!x.closed && x.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(n.id) + '" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' +
+        '<span class="tk-k">' + esc(n.cat) + ' · ' + srcLabel(n) + ' · ' + ver + tkCmt(n) + '<span class="tk-dd">' + dd + '</span></span>' +
         '<b class="tk-t">' + demoTag(n) + esc(n.t) + '</b>' +
-        '<span class="tk-m">' + (o.showStart && !x.closed ? fmt(sd) + ' 시작 → ' : '') + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + (n.cmt ? ' · <span class="tk-cmt" title="이 공고 정보 공유">💬 <span data-cmt="' + esc(n.id) + '">' + n.cmt + '</span></span>' : '') + '</span>' +
+        '<span class="tk-m">' + (o.showStart && !x.closed ? fmt(sd) + ' 시작 → ' : '') + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + '</span>' +
         '<span class="tk-bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span></button>';
     }
     function boardCol(title, arr, cls, mk) {
@@ -5439,6 +5442,16 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
       dsTalk(n) +
       '<div class="ds-sum">' + summaryCard(n).replace("<details ", "<details " + (VIEW === "plan" ? "" : "open ")) + '</div>';
   }
+  // p3.9: 모든 공고 카드에 댓글 수(0 포함) — 누르면 그 공고 정보 공유가 바로 열림
+  function tkCmt(n) {
+    if (n.demo === true || usingFallback || !n.id) return "";
+    return ' <span class="tk-cmt" title="이 공고 댓글 · 정보 공유">💬 댓글 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></span>';
+  }
+  window.tkOpen = function(e, id) {
+    var c = e && e.target && e.target.closest && e.target.closest(".tk-cmt");
+    if (c) { e.stopPropagation(); if (window.openDetail) window.openDetail(id, true); openComments(id); return; }
+    window.openDetail(id);
+  };
   // p3.8: 공고마다 정보 공유 (질문·참여 후기·준비 팁) — 상단 💬 정보 공유방은 그대로 두고, 공고별 방을 상세에 연결
   function dsTalk(n) {
     if (n.demo === true || usingFallback || !n.id) return "";
@@ -5791,7 +5804,7 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.18-p3.8";
+  var APP_VERSION = "2026.11.18-p3.9";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
