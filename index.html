@@ -2801,6 +2801,73 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
 .excl-banner .link-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; }
 details.excl > summary { min-height: 44px; display: flex; align-items: center; }
 
+
+/* ===== p3.15 B안 '지금 한 가지' ===== */
+.b-now { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 2px 0 14px; }
+.b-now > * { min-width: 0; }
+.now-card { background: var(--b-blue); color: #FFFFFF; border-radius: 18px; padding: 16px 16px 6px; }
+.nc-top { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; font-weight: 600; opacity: .92; }
+.nc-dd { font: 600 13px 'IBM Plex Mono', monospace; white-space: nowrap; }
+.nc-title { display: block; width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; padding: 10px 0 2px; cursor: pointer; }
+.nc-title small { display: block; font-size: 12.5px; opacity: .85; margin-bottom: 2px; }
+.nc-title b { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: 19px; line-height: 1.35; letter-spacing: -.01em; }
+.nc-title:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; border-radius: 6px; }
+.nc-meta { margin: 6px 0 0; font-size: 13px; line-height: 1.5; opacity: .95; }
+.now-card .tk-cond { background: #3A5AD0; color: #FFFFFF; }
+.now-card .tk-cmt { background: #3A5AD0; color: #FFFFFF; margin-left: 6px; }
+.nx-t .tk-cmt { margin-left: 6px; }
+:root[data-theme="dark"] .nx-row .tk-cmt { background: #26301A; color: #C8F06A; }
+.nc-meta .tk-cmt { cursor: pointer; }
+.nc-prog { display: flex; align-items: center; gap: 10px; margin: 14px 0 4px; }
+.nc-bar { flex: 1; height: 8px; border-radius: 4px; background: rgba(255,255,255,.25); overflow: hidden; }
+.nc-bar i { display: block; height: 100%; min-width: 6px; border-radius: 4px; background: #C8F06A; }
+.nc-prog b { font-size: 13px; white-space: nowrap; }
+.nc-docs { list-style: none; margin: 0; padding: 0; }
+.nc-doc { display: flex; align-items: center; gap: 10px; min-height: 44px; border-top: 1px solid rgba(255,255,255,.18); font-size: 14.5px; cursor: pointer; }
+.nc-doc input { width: 20px; height: 20px; flex: none; accent-color: #C8F06A; margin: 0; }
+.nc-doc.on span { text-decoration: line-through; opacity: .7; }
+.nc-more { min-height: 44px; width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid rgba(255,255,255,.18); color: inherit; font: inherit; font-size: 13.5px; text-decoration: underline; cursor: pointer; }
+.nc-act { display: flex; gap: 8px; padding: 12px 0 10px; }
+.nc-go { flex: 1; display: inline-flex; align-items: center; justify-content: center; min-height: 46px; border: 0; border-radius: 12px; background: #FFFFFF; color: var(--b-blue); font: inherit; font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; }
+.nc-plan, .nc-cal { min-height: 46px; min-width: 46px; padding: 0 12px; border: 1px solid rgba(255,255,255,.55); border-radius: 12px; background: none; color: inherit; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.nc-cal .ic { width: 20px; height: 20px; }
+.nc-go:focus-visible, .nc-plan:focus-visible, .nc-cal:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+.nx-h { font-size: 13px; font-weight: 700; color: var(--ink-secondary); margin: 2px 2px 6px; }
+.nx-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 58px; padding: 8px 14px; margin-bottom: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.nx-row:hover { border-color: var(--b-blue); }
+.nx-t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.nx-t b { font-size: 14px; font-weight: 600; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.nx-t small { font-size: 12px; color: var(--ink-secondary); }
+.nx-d { flex: none; font: 600 13px 'IBM Plex Mono', monospace; color: var(--ink-secondary); }
+.nx-row.soon .nx-d { color: var(--hot); }
+.b-allbtn { width: 100%; min-height: 48px; padding: 0 12px; border: 1px dashed var(--line); border-radius: 12px; background: none; color: var(--ink-secondary); font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.b-allbtn:hover { border-color: var(--b-blue); color: var(--b-blue); }
+.b-all-h { font-size: 16px; margin: 6px 2px 10px; }
+.b-all-h small { font-size: 12px; font-weight: 400; color: var(--ink-secondary); margin-left: 6px; }
+body.b-fold.has-now.vplan .b-all-h, body.b-fold.has-now.vplan .b-week, body.b-fold.has-now.vplan #v-feed .board { display: none; }
+.b-week { margin-bottom: 14px; }
+body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important; }
+.now-card .tag.demo { background: #3A5AD0; color: #FFFFFF; }
+:root[data-theme="dark"] .now-card { color: #0F1215; }
+:root[data-theme="dark"] .now-card .nc-bar { background: rgba(15,18,21,.18); }
+:root[data-theme="dark"] .now-card .nc-bar i { background: #0F1215; }
+:root[data-theme="dark"] .nc-go { background: #0F1215; color: #C8F06A; }
+:root[data-theme="dark"] .nc-plan, :root[data-theme="dark"] .nc-cal { border-color: rgba(15,18,21,.45); }
+:root[data-theme="dark"] .nc-doc, :root[data-theme="dark"] .nc-more { border-top-color: rgba(15,18,21,.18); }
+:root[data-theme="dark"] .nc-doc input { accent-color: #0F1215; }
+:root[data-theme="dark"] .now-card .tk-cond, :root[data-theme="dark"] .now-card .tk-cmt, :root[data-theme="dark"] .now-card .tag.demo { background: #A9CF55; color: #0F1215; }
+:root[data-theme="dark"] .nc-title:focus-visible, :root[data-theme="dark"] .nc-go:focus-visible { outline-color: #0F1215; }
+@media (max-width: 360px) {
+  .nc-act { flex-wrap: wrap; }
+  .nc-go { flex-basis: 100%; }
+  .nc-plan { flex: 1; }
+  .nc-title b { font-size: 18px; }
+}
+@media (min-width: 1024px) {
+  .b-now { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; gap: 16px; }
+  .now-card { padding: 20px 20px 8px; }
+  .nc-title b { font-size: 21px; }
+}
 </style>
 </head>
 <body>
@@ -4973,11 +5040,55 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
       directFirst(c[0]);
       window.P3_TODAY = Math.min(3, c[0].length);   // p3.14 F04: 오늘 할 일은 우선순위 상위 3건만
       var lateN = c[0].slice(3).filter(function(x){ return startOf(x) < 0; }).length;
-      return '<div class="board">' +
+      var ordered = c[0].concat(c[1], c[2], c[3]).filter(function(x){ return !x.closed; });
+      window.P3_NOW = ordered.length ? ordered[0].n.id : null;
+      return nowHtml(ordered, c) + '<div class="board">' +
         boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
         boardCol("이번 주에 시작", c[1], "", function(x){ return buildTask(x, { showStart: true }); }) +
         boardCol("다음 주에 시작", c[2], "", function(x){ return buildTask(x, { showStart: true }); }) +
         boardCol("그 뒤에 시작", c[3], "", function(x){ return buildTask(x, { showStart: true }); }) + '</div>';
+    }
+    // ===== p3.15 B안 '지금 한 가지': 1순위 하나 + 그 공고 서류 체크 + 다음 할 일 2건 (나머지는 '전체 보기') =====
+    function nowHtml(ordered, c) {
+      if (!ordered.length) return "";
+      var x = ordered[0], n = x.n, docs = docsOf(n), done = docsDone(n), pct = Math.round(done / docs.length * 100);
+      var st = startOf(x), sd = new Date(TODAY.getTime() + Math.max(0, st) * P3_DAY);
+      var when = st < 0 ? "빠듯해요 · 오늘 바로" : st === 0 ? "오늘 시작" : fmt(sd) + " 시작";
+      var sub = submitInfo(n), org = dsOrg(n), title = ct(n.t).replace(/^\s*(\[[^\]]*\]\s*)+/, "") || n.t;
+      var showDocs = docs.slice(0, 4);
+      var docRows = showDocs.map(function(d, i){
+        var k = n.id + "-doc-" + i, on = !!checkedDocs[k];
+        return '<li><label class="nc-doc' + (on ? ' on' : '') + '"><input type="checkbox"' + (on ? ' checked' : '') + ' onchange="toggleDocCheck(\'' + esc(k) + '\')"><span>' + esc(d) + '</span></label></li>';
+      }).join("") + (docs.length > 4 ? '<li><button type="button" class="nc-more" onclick="openDetail(\'' + esc(n.id) + '\')">서류 ' + (docs.length - 4) + '개 더 · 계획에서 보기</button></li>' : '');
+      var go = n.url
+        ? '<a class="nc-go" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + (done ? '원문 보고 이어서 하기' : '원문 보고 시작하기') + '</a>'
+        : '<button type="button" class="nc-go" onclick="openDetail(\'' + esc(n.id) + '\')">계획 보기</button>';
+      var nowCard = '<section class="now-card' + (x.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(n.id) + '" aria-label="지금 할 일 1순위">' +
+          '<div class="nc-top"><span>1순위 · ' + when + ' · 서류 준비 약 ' + (n.prep || 2) + '일</span><span class="nc-dd">' + ddText(x) + '</span></div>' +
+          '<button type="button" class="nc-title" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' + (org ? '<small>' + esc(org) + '</small>' : '') + '<b>' + demoTag(n) + esc(title) + '</b></button>' +
+          '<p class="nc-meta" onclick="if(event.target.closest(\'.tk-cmt\'))tkOpen(event,\'' + esc(n.id) + '\')">' + x.due.getFullYear() + '.' + fmt(x.due) + ' (' + WD[x.due.getDay()] + ') 마감 · ' + esc(sub.label || "접수 방식은 원문 확인") + condTag(n, "tk-cond") + tkCmt(n) + '</p>' +
+          '<div class="nc-prog"><span class="nc-bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span><b>서류 ' + done + '/' + docs.length + '</b></div>' +
+          '<ul class="nc-docs" aria-label="챙길 서류">' + docRows + '</ul>' +
+          '<div class="nc-act">' + go +
+            (n.url ? '<button type="button" class="nc-plan" onclick="openDetail(\'' + esc(n.id) + '\')">계획 보기</button>' : '') +
+            '<button type="button" class="nc-cal" onclick="openCalSheet(\'' + esc(n.id) + '\')" aria-label="마감을 내 캘린더에 넣기" title="마감을 내 캘린더에 넣기"><svg class="ic" aria-hidden="true"><use href="#i-calendar"></use></svg></button>' +
+          '</div></section>';
+      var next = ordered.slice(1, 3).map(function(y){
+        var s2 = startOf(y), d2 = new Date(TODAY.getTime() + Math.max(0, s2) * P3_DAY);
+        return '<button type="button" class="nx-row' + (y.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(y.n.id) + '" onclick="tkOpen(event,\'' + esc(y.n.id) + '\')">' +
+          '<span class="nx-t"><b title="' + esc(y.n.t) + '">' + demoTag(y.n) + esc(ct(y.n.t)) + '</b><small>' + (s2 <= 0 ? '오늘' : fmt(d2)) + ' 시작 → ' + fmt(y.due) + ' 마감 · 서류 ' + docsDone(y.n) + '/' + docsOf(y.n).length + tkCmt(y.n) + '</small></span>' +
+          '<span class="nx-d">' + ddText(y) + '</span></button>';
+      }).join("");
+      var rest = Math.max(0, c[0].length - 1 - Math.min(2, ordered.length - 1));
+      var parts = [];
+      if (c[0].length > 1) parts.push("오늘 " + (c[0].length) + "건");
+      if (c[1].length) parts.push("이번 주 " + c[1].length + "건");
+      if (c[2].length) parts.push("다음 주 " + c[2].length + "건");
+      var open = !!SHOW_ALL;
+      var allBtn = '<button type="button" class="b-allbtn" aria-expanded="' + (open ? 'true' : 'false') + '" onclick="bAllToggle()">' + (open ? '전체 일정 접기' : (parts.length ? parts.join(" · ") + ' · ' : '') + '전체 일정 보기') + '</button>';
+      return '<div class="b-now">' + nowCard +
+        '<div class="b-side">' + (next ? '<div class="nx"><div class="nx-h">다음 할 일</div>' + next + '</div>' : '') + allBtn + '</div></div>' +
+        '<h2 class="b-all-h">전체 일정 <small>이번 주 달력 · 준비 시작일 순</small></h2><div class="b-week">' + weekStrip() + '</div>';
     }
     function savedBoard(arr, emptyHtml) {
       if (!arr.length) return emptyHtml;
@@ -5000,7 +5111,7 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
       return '<div class="wstrip" role="group" aria-label="이번 주 준비 시작과 마감">' + out + '</div><p class="wnote"><b class="s">○</b> 준비 시작 · <b class="e">●</b> 마감 · 날짜를 누르면 달력</p>';
     }
     function heroHtml() {
-      if (VIEW === "plan") return feed.length ? weekStrip() : "";
+      if (VIEW === "plan") return feed.length && sortOpt !== "start" ? weekStrip() : "";   // p3.15: 계획 보드에서는 '전체 일정' 안으로
       var open = feed.filter(function(x){ return !x.closed; });
       if (!open.length) return "";
       var top = directFirst(open.slice().sort(function(a, b){ return (startOf(a) - startOf(b)) || (a.left - b.left); }))[0];
@@ -5061,7 +5172,10 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
     }
     if (skipView !== "v-feed") {
       el("hero-slot").innerHTML = heroHtml();
-      setList("v-feed", exBanner + groupedFeed('<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 · 거르기의 <b>✓ 검증된 공고만</b>을 끄면 검토중 공고도 보여요.</small>' : '') + '</div>') + noDueHtml());
+      var planMode = VIEW === "plan" && sortOpt === "start" && feed.length;
+      window.P3_NOW = null;
+      setList("v-feed", (planMode ? "" : exBanner) + groupedFeed('<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 · 거르기의 <b>✓ 검증된 공고만</b>을 끄면 검토중 공고도 보여요.</small>' : '') + '</div>') + (planMode ? exBanner : "") + noDueHtml());
+      document.body.classList.toggle("has-now", !!(planMode && window.P3_NOW));
     }
     // p3.14 F09: 토익 '없음'이면 왜 퀘스트가 없는지 + 점수 넣는 길
     function toeicNoneHtml() {
@@ -5502,7 +5616,7 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
     if (f && f !== "all" && FIELD[f]) bits.push(FIELD[f]);
     var gb = window.GAP_BEST, title;
     if (document.body.classList.contains("prof-on")) title = "내 조건";
-    else if (currentTab === "feed") title = VIEW === "plan" && window.P3_TODAY != null ? "오늘 시작할 일 " + window.P3_TODAY : "오늘 시작할 일";
+    else if (currentTab === "feed") title = VIEW === "plan" && window.P3_NOW ? "지금 이것부터" : "오늘 시작할 일";
     else if (currentTab === "gap") title = gb ? (gb.k === "토익" ? "토익 " + gb.need + "점이면" : "평점 " + gb.need + "이면") + " 문이 열려요" : "조금만 채우면 되는 공고";
     else if (currentTab === "bookmark") title = "보관함";
     else if (currentTab === "past") title = "지난 공고";
@@ -5573,11 +5687,22 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
   window.p3AutoDetail = function() {
     // PC 넓은 화면: 계획 보드에서 첫 공고를 오른쪽 상세 창에 미리 열어 둠 (닫으면 다시 열지 않음)
     if (!p3Docked() || p3Closed || detailId || currentTab !== "feed" || VIEW !== "plan") return;
-    var first = document.querySelector("#v-feed .tk");
+    var first = document.querySelector("#v-feed .now-card") || document.querySelector("#v-feed .tk");
     if (first) openDetail(first.getAttribute("data-tk"), true);
   };
   // 창을 좁히면(1280 미만) 오른쪽에 붙어 있던 상세 창이 목록을 덮지 않게 닫기
   if (dockMQ.addEventListener) dockMQ.addEventListener("change", function(e){ if (!e.matches && detailId && window.closeDetail) window.closeDetail(true); });
+  // p3.15 B안: '전체 일정 보기' 펼침 상태 (이 기기에만 기억)
+  var SHOW_ALL = false;
+  try { SHOW_ALL = localStorage.getItem("cuk_ball") === "1"; } catch (e) {}
+  function applyBAll() { document.body.classList.toggle("b-fold", !SHOW_ALL); }
+  applyBAll();
+  window.bAllToggle = function() {
+    SHOW_ALL = !SHOW_ALL;
+    try { localStorage.setItem("cuk_ball", SHOW_ALL ? "1" : "0"); } catch (e) {}
+    applyBAll(); render();
+    if (SHOW_ALL) { var h = document.querySelector(".b-all-h"); if (h && h.scrollIntoView) h.scrollIntoView({ block: "start", behavior: "smooth" }); }
+  };
   window.bcolToggle = function(btn, more) {
     var col = btn.parentNode, on = col.classList.toggle("all");
     btn.textContent = on ? "접기" : (btn.getAttribute("data-label") || more + "건 더");
@@ -6075,7 +6200,7 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.18-p3.14";
+  var APP_VERSION = "2026.11.18-p3.15";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
