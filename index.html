@@ -2719,6 +2719,15 @@ body.p3 .cal-link { min-height:44px; display:inline-flex; align-items:center; }
 .cal-acts .cal-link { min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--line); cursor: pointer; font: inherit; font-size: 13px; }
 
 /* p3.11: 크로스체크 · 심리학 검토 반영 */
+/* p3.12: 어두운 화면에서 기본 파란 링크가 안 보이던 문제 */
+:root[data-theme="dark"] body.p3 .bn-item.active { background: #C8F06A; }
+:root[data-theme="dark"] body.p3 .bn-item.active, :root[data-theme="dark"] body.p3 .bn-item.active .bn-label { color: #0F1215; }
+:root[data-theme="dark"] .qcheck, :root[data-theme="dark"] .qcheck span, :root[data-theme="dark"] .qdone, :root[data-theme="dark"] .quest .qdone { color: #FFB27A; }
+:root[data-theme="dark"] .qcheck input:checked + span { color: #fff; }
+:root[data-theme="dark"] .cmt-types input:checked + span, :root[data-theme="dark"] .cmt-send { color: #0F1215; }
+:root[data-theme="dark"] .keep-del { color: #FF9C80 !important; }
+:where(:root[data-theme="dark"]) a:not([class]) { color: #A9BDFF; }
+:where(:root[data-theme="dark"]) a:not([class]):visited { color: #C9B8FF; }
 /* PC: 오른쪽 상세 창이 열려 있으면 💬 정보 공유방 버튼을 상세 창 왼쪽으로 옮겨 가리지 않게 */
 @media (min-width: 1280px) { body.p3.ds-open .fab-wrap { right: 424px; } }
 .ds-talk { flex-wrap: wrap; }
@@ -2740,6 +2749,58 @@ body.p3 .profile-badge-summary { white-space: normal; overflow: visible; text-ov
 body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
 .wnote .s { color: var(--b-blue, #2546C4); } .wnote .e { color: #B23A1A; }
 :root[data-theme="dark"] .wnote .s { color: #C8F06A; } :root[data-theme="dark"] .wnote .e { color: #FF8A6B; }
+
+/* p3.13: 보기 메뉴 개편 — 보기 방식 3칸 · 화면 설정 */
+#view-btn { display: none !important; }
+.view-menu.view-seg { position: static !important; display: flex !important; gap: 4px; padding: 4px; margin: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: none !important; width: auto; min-width: 0; max-height: none; overflow: visible; }
+.view-seg .vm-item { flex: 1 1 0; justify-content: center; gap: 6px; min-height: 44px; padding: 0 10px; border-radius: 9px; font-weight: 700; white-space: nowrap; }
+.view-seg .vm-item .vm-dot { display: none; }
+.view-seg .vm-item svg { width: 18px; height: 18px; }
+.view-seg .vm-item[aria-checked="true"] { background: var(--b-blue, #2546C4); color: #fff; }
+.view-seg .vm-item[aria-checked="true"] svg { stroke: currentColor; }
+:root[data-theme="dark"] .view-seg .vm-item[aria-checked="true"] { background: #C8F06A; color: #0F1215; }
+.view-seg [hidden] { display: none !important; }
+.view-menu-wrap { width: 100%; }
+.vo-chip.on, .vo-chip[aria-pressed="true"] { background: var(--b-blue, #2546C4); border-color: var(--b-blue, #2546C4); color: #fff; }
+:root[data-theme="dark"] .vo-chip.on { background: #C8F06A; border-color: #C8F06A; color: #0F1215; }
+.disp-box, .keep-box { grid-column: 1 / -1; width: 100%; box-sizing: border-box; align-self: stretch; }
+.disp-box { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; display: flex; flex-direction: column; }
+.disp-h { font-size: 13.5px; padding: 6px 0; }
+.disp-tg { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border: 0; border-top: 1px solid var(--line); background: none; color: var(--ink); font: inherit; font-size: 14px; text-align: left; cursor: pointer; padding: 0; }
+.disp-tg small { display: block; font-size: 12px; color: var(--ink-secondary); font-weight: 400; }
+.disp-tg i { flex: none; width: 42px; height: 24px; border-radius: 12px; background: var(--line); position: relative; transition: background .15s; }
+.disp-tg i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.disp-tg.on i { background: var(--b-blue, #2546C4); } .disp-tg.on i::after { left: 21px; }
+:root[data-theme="dark"] .disp-tg.on i { background: #C8F06A; } :root[data-theme="dark"] .disp-tg.on i::after { background: #0F1215; }
+
+/* ===== p3.14 페르소나 점검 반영 (2026.11.18) ===== */
+.tk-t, .ht-title, .wk-t b, .card-title a, .card-title > span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tk-cond, .ht-cond, .cond-tag { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 6px; font-size: 11px; line-height: 18px; font-weight: 600; background: #FFF4E5; color: #8A4B00; white-space: nowrap; }
+.tag.cond { background: #FFF4E5; color: #8A4B00; border-color: transparent; margin-left: 0; }
+:root[data-theme="dark"] .tk-cond, :root[data-theme="dark"] .ht-cond, :root[data-theme="dark"] .cond-tag, :root[data-theme="dark"] .tag.cond { background: #3A2A12; color: #FCD34D; }
+.hero-today .ht-cond { background: rgba(15,18,21,.12); color: inherit; }
+.dow-bad, .ds-cond { margin: -10px 0 14px; font-size: 12.5px; font-weight: 600; color: #B45309; }
+.dow-bad small { font-weight: 400; margin-left: 4px; color: var(--ink-secondary); }
+:root[data-theme="dark"] .dow-bad, :root[data-theme="dark"] .ds-cond { color: #FCD34D; }
+.sum-block-title em { font-style: normal; font-weight: 600; color: #B45309; margin-left: 4px; font-size: 12px; }
+:root[data-theme="dark"] .sum-block-title em { color: #FCD34D; }
+.ai-note a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
+.tk-k { flex-wrap: wrap; row-gap: 2px; }
+.tk-meta { white-space: nowrap; }
+.tk-k .tk-cmt, .tk-k .tk-cond, .tk-dd { flex: none; white-space: nowrap; }
+.bcol-h small { font-weight: 400; font-size: 12px; color: var(--ink-secondary); }
+#src-kosaf.on .kos-wait { display: none; }
+.app-ver.contest { font-weight: 600; color: var(--ink-secondary); margin-bottom: 2px; }
+.theme-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; border-top: 1px solid var(--line); font-size: 14px; flex-wrap: wrap; padding: 4px 0; }
+.theme-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.theme-seg button { min-width: 56px; min-height: 44px; border: 0; background: none; color: var(--ink); font: inherit; font-size: 13.5px; cursor: pointer; padding: 0 10px; }
+.theme-seg button + button { border-left: 1px solid var(--line); }
+.theme-seg button.on { background: var(--b-blue, #2546C4); color: #fff; font-weight: 700; }
+:root[data-theme="dark"] .theme-seg button.on { background: #C8F06A; color: #0F1215; }
+.toeic-none { margin-bottom: 12px; }
+.excl-banner .link-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; }
+details.excl > summary { min-height: 44px; display: flex; align-items: center; }
+
 </style>
 </head>
 <body>
@@ -2885,6 +2946,10 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       </div>
       <div class="save-note" id="save-note">저장한 조건은 이 기기의 이 브라우저에만 보관돼요. 서버로 보내지 않아요.
       </div>
+      <div class="disp-box" id="disp-box"><b class="disp-h">🖥 화면 설정</b>
+        <div class="theme-row"><span>🌙 화면 밝기</span><div class="theme-seg" role="radiogroup" aria-label="화면 밝기"><button type="button" data-theme-set="auto" role="radio" aria-checked="false">자동</button><button type="button" data-theme-set="light" role="radio" aria-checked="true">밝게</button><button type="button" data-theme-set="dark" role="radio" aria-checked="false">어둡게</button></div></div>
+        <button type="button" class="disp-tg" data-show="demoMode" data-tg="1" role="switch" aria-checked="false"><span>🧪 시연 모드 <small>가상 공고 포함 · 발표용</small></span><i aria-hidden="true"></i></button>
+      </div>
       <details class="keep-box" id="keep-box"><summary>📦 저장 내용 옮기기 · 지우기</summary>
         <p class="keep-p">휴대폰을 바꾸거나 PC에서도 쓰려면, 여기서 만든 코드를 복사해 새 기기의 같은 칸에 붙여 넣으세요. 코드에는 내 조건·보관함·서류 체크·퀘스트 진행·준비 기간만 들어가요.</p>
         <div class="keep-btns"><button type="button" class="btn-cond ghost" onclick="keepExport()">📋 코드 만들기(복사)</button><button type="button" class="btn-cond ghost" onclick="keepImport()">📥 코드로 불러오기</button></div>
@@ -2939,6 +3004,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     <button type="button" class="vf-chip" id="vf-chip" hidden title="누르면 검토중 공고도 다시 보여요">✓ 검증된 공고만 <span aria-hidden="true">✕</span></button>
     <div class="toolbar-actions">
       <button type="button" class="d5-chip" id="d5-chip" aria-pressed="false" title="마감 5일 이내 공고만 보여요">⏰ D-5<span class="d5-long"> 마감 임박만</span></button>
+      <button type="button" class="d5-chip vo-chip" id="vo-chip" data-show="verifiedOnly" data-tg="1" aria-pressed="false" title="운영자가 원문과 대조한 공고만 보여요">✓ 검증된 공고만</button>
       <div class="sort-wrap">
       <span class="sort-label" style="font-size:12px; color:var(--muted); font-weight:600; white-space:nowrap;">정렬:</span>
       <select id="sort-select" class="sort-select">
@@ -2952,21 +3018,21 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
         <button type="button" class="view-btn" id="view-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="view-menu">
           <svg viewBox="0 0 20 20"><path d="M3 5h14M3 10h14M3 15h14"/></svg><span>보기</span><span class="caret">▾</span>
         </button>
-        <div class="view-menu" id="view-menu" role="menu" hidden>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="plan" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="4" width="4" height="12" rx="1"/><rect x="8" y="4" width="4" height="8" rx="1"/><rect x="13.5" y="4" width="4" height="10" rx="1"/></svg><span class="vm-label">계획 보드 (기본)</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="xl" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/></svg><span class="vm-label">아주 큰 카드</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="large" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="4.5" y="4" width="11" height="10" rx="1.5"/><path d="M7.5 17h5"/></svg><span class="vm-label">큰 카드</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="medium" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="6" y="5" width="8" height="7.5" rx="1.2"/><path d="M8 15.5h4"/></svg><span class="vm-label">보통 카드</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="small" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="5" height="5" rx="1"/><rect x="11.5" y="3.5" width="5" height="5" rx="1"/><rect x="3.5" y="11.5" width="5" height="5" rx="1"/><rect x="11.5" y="11.5" width="5" height="5" rx="1"/></svg><span class="vm-label">작은 카드</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="list" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><path d="M3 5h2.5M3 10h2.5M3 15h2.5M8 5h9M8 10h9M8 15h9"/></svg><span class="vm-label">목록</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="details" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><path d="M3 4.5h14M3 8.2h14M3 11.8h14M3 15.5h14"/></svg><span class="vm-label">자세히</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="tiles" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="4" width="4.5" height="4.5" rx="1"/><path d="M10 5h7M10 7.5h5"/><rect x="3" y="11.5" width="4.5" height="4.5" rx="1"/><path d="M10 12.5h7M10 15h5"/></svg><span class="vm-label">타일</span></button>
-          <button type="button" class="vm-item" role="menuitemradio" data-view="content" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="3.5" width="4" height="4" rx="1"/><path d="M9.5 4.5h7.5M9.5 7h5"/><rect x="3" y="12.5" width="4" height="4" rx="1"/><path d="M9.5 13.5h7.5M9.5 16h5"/></svg><span class="vm-label">내용</span></button>
-          <div class="vm-sep vm-pc" role="separator"></div>
-          <button type="button" class="vm-item vm-pane" role="menuitemradio" data-pane="info" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M12.5 3.5v13M14.3 7h1.4M14.3 9.5h1.4"/></svg><span class="vm-label">세부 정보 창</span></button>
-          <button type="button" class="vm-item vm-pane" role="menuitemradio" data-pane="preview" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M11.5 3.5v13"/></svg><span class="vm-label">미리 보기 창</span></button>
-          <div class="vm-sep" role="separator"></div>
-          <div class="vm-sub-wrap">
+        <div class="view-menu view-seg" id="view-menu" role="radiogroup" aria-label="보기 방식">
+          <button type="button" class="vm-item" role="radio" data-view="plan" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="4" width="4" height="12" rx="1"/><rect x="8" y="4" width="4" height="8" rx="1"/><rect x="13.5" y="4" width="4" height="10" rx="1"/></svg><span class="vm-label">계획 보드</span></button>
+          <button type="button" class="vm-item vm-old" role="menuitemradio" data-view="xl" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/></svg><span class="vm-label">아주 큰 카드</span></button>
+          <button type="button" class="vm-item" role="radio" data-view="large" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="4.5" y="4" width="11" height="10" rx="1.5"/><path d="M7.5 17h5"/></svg><span class="vm-label">카드</span></button>
+          <button type="button" class="vm-item vm-old" role="menuitemradio" data-view="medium" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="6" y="5" width="8" height="7.5" rx="1.2"/><path d="M8 15.5h4"/></svg><span class="vm-label">보통 카드</span></button>
+          <button type="button" class="vm-item vm-old" role="menuitemradio" data-view="small" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="5" height="5" rx="1"/><rect x="11.5" y="3.5" width="5" height="5" rx="1"/><rect x="3.5" y="11.5" width="5" height="5" rx="1"/><rect x="11.5" y="11.5" width="5" height="5" rx="1"/></svg><span class="vm-label">작은 카드</span></button>
+          <button type="button" class="vm-item" role="radio" data-view="list" aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><path d="M3 5h2.5M3 10h2.5M3 15h2.5M8 5h9M8 10h9M8 15h9"/></svg><span class="vm-label">목록</span></button>
+          <button type="button" class="vm-item vm-old" role="menuitemradio" data-view="details" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><path d="M3 4.5h14M3 8.2h14M3 11.8h14M3 15.5h14"/></svg><span class="vm-label">자세히</span></button>
+          <button type="button" class="vm-item vm-old" role="menuitemradio" data-view="tiles" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="4" width="4.5" height="4.5" rx="1"/><path d="M10 5h7M10 7.5h5"/><rect x="3" y="11.5" width="4.5" height="4.5" rx="1"/><path d="M10 12.5h7M10 15h5"/></svg><span class="vm-label">타일</span></button>
+          <button type="button" class="vm-item vm-old" role="menuitemradio" data-view="content" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="3" y="3.5" width="4" height="4" rx="1"/><path d="M9.5 4.5h7.5M9.5 7h5"/><rect x="3" y="12.5" width="4" height="4" rx="1"/><path d="M9.5 13.5h7.5M9.5 16h5"/></svg><span class="vm-label">내용</span></button>
+          <div class="vm-sep vm-pc" role="separator" hidden></div>
+          <button type="button" class="vm-item vm-pane" role="menuitemradio" data-pane="info" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M12.5 3.5v13M14.3 7h1.4M14.3 9.5h1.4"/></svg><span class="vm-label">세부 정보 창</span></button>
+          <button type="button" class="vm-item vm-pane" role="menuitemradio" data-pane="preview" hidden aria-checked="false"><span class="vm-dot"></span><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M11.5 3.5v13"/></svg><span class="vm-label">미리 보기 창</span></button>
+          <div class="vm-sep" role="separator" hidden></div>
+          <div class="vm-sub-wrap" hidden>
             <button type="button" class="vm-item vm-has-sub" id="vm-show-btn" aria-haspopup="menu" aria-expanded="false"><span class="vm-dot"></span><span class="vm-icon-space"></span><span class="vm-label">표시</span><span class="vm-arrow">›</span></button>
             <div class="vm-sub" id="vm-sub" role="menu" hidden>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="verifiedOnly" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">검증된 공고만 보기</span></button>
@@ -2975,7 +3041,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="wrap" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">텍스트 줄 바꿈 (자세히)</span></button>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="hid" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">숨긴 공고 안내</span></button>
               <button type="button" class="vm-item" role="menuitemcheckbox" data-show="demoMode" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🧪 시연 모드 (가상 공고 포함)</span></button>
-              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="darkMode" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🌙 어두운 화면 (켜면 기기 설정을 따름)</span></button>
+              <button type="button" class="vm-item" role="menuitemcheckbox" data-show="darkMode" aria-checked="false"><span class="vm-check">✓</span><span class="vm-label">🌙 어두운 화면</span></button>
             </div>
           </div>
         </div>
@@ -3016,9 +3082,10 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     <h4>📂 데이터 출처</h4>
     <ul>
       <li>가톨릭대학교 공지사항 공개 게시판 — 제목·링크·마감일과 AI 요약을 제공하고, 공고마다 "출처: 가톨릭대학교 공지사항"과 원문 링크를 함께 표시해요 (교수학습개발원 활용 확인, 2026.11.5)</li>
-      <li>학교 공지 수집 원칙: 하루 1회, 요청 사이 간격 유지 · 수집할 때마다 <a href="https://www.catholic.ac.kr/robots.txt" target="_blank" rel="noopener">robots.txt</a>를 다시 확인하고 제한된 경로(/_attach/, /_custom/, /_res/ 등)는 가져오지 않음 · 명단 등 개인정보가 담긴 부분은 AI에 넣지 않고 요약에도 보여 주지 않음</li>
-      <li>국가기관 공지 게시판 (문화체육관광부·고용노동부·보건복지부 등, 공공저작물 · 제목·링크만 저장, 원문으로 연결)</li>
-      <li><a href="https://www.data.go.kr/data/15028252/fileData.do" target="_blank" rel="noopener">한국장학재단_학자금지원정보(대학생)</a> · 공공데이터포털 (이용허락범위 제한 없음)</li>
+      <li>학교 공지 수집 원칙: 하루 1회, 요청 사이 1.5초 간격 유지 · 상세 페이지의 공지 본문 글자만 읽음 · 수집할 때마다 <a href="https://www.catholic.ac.kr/robots.txt" target="_blank" rel="noopener">robots.txt</a>를 다시 확인하고 제한된 경로(/_attach/, /_custom/, /_res/ 등)는 가져오지 않음 · 명단 등 개인정보가 담긴 부분은 AI에 넣지 않고 요약에도 보여 주지 않음</li>
+      <li>국가기관 공지 게시판 (문화체육관광부·고용노동부·보건복지부 등, 공공저작물) — 제목·링크·마감일을 저장하고, 공지 본문을 읽어 AI가 정리한 요약·자격을 함께 보여 줘요 (본문 자체는 저장하지 않고, 공고마다 출처와 원문 링크 표시)</li>
+      <li>외부 공모전·대외활동 — 주최 기관의 공식 공고를 팀이 직접 조사·확인한 정보(제목·마감일·링크)예요. 공고마다 "출처: 주최 기관"과 원문 링크를 표시해요</li>
+      <li id="src-kosaf"><a href="https://www.data.go.kr/data/15028252/fileData.do" target="_blank" rel="noopener">한국장학재단_학자금지원정보(대학생)</a> · 공공데이터포털 (이용허락범위 제한 없음)<span class="kos-wait"> — <b>등록 예정</b> (아직 화면에 들어간 공고는 없어요)</span></li>
       <li>'시연용 예시' 표시가 붙은 공고는 서비스 시연을 위해 만든 가상 데이터예요</li>
     </ul>
     <h4>🔒 개인정보</h4>
@@ -3033,6 +3100,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       <li>글꼴: IBM Plex Sans KR · IBM Plex Mono (SIL Open Font License 1.1)</li>
       <li>선 아이콘: 위 아이콘과 같은 선 굵기로 이 프로젝트에서 직접 그림</li>
     </ul>
+    <p class="app-ver contest">2026 가톨릭대학교 생성형 AI 경진대회 출품작 · 시연용 서비스</p>
     <p class="app-ver">화면 버전 <span id="app-ver"></span> · 인터넷이 끊겨도 마지막으로 받은 화면과 공고(7일)를 보여 줘요</p>
   </footer>
   </div>
@@ -3120,7 +3188,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
         <dt>정렬</dt><dd>마감 임박순 · 장학금 우선순 · 서류 준비 빠른순.</dd>
         <dt>🔍 검색</dt><dd>공고명·혜택·자격 문구로 바로 찾아요.</dd>
         <dt>🔎 추천에서 빠진 공고</dt><dd>내 조건과 달라 추천에서 뺀 공고는 목록 아래 <b>추천에서 빠진 공고 보기</b>에서 빠진 이유와 함께 볼 수 있어요. 팀 구성·연령 같은 세부 자격은 거르지 않고 상세의 <b>필수 자격</b>에 보여 드려요.</dd>
-        <dt>✓ 검증 / 검토중</dt><dd>'검증'은 운영자가 원문과 대조한 공고예요. 보기 › 표시 › <b>검증된 공고만 보기</b>로 검증된 것만 볼 수 있어요.</dd>
+        <dt>✓ 검증 / 검토중</dt><dd>'검증'은 운영자가 원문과 대조한 공고예요. 보기 · 거르기의 <b>✓ 검증된 공고만</b> 칩으로 검증된 것만 볼 수 있어요.</dd>
       </dl>
     </details>
     <details class="help-sec"><summary>🗂️ 공고 카드 읽는 법</summary>
@@ -3130,13 +3198,13 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
         <dt>📮 오프라인 접수</dt><dd>우편·방문 접수는 주황 경고가 붙어요. 우편은 <b>소인 날짜</b>, 방문은 <b>마감 시각</b>을 꼭 확인하세요.</dd>
         <dt>🔗 공유 · 💬 정보 공유</dt><dd>카카오톡·문자·메일로 공유할 수 있어요. 위쪽 💬 <b>정보 공유방</b>은 누구나 자유롭게, 공고를 누르면 나오는 <b>이 공고 정보 공유</b>에서는 그 공고만의 질문·참여 후기·준비 팁을 나눠요. 이야기가 있는 공고는 카드에 💬 숫자가 보여요.</dd>
         <dt>🏠 기관 홈페이지 링크</dt><dd>공고로 바로 가지 않는 링크는 '공고 검색' 버튼으로 찾아갈 수 있어요.</dd>
-        <dt>🧪 시연 모드</dt><dd>제목에 <b>[시연]</b>이 붙은 공고는 기능 시연용 <b>가상 공고</b>예요. 평소에는 숨겨져 있고, 보기 › 표시 › <b>시연 모드</b>를 켤 때만 보여요.</dd>
+        <dt>🧪 시연 모드</dt><dd>제목에 <b>[시연]</b>이 붙은 공고는 기능 시연용 <b>가상 공고</b>예요. 평소에는 숨겨져 있고, 내 조건 › <b>화면 설정 › 시연 모드</b>를 켤 때만 보여요.</dd>
         <dt>📌 기한 미기재·상시</dt><dd>학교 공지 중 마감일이 적혀 있지 않은 글은 오늘 탭 아래쪽 묶음에 모아 둬요. 원문에서 기한을 확인하세요.</dd>
       </dl>
     </details>
     <details class="help-sec"><summary>🪟 보기 방식 바꾸기</summary>
-      <p>오른쪽 위 <b>보기</b>에서 윈도우 탐색기처럼 아주 큰 카드 · 큰 카드 · 보통/작은 카드 · 목록 · 자세히(표) · 타일 · 내용을 고를 수 있어요. PC에서는 <b>세부 정보 창</b>을 켜면 목록 옆에 공고 정보가 함께 보여요. 고른 보기는 이 기기에 기억돼요.</p>
-      <p>기본은 밝은 화면이에요. 보기 › 표시 › <b>어두운 화면</b>을 켜면, 기기가 다크 모드일 때 CUK-콕도 어둡게 바뀌어요.</p>
+      <p><b>보기 · 거르기</b> 아래쪽에서 <b>계획 보드 · 카드 · 목록</b> 중 하나를 고를 수 있어요. PC에서는 공고를 누르면 오른쪽에 상세가 함께 보여요. 고른 보기는 이 기기에 기억돼요.</p>
+      <p>기본은 밝은 화면이에요. 내 조건 › <b>화면 설정 › 어두운 화면</b>을 켜면 바로 어둡게 바뀌어요.</p>
       <p>화면 크기에 맞춰 카드 열 수와 글자 크기가 자동으로 바뀌어요. 휴대폰과 좁은 카드에서는 공유·캘린더 버튼이 아이콘(🔗 📅)만 보이고, 누르는 곳은 손가락 크기(44px)로 넓어요. 두 손가락으로 확대할 수도 있어요.</p>
       <p>웹앱 연결이 잠깐 끊겨도 이 기기에 마지막으로 받은 실제 공고(7일 이내)를 보여 줘요.</p>
     </details>
@@ -3513,6 +3581,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     return "https://www.google.com/search?q=" + encodeURIComponent(String(n.t || "").replace(/&#0?39;/g, "'") + " 공고");
   }
   function linkNote(n) {
+    if (n.demo === true) return '<div class="link-note demo-note"><span>🧪 시연용 가상 공고라 원문이 없어요</span></div>';
     if (linkTypeOf(n) === "직접") return "";
     return '<div class="link-note"><span>🏠 기관 홈페이지 링크예요. 공고는 들어가서 찾아야 해요</span>' +
       '<a href="' + esc(searchUrl(n)) + '" target="_blank" rel="noopener">🔎 공고 검색</a></div>';
@@ -3522,11 +3591,14 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
   var usingFallback = true;
   function isDemo(n) { return usingFallback || n.demo === true; }
   // 운영자 검수: 시트의 '검수' 열이 O → "검증", 그 외(X·빈칸) → "검토중"
+  // p3.14: '✓ 검증'은 마감일·접수 방식·자격이 원문과 맞고 공고 글로 바로 가는 링크일 때만
   function verifyTag(n) {
-    return n.verified === true
-      ? '<span class="tag verified" title="운영자가 원문과 대조해 확인한 공고예요">✓ 검증</span>'
-      : '<span class="tag reviewing" title="AI가 정리했고 아직 운영자 확인 전이에요">검토중</span>';
+    if (n.verified === true) return '<span class="tag verified" title="운영자가 원문과 대조해 확인한 공고예요">✓ 검증</span>';
+    if (n.vlevel === "main") return '<span class="tag reviewing" title="마감일은 운영자가 확인했지만, 링크가 공고 글이 아니라 기관 홈페이지예요">기관 홈페이지 링크</span>';
+    if (n.vlevel === "due") return '<span class="tag reviewing" title="마감일은 운영자가 확인했고, 요약·자격은 아직 원문 확인 전이에요">마감일 확인</span>';
+    return '<span class="tag reviewing" title="AI가 정리했고 아직 운영자 확인 전이에요">검토중</span>';
   }
+  function verWord(n) { return n.verified === true ? "검증" : n.vlevel === "main" ? "홈페이지 링크" : n.vlevel === "due" ? "마감일 확인" : "검토중"; }
   // 마감일 출처 안내 (마우스를 올리면 보임)
   function dueTip(n) {
     return "마감일 출처: " + (n.dueSource || "확인 필요") + (n.dueEvidence ? "\n근거: " + n.dueEvidence : "");
@@ -3647,7 +3719,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     var detail = "";
     var stList = calSel && stDay[calSel] ? stDay[calSel] : [];
     var stHtml = stList.length ? '<div class="cal-st-box"><div class="cal-detail-title">이날 준비 시작 · ' + stList.length + '건</div>' +
-      stList.map(function(it){ var n = it.x.n; return '<button type="button" class="cal-st-row" onclick="openDetail(\'' + esc(n.id) + '\')"><span>' + esc(n.t) + '</span><b class="mono">' + fmt(it.x.due) + ' 마감 · D-' + it.x.left + (n.demo === true || usingFallback ? '' : ' · 💬 ' + (n.cmt || 0)) + '</b></button>'; }).join("") + '</div>' : '';
+      stList.map(function(it){ var n = it.x.n; return '<button type="button" class="cal-st-row" onclick="openDetail(\'' + esc(n.id) + '\')"><span>' + esc(ct(n.t)) + '</span><b class="mono">' + fmt(it.x.due) + ' 마감 · D-' + it.x.left + (n.demo === true || usingFallback ? '' : ' · 💬 ' + (n.cmt || 0)) + '</b></button>'; }).join("") + '</div>' : '';
     if (calSel && !byDay[calSel] && stList.length) {
       detail = stHtml;
     } else if (calSel && byDay[calSel]) {
@@ -3667,7 +3739,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
               verifyTag(n) +
               demoTag(n) +
             '</div>' +
-            '<button type="button" class="cal-item-title cal-open" onclick="openDetail(\'' + esc(n.id) + '\')">' + esc(n.t) + '</button>' +
+            '<button type="button" class="cal-item-title cal-open" onclick="openDetail(\'' + esc(n.id) + '\')">' + esc(ct(n.t)) + '</button>' +
             '<div class="cal-acts"><button type="button" class="cal-link" onclick="openDetail(\'' + esc(n.id) + '\')">📋 상세 보기</button>' + (n.demo === true || usingFallback ? '' : '<button type="button" class="cal-link ghost" onclick="openComments(\'' + esc(n.id) + '\')">💬 댓글 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>') + '</div>' +
             (desc ? '<div class="cal-item-desc">' + esc(desc) + '</div>' : '') +
             '<div class="benefit-line" title="' + esc(n.benefit || "") + '">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
@@ -3971,12 +4043,31 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     showToast("📅 찜한 공고 " + items.length + "건을 캘린더 파일로 받았어요. 열면 한 번에 등록돼요");
   };
 
-  // ===== 🌙 어두운 화면: 기기 설정을 따름 (보기 › 표시에서 끌 수 있음) =====
+  // ===== 🌙 어두운 화면: 내 조건 › 화면 설정에서 켜고 끔 =====
   var darkMQ = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  // p3.14 F08: 자동(기기 설정) / 밝게 / 어둡게 — 어두우면 위쪽 상태바 색(theme-color)도 같이
+  function themeMode() { return SHOW.themeAuto ? "auto" : SHOW.darkMode ? "dark" : "light"; }
   function applyTheme() {
-    var on = SHOW.darkMode && darkMQ && darkMQ.matches;
+    var mode = themeMode();
+    var on = mode === "dark" || (mode === "auto" && !!(darkMQ && darkMQ.matches));
     if (on) document.documentElement.setAttribute("data-theme", "dark"); else document.documentElement.removeAttribute("data-theme");
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", on ? "#0F1215" : "#F3F4F7");
+    [].forEach.call(document.querySelectorAll("[data-theme-set]"), function(b){
+      var sel = b.getAttribute("data-theme-set") === mode;
+      b.setAttribute("aria-checked", sel ? "true" : "false"); b.classList.toggle("on", sel);
+    });
   }
+  window.setTheme = function(mode) {
+    SHOW.themeAuto = mode === "auto";
+    if (mode !== "auto") SHOW.darkMode = mode === "dark";
+    saveViewState(); applyTheme();
+    showToast(mode === "auto" ? "화면 밝기를 기기 설정에 맞춰요" : mode === "dark" ? "🌙 어두운 화면으로 바꿨어요" : "밝은 화면으로 바꿨어요");
+  };
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest("[data-theme-set]");
+    if (b) window.setTheme(b.getAttribute("data-theme-set"));
+  });
   if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener("change", applyTheme);
 
   // ===== 캠퍼스 안내: 성의·성신교정 전용 공지는 아직 수집 전 =====
@@ -4104,7 +4195,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     var gr = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
     if (gr.length && gr.length < 4) out.push(gr.join("·") + "학년");
     var st = Array.isArray(n.status) ? n.status : [];
-    if (st.length) out.push("학적: " + st.map(function(k){ return STATUS[k] || k; }).join("·"));
+    if (st.length) out.push(n.stExplicit === false && st.length < 3 ? "학적: 무관 (원문 확인)" : "학적: " + st.map(function(k){ return STATUS[k] || k; }).join("·"));
     if (Array.isArray(n.field) && n.field.length) out.push("전공 계열: " + n.field.map(function(f){ return FIELD[f] || f; }).join(", "));
     if (n.gpa) out.push("직전학기 평점 " + Number(n.gpa).toFixed(1) + " 이상");
     if (n.toeic) out.push("TOEIC " + n.toeic + "점 이상");
@@ -4176,7 +4267,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
           var boxId = docKey + "-" + (uid++);   // 같은 공고가 보관함 등 다른 탭에도 그려지므로 화면 id는 매번 다르게
           return '<li><input type="checkbox" id="' + esc(boxId) + '" ' + isChecked + ' onchange="toggleDocCheck(\'' + esc(docKey) + '\')"><label for="' + esc(boxId) + '">' + esc(s) + '</label></li>';
         }).join("") + '</ul></div>' +
-        '<div class="sum-block"><div class="sum-block-title"><i>5</i>AI 판단 근거 (원문 발췌)</div><div class="quote-box">"' + esc(n.q || n.t) + '"</div></div>' +
+        '<div class="sum-block"><div class="sum-block-title"><i>5</i>' + (n.qIsTitle ? 'AI 판단 근거 <em>제목만 확인됨 · 원문 확인 필요</em>' : 'AI 판단 근거 (원문 발췌)') + '</div><div class="quote-box">"' + esc(n.q || n.t) + '"</div></div>' +
       '</div></details>';
   }
 
@@ -4201,14 +4292,21 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     var m = /^https?:\/\/([^\/?#]+)/i.exec(String(n && n.url || ""));
     return !!m && /(^|\.)catholic\.ac\.kr$/i.test(m[1]);
   }
+  // p3.14 F14: 모든 공고에 출처 줄 (교내 · 국가기관 · 장학재단 · 외부 공모전 · 시연)
   function srcNote(n) {
-    if (!isCukNotice(n)) return "";
-    return '<div class="src-note">출처: 가톨릭대학교 공지사항 · <a href="' + esc(n.url) + '" target="_blank" rel="noopener">원문 보기 ↗</a></div>';
+    if (n.demo === true) return '<div class="src-note">🧪 시연용 가상 공고라 원문이 없어요 · 실제 모집이 아니에요</div>';
+    if (!n.url) return "";
+    var o = String(n.origin || ""), org = dsOrg(n), who;
+    if (isCukNotice(n)) who = "가톨릭대학교 공지사항";
+    else if (o.indexOf("국가기관") === 0) who = org + " 공지사항 (공공저작물)";
+    else if (o.indexOf("공공데이터") === 0 || /한국장학재단/.test(o)) who = "한국장학재단 학자금지원정보 (공공데이터포털)";
+    else who = org + " 공식 공고 (팀이 직접 조사·확인)";
+    return '<div class="src-note">출처: ' + esc(who) + ' · <a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + (linkTypeOf(n) === "직접" ? "원문 보기 ↗" : "기관 홈페이지 ↗") + '</a></div>';
   }
   // xl=아주 큰 카드(1열) · large=큰 카드(기본) · medium=보통 카드 · small=작은 카드 · list=목록 · details=자세히 · tiles=타일 · content=내용
   var VIEW_MODES = ["plan", "xl", "large", "medium", "small", "list", "details", "tiles", "content"];
   var VIEW = "plan", PANE = "none";   // 3안: 기본은 계획 보드
-  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false, demoMode: false, darkMode: false };   // darkMode: 기본은 밝은 화면
+  var SHOW = { verifiedOnly: false, side: true, wrap: false, hid: true, demo: true, d5: false, demoMode: false, darkMode: false, themeAuto: false };   // darkMode: 기본은 밝은 화면
   try {
     var v2 = localStorage.getItem("cuk_view2");
     if (VIEW_MODES.indexOf(v2) > -1) VIEW = v2;
@@ -4219,12 +4317,14 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       if (old === "wrap") SHOW.wrap = true;
       if (localStorage.getItem("cuk_preview") === "1") PANE = "preview";
     }
+    VIEW = ({ xl: "large", medium: "large", small: "large", details: "list", tiles: "list", content: "list" })[VIEW] || VIEW;   // p3.13: 보기 방식 3가지로
     if (!localStorage.getItem("cuk_p3")) { VIEW = "plan"; localStorage.setItem("cuk_p3", "1"); localStorage.setItem("cuk_view2", "plan"); }   // 3안 첫 적용: 한 번만 계획 보드로
     var p2 = localStorage.getItem("cuk_pane");
     if (["none", "info", "preview"].indexOf(p2) > -1) PANE = p2;
     var sh = JSON.parse(localStorage.getItem("cuk_show") || "null");
     if (sh) Object.keys(SHOW).forEach(function(k){ if (typeof sh[k] === "boolean") SHOW[k] = sh[k]; });
   } catch (e) {}
+  PANE = "none"; SHOW.wrap = false; SHOW.side = true;   // p3.13: 세부·미리 보기 창, 줄 바꿈, 사이드바 끄기 메뉴는 정리됨
   function saveViewState() {
     try {
       localStorage.setItem("cuk_view2", VIEW);
@@ -4274,6 +4374,11 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     [].forEach.call(document.querySelectorAll(".vm-item[data-show]"), function(b){
       b.setAttribute("aria-checked", SHOW[b.getAttribute("data-show")] ? "true" : "false");
     });
+    [].forEach.call(document.querySelectorAll("[data-tg][data-show]"), function(b){
+      var on = !!SHOW[b.getAttribute("data-show")];
+      b.setAttribute(b.getAttribute("role") === "switch" ? "aria-checked" : "aria-pressed", on ? "true" : "false");
+      b.classList.toggle("on", on);
+    });
     c.classList.toggle("text-wrap", SHOW.wrap);
     el("page-wrap").classList.toggle("no-side", !SHOW.side);
     el("hid").style.display = SHOW.hid ? "" : "none";
@@ -4293,8 +4398,8 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     var rows = [
       ["분야", esc(n.cat || "-")],
       ["구분", srcLabel(n)],
-      ["검수", n.verified === true ? "✓ 검증 (운영자 확인 완료)" : "검토중 (AI 정리, 확인 전)"],
-      ["마감일", x.due.getFullYear() + "." + fmt(x.due) + " (" + WD[x.due.getDay()] + ")"],
+      ["검수", n.verified === true ? "✓ 검증 (운영자 확인 완료)" : n.vlevel === "main" ? "마감일 확인 · 링크는 기관 홈페이지" : n.vlevel === "due" ? "마감일 확인 · 요약·자격은 원문 확인 전" : "검토중 (AI 정리, 확인 전)"],
+      ["마감일", x.due.getFullYear() + "." + fmt(x.due) + " (" + WD[x.due.getDay()] + ")" + (n.dowBad ? ' <b class="due-bad">원문 요일 불일치 · 원문 확인</b>' : '')],
       ["마감일 출처", esc(n.dueSource || "확인 필요")],
       ["마감일 근거", n.dueEvidence ? '<span class="info-quote">"' + esc(n.dueEvidence) + '"</span>' : "-"],
       ["남은 날", x.left < 0 ? "마감됨 (" + (-x.left) + "일 전)" : x.left === 0 ? "오늘 마감" : "D-" + x.left],
@@ -4308,7 +4413,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       ["접수 방식", esc(submitInfo(n).label)],
       ["서류 준비", (n.prep || 0) === 0 ? "즉시 신청" : "약 " + n.prep + "일"],
       ["필요 서류", docs],
-      ["링크", lt === "직접" ? "공고로 바로 이동" : "기관 홈페이지 (들어가서 찾기)"]
+      ["링크", n.demo === true ? "시연용 가상 공고라 원문 없음" : lt === "직접" ? "공고로 바로 이동" : "기관 홈페이지 (들어가서 찾기)"]
     ];
     var gap = x.isGap && x.short ? x.short.map(function(z){
       return '<div class="info-gap">' + z.k + ' +' + z.diff + (z.k === "토익" ? "점" : "") + ' 부족 (' + z.cur + ' / ' + z.need + ')</div>';
@@ -4318,7 +4423,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       '<dl class="info-grid">' + rows.map(function(r){ return '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; }).join("") + '</dl>' +
       '<div class="info-actions">' +
         (n.url ? '<a class="cal-link" href="' + esc(n.url) + '" target="_blank" rel="noopener">원문 공고 열기 ↗</a>' : '') +
-        (lt !== "직접" ? '<a class="cal-link ghost" href="' + esc(searchUrl(n)) + '" target="_blank" rel="noopener">🔎 공고 검색</a>' : '') +
+        (lt !== "직접" && n.demo !== true ? '<a class="cal-link ghost" href="' + esc(searchUrl(n)) + '" target="_blank" rel="noopener">🔎 공고 검색</a>' : '') +
         '<button type="button" class="cal-link ghost" onclick="openComments(\'' + esc(n.id) + '\')">💬 댓글 <span data-cmt="' + esc(n.id) + '">' + (n.cmt || 0) + '</span></button>' +
       '</div>' +
       '<div class="ai-note">🤖 AI가 정리한 정보이니 원문을 꼭 확인하세요.</div>' +
@@ -4338,12 +4443,68 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     render(); if (window.openDetail) window.openDetail(id, true);
     showToast(d === 0 ? "AI가 추정한 준비 기간으로 되돌렸어요" : "서류 준비 기간을 " + PREP_OV[id] + "일로 바꿨어요. 시작일이 다시 계산돼요");
   };
+  // ===== p3.14 페르소나 점검(2026.11.18) 반영: 화면에 그리기 전에 공고 데이터 손질 =====
+  // F01 시연 공고 마감일 = 오늘 + N일 (본선 12/4에도 10건이 모두 보이고, 영국 단기어학연수 TOEIC 780 퀘스트가 첫 번째)
+  var DEMO_OFF = { N902: 12, N909: 14, N901: 16, N903: 18, N905: 20, N906: 22, N904: 24, N910: 26, N907: 28, N908: 30 };
+  var THIN_RE = /(상세 내용이 없|메뉴 목록|메뉴 위주|본문 미포함|본문이 없|확인 불가|확인할 수 없|세부 요건)/;
+  // F07 학적: 원문에 학적 문장("재학생", "휴학생 제외", "수료(유예)생 지원 불가" 등)이 있을 때만 학적으로 거름
+  var ST_RE = /(재학생|재학 ?중|휴학생|휴학 ?(중|불가|제외)|수료|유예|졸업생|졸업자|졸업 ?예정|정규 ?학기|신입생|\d{2}학번)/;
+  // F06 앱이 판정하지 않는 조건 (거주지·소득·국적)
+  var COND_RE = [["거주지", /(거주|주민등록|주소를 두|관내 ?(고|학교|고등))/], ["소득", /(소득|기초생활|차상위|수급자|지원구간|분위)/], ["국적", /(국적|내국인|외국인 ?(유학생)?만)/]];
+  var WD_KO = "일월화수목금토";
+  function sqz(t) { return String(t || "").replace(/&#0?39;|&quot;|&amp;/g, "").replace(/^\s*\[[^\]]*\]\s*/, "").replace(/[\s"'“”‘’「」『』.,·…]/g, ""); }
+  function prepOne(n) {
+    if (n.demo === true) {
+      if (n._due0 === undefined) { n._due0 = n.due; n._url0 = n.url || ""; }
+      var off = DEMO_OFF[n.id] || (12 + (parseInt(String(n.id).replace(/\D/g, ""), 10) || 0) % 20);
+      n.due = isoDay(new Date(TODAY.getTime() + off * 86400000)); n.noDue = false;
+      n.url = "";   // F13 가상 공고에는 원문이 없음 → 원문 버튼 대신 안내
+    }
+    // F03·F12 '✓ 검증' = 시트 검수 O + 공고 글 직접 링크 + 요약·자격이 비어 있지 않을 때만
+    if (n._ver0 === undefined) n._ver0 = n.verified === true;
+    var thin = THIN_RE.test([].concat(n.sum || [], n.required_qualifications || []).join(" "));
+    n.vlevel = !n._ver0 ? "" : (n.url && linkTypeOf(n) !== "직접") ? "main" : thin ? "due" : "full";
+    n.verified = n.vlevel === "full";
+    var stText = [n.statusBasis || "", n.q || "", n.t || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
+    n.stExplicit = !!String(n.statusBasis || "").trim() || ST_RE.test(stText);
+    var cText = [n.q || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
+    n.conds = COND_RE.filter(function(c){ return c[1].test(cText); }).map(function(c){ return c[0]; });
+    // F17 근거 문장이 제목과 같으면 '원문 발췌'가 아님
+    var qq = sqz(n.q), tt = sqz(n.t);
+    n.qIsTitle = !qq || qq === tt || (qq.length >= 8 && tt.indexOf(qq) >= 0) || (tt.length >= 8 && qq.indexOf(tt) >= 0 && qq.length - tt.length < 6);
+    // F18 원문 날짜의 요일이 실제 요일과 다르면 표시
+    n.dowBad = "";
+    var dm = String(n.due || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (dm && n.demo !== true) {
+      var real = WD_KO.charAt(new Date(+dm[1], +dm[2] - 1, +dm[3]).getDay());
+      var re = /(\d{1,2})\s*(?:월|\.|\/)\s*(\d{1,2})\s*(?:일|\.)?\s*\(\s*([월화수목금토일])\s*\)/g, mm, src = [n.dueEvidence || "", n.q || "", n.t || ""].concat(n.sum || []).join(" ");
+      while ((mm = re.exec(src))) {
+        if (+mm[1] === +dm[2] && +mm[2] === +dm[3] && mm[3] !== real) { n.dowBad = mm[3] + "→" + real; break; }
+      }
+    }
+  }
+  // 점검용(읽기): 개발자 도구·자동 테스트에서 지금 화면의 공고 상태를 볼 때
+  window.__cukState = function(){ return { N: N, CARD: CARD, linkTypeOf: linkTypeOf, render: render }; };
+  function condTag(n, cls) {
+    return n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음</span>' : "";
+  }
+  // F05 카드 제목: 한국어 뒤에 중국어·영어·베트남어가 이어지면 첫 한국어 부분만 (전체 제목은 상세에서)
+  function ct(t) {
+    t = String(t || "");
+    var i = t.search(/[\u3400-\u9FFF]/);
+    if (i > 0) {
+      var head = t.slice(0, i).replace(/[\s(（\[]+$/, "").replace(/\s+\d{2,4}$/, "");   // "모집공고 2026学年…" → "모집공고"
+      if ((head.match(/[가-힣]/g) || []).length >= 6) return head;
+    }
+    return t;
+  }
   function render(skipView) {
     applyPrep();
     uid = 0;
     // 화면을 켜 둔 채 자정을 넘겨도 D-day·오늘 마감이 맞도록 매번 오늘 날짜를 다시 계산
     var nowD = new Date();
     if (nowD.getDate() !== TODAY.getDate() || nowD - TODAY > 86400000) TODAY = new Date(nowD.getFullYear(), nowD.getMonth(), nowD.getDate());
+    N.forEach(prepOne);
     CARD = {};
     // "all"(전체)이면 해당 조건으로 거르지 않음
     var gv = el("p-grade").value, g = gv === "all" ? null : +gv;
@@ -4365,11 +4526,28 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     function hide(r, x, why){ hidden[r] = (hidden[r] || 0) + 1; if (x) excluded.push({ x:x, why: why || r }); }
 
     var demoHidden = 0, noDue = [];
+    // 학년·학적·계열 판정 (오늘 목록과 '기한 미기재·상시' 묶음이 같은 기준 · p3.14 F02)
+    function eligWhy(n) {
+      var grades = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
+      var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
+      var ss = (s === "transfer" || s === "intl") ? "enrolled" : s;   // 편입생·외국인 유학생 = 재학생 기준
+      if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상"];
+      if (n.stExplicit) {   // p3.14 F07: 원문에 학적 문장이 있을 때만 학적으로 거름
+        if (ss === "grad" || ss === "delay" || ss === "done") {
+          // 졸업생: 공고에 졸업생 허용이 있거나, '누구나·일반인·청년' 대상 공고만
+          var openText = [n.q || "", n.t || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
+          var okWords = ss === "grad" ? /(누구나|일반인|청년|졸업생|졸업자|제한 없음)/ : /(누구나|일반인|청년|졸업유예|수료|제한 없음)/;
+          if (status.indexOf(ss) < 0 && status.indexOf("grad") < 0 && !okWords.test(openText)) return ["학적 조건", "학적: " + statusText(status) + " 대상"];
+        } else if (ss !== "all" && status.indexOf(ss) < 0) return ["학적 조건", "학적: " + statusText(status) + " 대상"];
+      }
+      if (f !== "all" && n.field && n.field.indexOf(f) < 0) return ["전공 계열 조건", "전공 계열: " + n.field.map(function(k){ return FIELD[k] || k; }).join("·") + " 대상"];
+      return null;
+    }
     N.forEach(function(n) {
       // 시연용 가상 공고: 시연 모드에서만 (웹앱에 연결 못 해 예시 데이터만 있을 때는 그대로 보여 줌)
       if (n.demo === true && !SHOW.demoMode && !usingFallback) { demoHidden++; return; }
-      // 기한 미기재·상시 공고: 따로 묶어서 보여 줌
-      if (n.noDue) { noDue.push(n); return; }
+      // 기한 미기재·상시 공고: 따로 묶어서 보여 줌 (내 조건에 안 맞으면 '추천에서 빠진 공고'로)
+      if (n.noDue) { var nw = eligWhy(n); if (nw) { hide(nw[0], { n:n, left:9999, nodue:true }, nw[1]); return; } noDue.push(n); return; }
       // 날짜 안전 파싱
       var due;
       if (Array.isArray(n.due) && n.due.length >= 3) {
@@ -4383,6 +4561,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       // 마감일을 읽을 수 없는 공고는 엉뚱한 날짜로 보여주지 않고 숨김
       // 마감일을 읽을 수 없는 공고: 숨기지 않고 '기한 미기재·확인 필요' 묶음으로 (엉뚱한 날짜로 보여주지는 않음)
       if (!due || isNaN(due.getTime()) || due.getMonth() + 1 !== +(String(n.due).match(/-(\d{1,2})-/) || [0, due.getMonth() + 1])[1]) {
+        var bw = eligWhy(n); if (bw) { hide(bw[0], { n:n, left:9999, nodue:true }, bw[1]); return; }
         noDue.push(Object.assign({}, n, { dueBad: true }));
         return;
       }
@@ -4411,18 +4590,8 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
         bookmarked.push(x);
       }
 
-      var grades = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
-      var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
-
-      if (g !== null && grades.indexOf(g) < 0) { hide("학년 조건", x, "학년: " + grades.join("·") + "학년 대상"); return; }
-      if (s === "transfer" || s === "intl") s = "enrolled";   // 편입생·외국인 유학생 = 재학생 기준
-      if (s === "grad" || s === "delay" || s === "done") {
-        // 졸업생: 공고에 졸업생 허용이 있거나, '누구나·일반인·청년' 대상 공고만
-        var openText = [n.q || "", n.t || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
-        var okWords = s === "grad" ? /(누구나|일반인|청년|졸업생|졸업자|제한 없음)/ : /(누구나|일반인|청년|졸업유예|수료|제한 없음)/;
-        if (status.indexOf(s) < 0 && !okWords.test(openText)) { hide("학적 조건", x, "학적: " + statusText(status) + " 대상"); return; }
-      } else if (s !== "all" && status.indexOf(s) < 0) { hide("학적 조건", x, "학적: " + statusText(status) + " 대상"); return; }
-      if (f !== "all" && n.field && n.field.indexOf(f) < 0) { hide("전공 계열 조건", x, "전공 계열: " + n.field.map(function(k){ return FIELD[k] || k; }).join("·") + " 대상"); return; }
+      var ew = eligWhy(n);
+      if (ew) { hide(ew[0], x, ew[1]); return; }
       if (team !== null && n.cat === "공모전") {   // 팀 인원은 공모전에만 적용 (내가 팀 인원을 골랐을 때만)
         var tr = teamRange(n);
         if (team < tr.min || team > tr.max) { hide("팀 인원 조건 미부합", x, "팀 인원: " + teamText(n)); return; }
@@ -4465,7 +4634,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     // 검증된 공고만 보기: 시트 '검수'가 O인 공고만 남김 (교내/교외 건수도 이 기준으로)
     var unverifiedHidden = 0;
     if (SHOW.verifiedOnly) {
-      var isVerified = function(x){ return x.n.verified === true; };
+      var isVerified = function(x){ return x.n._ver0 === true; };   // p3.14: 운영자가 원문과 대조한 공고 (마감일 확인·기관 홈페이지 링크 포함)
       unverifiedHidden = feed.concat(gaps).filter(function(x){ return !isVerified(x); }).length;
       feed = feed.filter(isVerified); gaps = gaps.filter(isVerified); bookmarked = bookmarked.filter(isVerified);
     }
@@ -4494,7 +4663,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     // 지난 공고: 검증·교내외·분야 조건만 적용, 최근 마감순 / 같은 분야 건수 (카드의 '비교하기'용)
     var pastByCat = {};
     var past = pastAll.filter(function(x){
-      if (SHOW.verifiedOnly && x.n.verified !== true) return false;
+      if (SHOW.verifiedOnly && x.n._ver0 !== true) return false;
       if (SCOPE !== "all" && scopeOf(x.n) !== SCOPE) return false;
       pastByCat[x.n.cat] = (pastByCat[x.n.cat] || 0) + 1;
       return ints.indexOf(x.n.cat) > -1;
@@ -4546,12 +4715,14 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       .concat(off ? ["관심 분야 밖 " + off + "건"] : [])
       .concat(unverifiedHidden ? ["검토중이라 숨김 " + unverifiedHidden + "건"] : [])
       .concat(d5Hidden ? ["D-5 밖 " + d5Hidden + "건"] : [])
-      .concat(demoHidden ? ["시연용 가상 공고 " + demoHidden + "건 (보기 › 표시 › 시연 모드)"] : []);
+      .concat(demoHidden ? ["시연용 가상 공고 " + demoHidden + "건 (내 조건 › 화면 설정 › 시연 모드)"] : []);
     var hidTotal = ht + off + unverifiedHidden + d5Hidden + demoHidden;
     el("mode-banner").hidden = !(SHOW.demoMode && !usingFallback);
+    var kos = el("src-kosaf");
+    if (kos) { var hasK = N.some(function(n){ return /^공공데이터\(한국장학재단\)/.test(String(n.origin || "")); }); kos.classList.toggle("on", hasK); }
     var exShown = excluded.filter(function(e){
       if (SCOPE !== "all" && scopeOf(e.x.n) !== SCOPE) return false;
-      if (SHOW.verifiedOnly && e.x.n.verified !== true) return false;
+      if (SHOW.verifiedOnly && e.x.n._ver0 !== true) return false;
       return true;
     }).sort(function(a, b){ return a.x.left - b.x.left; });
     el("hid").innerHTML = '<div class="hid-sum">' + esc(hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음") + '</div>' +
@@ -4560,8 +4731,8 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
         exShown.map(function(e){
           var n = e.x.n;
           return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
-            '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a>' +
-            '<span class="excl-meta">D-' + e.x.left + ' · ' + srcLabel(n) + (n.verified === true ? '' : ' · 검토중') + '</span>' +
+            (n.url ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(ct(n.t)) + ' ↗</a>' : '<button type="button" class="link-btn" onclick="openDetail(\'' + esc(n.id) + '\')">' + esc(ct(n.t)) + '</button>') +
+            '<span class="excl-meta">' + (e.x.nodue ? '기한 미기재·상시' : 'D-' + e.x.left) + ' · ' + srcLabel(n) + (n.verified === true ? '' : ' · 검토중') + '</span>' +
             '<span class="excl-why">빠진 이유: ' + esc(e.why) + '</span></li>';
         }).join("") + '</ul></details>' : '');
     var exQ = query ? exShown.length : 0;
@@ -4596,7 +4767,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
             '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
             '<span class="tag">' + srcLabel(n) + '</span>' +
             teamTag(n) +
-            verifyTag(n) +
+            verifyTag(n) + condTag(n, "tag cond") +
             '<span class="tag date" title="' + esc(dueTip(n)) + '">마감 ' + fmt(x.due) + '</span>' +
             demoTag(n) +
             '<div class="action-btns">' +
@@ -4606,7 +4777,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
               (x.closed ? '' : '<button class="btn-icon" onclick="openCalSheet(\'' + esc(n.id) + '\')" title="캘린더에 추가" aria-label="캘린더에 추가">📅<span class="bl"> 캘린더</span></button>') +
             '</div>' +
           '</div>' +
-          '<h3 class="card-title"><a href="' + esc(n.url) + '" target="_blank" rel="noopener" title="' + esc(n.t) + '">' + esc(n.t) + ' ↗</a></h3>' +
+          '<h3 class="card-title">' + (n.url ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener" title="' + esc(n.t) + '">' + esc(ct(n.t)) + ' ↗</a>' : '<span title="' + esc(n.t) + '">' + esc(ct(n.t)) + '</span>') + '</h3>' +
           linkNote(n) +
           '<div class="benefit-line" title="' + esc(n.benefit || "") + '">🎁 혜택: <b>' + esc(n.benefit || "공고 내용 참조") + '</b></div>' +
           '<div class="prep-box' + (x.closed ? ' closed' : '') + '">' + prepText + '</div>' +
@@ -4639,7 +4810,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       return '<article class="tile' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         '<div class="tile-top">' + miniDday(x) + heartButton(n.id, bookmarks.indexOf(n.id) > -1) + '</div>' +
         '<div class="tile-tags">' + catTag(n) + verifyTag(n) + demoTag(n) + '</div>' +
-        '<div class="tile-title" title="' + esc(n.t) + '">' + esc(n.t) + '</div>' +
+        '<div class="tile-title" title="' + esc(n.t) + '">' + esc(ct(n.t)) + '</div>' +
         (VIEW === "medium" && Array.isArray(n.sum) && n.sum[0] ? '<div class="tile-sum" title="' + esc(n.sum[0]) + '">' + esc(n.sum[0]) + '</div>' : '') +
         '<div class="tile-meta" title="' + esc(n.benefit || "") + '">마감 ' + fmt(x.due) + (n.benefit ? ' · ' + esc(n.benefit) : '') + '</div>' +
       '</article>' + expand(x);
@@ -4651,7 +4822,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       return '<article class="htile' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         '<div class="htile-icon' + cls + '"><b>' + (x.closed ? "마감" : x.left === 0 ? "오늘" : "D-" + x.left) + '</b><span>' + fmt(x.due) + '</span></div>' +
         '<div class="htile-body">' +
-          '<div class="htile-title" title="' + esc(n.t) + '">' + esc(n.t) + '</div>' +
+          '<div class="htile-title" title="' + esc(n.t) + '">' + esc(ct(n.t)) + '</div>' +
           '<div class="htile-meta">' + esc(n.cat) + ' · ' + srcLabel(n) + verifyTag(n) + demoTag(n) + '</div>' +
           '<div class="htile-meta" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</div>' +
         '</div>' +
@@ -4664,7 +4835,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       var sum0 = Array.isArray(n.sum) && n.sum[0] ? n.sum[0] : (n.q || "");
       return '<div class="crow' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         '<div class="crow-main">' +
-          '<div class="crow-title" title="' + esc(n.t) + '">' + catTag(n) + demoTag(n) + '<span>' + esc(n.t) + '</span></div>' +
+          '<div class="crow-title" title="' + esc(n.t) + '">' + catTag(n) + demoTag(n) + '<span>' + esc(ct(n.t)) + '</span></div>' +
           '<div class="crow-sum" title="' + esc(sum0) + '">' + esc(sum0) + '</div>' +
         '</div>' +
         '<div class="crow-side">' +
@@ -4678,10 +4849,10 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       var n = x.n;
       return '<div class="row-item' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         miniDday(x) + catTag(n) +
-        '<span class="row-title" title="' + esc(n.t) + '">' + demoTag(n) + esc(n.t) + '</span>' +
+        '<span class="row-title" title="' + esc(n.t) + '">' + demoTag(n) + esc(ct(n.t)) + condTag(n) + '</span>' +
         verifyTag(n) +
         '<span class="row-due">' + fmt(x.due) + ' 마감</span>' +
-        '<a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a>' +
+        (n.url ? '<a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a>' : '<span class="row-open" aria-hidden="true"></span>') +
         heartButton(n.id, bookmarks.indexOf(n.id) > -1) +
       '</div>' + expand(x);
     }
@@ -4689,13 +4860,13 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       var n = x.n, prep = n.prep || 0;
       return '<tr class="d-row' + selCls(n) + (expandedId === n.id ? ' open' : '') + '" data-id="' + esc(n.id) + '" tabindex="0">' +
         '<td class="c-center">' + catTag(n) + '</td>' +
-        '<td class="d-title" title="' + esc(n.t) + '">' + (SHOW.wrap ? esc(n.t) + demoTag(n) : demoTag(n) + esc(n.t)) + '</td>' +
+        '<td class="d-title" title="' + esc(n.t) + '">' + (SHOW.wrap ? esc(ct(n.t)) + demoTag(n) : demoTag(n) + esc(ct(n.t))) + '</td>' +
         '<td class="c-center">' + srcLabel(n) + '</td>' +
         '<td class="d-num c-center" title="' + esc(dueTip(n)) + '">' + fmt(x.due) + '</td>' +
         '<td class="c-center">' + miniDday(x) + '</td>' +
         '<td class="d-benefit" title="' + esc(n.benefit || "") + '">' + esc(n.benefit || "-") + '</td>' +
         '<td class="d-num c-center">' + (prep === 0 ? "즉시" : prep + "일") + '</td>' +
-        '<td class="c-center"><a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a></td>' +
+        '<td class="c-center">' + (n.url ? '<a class="row-open" href="' + esc(n.url) + '" target="_blank" rel="noopener" title="원문 공고 열기">↗</a>' : '') + '</td>' +
         '<td class="c-center">' + verifyTag(n) + '</td>' +
         '<td class="c-center">' + heartButton(n.id, bookmarks.indexOf(n.id) > -1) + '</td>' +
       '</tr>' + expand(x, "tr");
@@ -4729,15 +4900,15 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     var nd = noDue.filter(function(n){
       if (query && (n.t + " " + (n.benefit || "") + " " + (n.cat || "")).toLowerCase().indexOf(query) === -1) return false;
       if (SCOPE !== "all" && scopeOf(n) !== SCOPE) return false;
-      if (SHOW.verifiedOnly && n.verified !== true) return false;
+      if (SHOW.verifiedOnly && n._ver0 !== true) return false;
       return ints.indexOf(n.cat) > -1;
     });
     function noDueHtml() {
       if (!nd.length) return "";
       return '<section class="nodue"><details data-key="nodue"><summary><span>📌 기한 미기재·상시·마감일 확인 필요 공고 <b>' + nd.length + '건</b> — 마감일을 원문에서 확인하세요</span></summary><ul class="nodue-list">' +
         nd.map(function(n){
-          return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.t) + ' ↗</a>' +
-            '<span class="nodue-meta">' + (n.dueBad ? '<b class="due-bad">마감일 확인 필요</b> · ' : '') + srcLabel(n) + (n.benefit && !/(원문|없음|확인 필요|미확인)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</span>' + cmtButton(n) + '</li>';
+          return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(ct(n.t)) + ' ↗</a>' +
+            '<span class="nodue-meta">' + (n.dueBad ? '<b class="due-bad">마감일 확인 필요</b> · ' : '') + srcLabel(n) + (n.conds && n.conds.length ? ' · ' + condTag(n) : '') + (n.benefit && !/(원문|없음|확인 필요|미확인)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</span>' + cmtButton(n) + '</li>';
         }).join("") + '</ul></details></section>';
     }
     // 갭 보완이 비었을 때 이유 (점수를 넣었는데 0건)
@@ -4767,33 +4938,43 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       var st = Math.max(0, startOf(x)), sd = new Date(TODAY.getTime() + st * P3_DAY);
       var dd = ddText(x);
       var pct = Math.round(done / docs.length * 100);
-      var ver = n.verified === true ? '<span class="tk-ok">검증</span>' : '<span>검토중</span>';
+      var ver = n.verified === true ? '<span class="tk-ok">검증</span>' : '<span>' + verWord(n) + '</span>';
       if (o.hero) {
         return '<button type="button" class="tk tk-hero" data-tk="' + esc(n.id) + '" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' +
-          '<span class="tk-k">1순위 · 서류 준비 약 ' + (n.prep || 2) + '일<span class="tk-dd">' + dd + '</span></span>' +
-          '<b class="tk-t">' + demoTag(n) + esc(n.t) + '</b>' +
+          '<span class="tk-k"><span class="tk-meta">1순위 · 서류 준비 약 ' + (n.prep || 2) + '일</span>' + condTag(n, "tk-cond") + '<span class="tk-dd">' + dd + '</span></span>' +
+          '<b class="tk-t" title="' + esc(n.t) + '">' + demoTag(n) + esc(ct(n.t)) + '</b>' +
           '<span class="tk-m">' + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + ' · <b>' + (startOf(x) < 0 ? '빠듯해요 · 오늘 바로' : startOf(x) === 0 ? '오늘 시작해야 해요' : fmt(sd) + ' 시작') + '</b>' + tkCmt(n) + '</span>' +
           '<span class="tk-go">계획 보기</span></button>';
       }
       return '<button type="button" class="tk' + (!x.closed && x.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(n.id) + '" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' +
-        '<span class="tk-k">' + esc(n.cat) + ' · ' + srcLabel(n) + ' · ' + ver + tkCmt(n) + '<span class="tk-dd">' + dd + '</span></span>' +
-        '<b class="tk-t">' + demoTag(n) + esc(n.t) + '</b>' +
-        '<span class="tk-m">' + (o.showStart && !x.closed ? fmt(sd) + ' 시작 → ' : '') + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + '</span>' +
+        '<span class="tk-k"><span class="tk-meta">' + esc(n.cat) + ' · ' + srcLabel(n) + ' · ' + ver + '</span>' + tkCmt(n) + '<span class="tk-dd">' + dd + '</span></span>' +
+        '<b class="tk-t" title="' + esc(n.t) + '">' + demoTag(n) + esc(ct(n.t)) + '</b>' +
+        '<span class="tk-m">' + (o.showStart && !x.closed ? fmt(sd) + ' 시작 → ' : '') + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + condTag(n, "tk-cond") + '</span>' +
         '<span class="tk-bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span></button>';
     }
-    function boardCol(title, arr, cls, mk) {
-      var items = arr.map(mk), more = items.length - 6;
-      return '<section class="bcol' + (cls ? ' ' + cls : '') + '"><div class="bcol-h"><b>' + title + '</b><span>' + arr.length + '</span></div>' +
-        (arr.length ? items.slice(0, 6).join("") + (more > 0 ? '<div class="bcol-more">' + items.slice(6).join("") + '</div><button type="button" class="bcol-btn" onclick="bcolToggle(this,' + more + ')">' + more + '건 더</button>' : '')
+    function boardCol(title, arr, cls, mk, top, moreLabel) {
+      top = top || 6;
+      var items = arr.map(mk), more = items.length - top;
+      var lbl = moreLabel ? moreLabel(more) : more + "건 더";
+      return '<section class="bcol' + (cls ? ' ' + cls : '') + '"><div class="bcol-h"><b>' + title + '</b><span>' + Math.min(arr.length, top) + (more > 0 ? '<small> / ' + arr.length + '</small>' : '') + '</span></div>' +
+        (arr.length ? items.slice(0, top).join("") + (more > 0 ? '<div class="bcol-more">' + items.slice(top).join("") + '</div><button type="button" class="bcol-btn" data-label="' + esc(lbl) + '" onclick="bcolToggle(this,' + more + ')">' + esc(lbl) + '</button>' : '')
                     : '<p class="bcol-empty">없어요</p>') + '</section>';
+    }
+    // 1순위(맨 위 큰 카드)는 공고 글로 바로 가는 링크가 있는 공고를 먼저 (p3.14 F03)
+    function directFirst(arr) {
+      var i = arr.findIndex(function(x){ return x.n.demo === true || linkTypeOf(x.n) === "직접"; });
+      if (i > 0) arr.unshift(arr.splice(i, 1)[0]);
+      return arr;
     }
     function planBoard(emptyHtml) {
       if (!feed.length) return emptyHtml;
       var toSun = (7 - TODAY.getDay()) % 7, c = [[], [], [], []];
       feed.forEach(function(x){ if (x.closed) { c[3].push(x); return; } var s = startOf(x); c[s <= 0 ? 0 : s <= toSun ? 1 : s <= toSun + 7 ? 2 : 3].push(x); });
-      window.P3_TODAY = c[0].length;
+      directFirst(c[0]);
+      window.P3_TODAY = Math.min(3, c[0].length);   // p3.14 F04: 오늘 할 일은 우선순위 상위 3건만
+      var lateN = c[0].slice(3).filter(function(x){ return startOf(x) < 0; }).length;
       return '<div class="board">' +
-        boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 }); }) +
+        boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
         boardCol("이번 주에 시작", c[1], "", function(x){ return buildTask(x, { showStart: true }); }) +
         boardCol("다음 주에 시작", c[2], "", function(x){ return buildTask(x, { showStart: true }); }) +
         boardCol("그 뒤에 시작", c[3], "", function(x){ return buildTask(x, { showStart: true }); }) + '</div>';
@@ -4822,15 +5003,15 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       if (VIEW === "plan") return feed.length ? weekStrip() : "";
       var open = feed.filter(function(x){ return !x.closed; });
       if (!open.length) return "";
-      var top = open.slice().sort(function(a, b){ return (startOf(a) - startOf(b)) || (a.left - b.left); })[0];
+      var top = directFirst(open.slice().sort(function(a, b){ return (startOf(a) - startOf(b)) || (a.left - b.left); }))[0];
       var n = top.n, prep = n.prep || 2, st = startOf(top);
       var plan = st < 0 ? "서류 준비 약 " + prep + "일 · <b>빠듯해요 · 오늘 바로 시작</b>" : st === 0 ? "서류 준비 약 " + prep + "일 · <b>오늘 시작해야 해요</b>"
                : "<b>" + fmt(new Date(TODAY.getTime() + st * 86400000)) + "</b>에 서류 준비 시작 · 약 " + prep + "일";
       var dd = ddText(top);
       return '<section class="hero-today" aria-label="오늘 시작할 일">' +
           '<div class="ht-top"><span class="ht-label">오늘 시작할 일 · 1순위</span><span class="ht-dday">' + dd + '</span></div>' +
-          '<div class="ht-title">' + demoTag(n) + esc(n.t) + '</div>' +
-          '<div class="ht-meta">' + fmt(top.due) + ' 마감 · ' + esc(n.cat) + (n.benefit && !/(원문|없음|확인 필요|미확인|참조)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</div>' +
+          '<div class="ht-title" title="' + esc(n.t) + '">' + demoTag(n) + esc(ct(n.t)) + '</div>' +
+          '<div class="ht-meta">' + fmt(top.due) + ' 마감 · ' + esc(n.cat) + (n.conds && n.conds.length ? ' · ' + condTag(n, "ht-cond") : '') + (n.benefit && !/(원문|없음|확인 필요|미확인|참조)/.test(n.benefit) ? ' · ' + esc(n.benefit) : '') + '</div>' +
           '<div class="ht-plan">' + plan + '</div>' +
           '<button type="button" class="ht-go" onclick="openDetail(\'' + esc(n.id) + '\')">지금 할 일 보기</button>' +
         '</section>' + weekHtml(open, top) +
@@ -4853,7 +5034,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
           var st = Math.max(0, startOf(x)), sd = new Date(TODAY.getTime() + st * 86400000);
           var right = ddText(x);
           return '<li><button type="button" onclick="openDetail(\'' + esc(x.n.id) + '\')">' +
-            '<span class="wk-t"><b>' + esc(x.n.t) + '</b><small>' + esc(x.n.cat) + ' · ' + (st === 0 ? "오늘" : fmt(sd)) + ' 시작 → ' + fmt(x.due) + ' 마감</small></span>' +
+            '<span class="wk-t"><b>' + esc(ct(x.n.t)) + '</b><small>' + esc(x.n.cat) + ' · ' + (st === 0 ? "오늘" : fmt(sd)) + ' 시작 → ' + fmt(x.due) + ' 마감</small></span>' +
             '<span class="wk-d' + (x.left <= 3 ? ' hot' : '') + '">' + right + '</span></button></li>';
         }).join("") + '</ul>' +
         (more > 0 ? '<button type="button" class="wk-more" onclick="goTab(\'feed\')">이번 주 ' + more + '건 더 · 아래 전체 목록</button>' : '') +
@@ -4880,10 +5061,20 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     }
     if (skipView !== "v-feed") {
       el("hero-slot").innerHTML = heroHtml();
-      setList("v-feed", exBanner + groupedFeed('<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 › 표시에서 끄면 검토중 공고도 보여요.</small>' : '') + '</div>') + noDueHtml());
+      setList("v-feed", exBanner + groupedFeed('<div class="empty-state">조건에 부합하는 공고가 없습니다. (검색어 또는 필터를 확인해 보세요)' + (SHOW.verifiedOnly ? '<br><small>지금은 <b>검증된 공고만</b> 보고 있어요. 보기 · 거르기의 <b>✓ 검증된 공고만</b>을 끄면 검토중 공고도 보여요.</small>' : '') + '</div>') + noDueHtml());
+    }
+    // p3.14 F09: 토익 '없음'이면 왜 퀘스트가 없는지 + 점수 넣는 길
+    function toeicNoneHtml() {
+      if (toeic !== 0) return "";
+      var need = N.filter(function(n){
+        if (!n.toeic || n.noDue || (n.demo === true && !SHOW.demoMode && !usingFallback)) return false;
+        var c = CARD[n.id]; return !c || !c.closed;
+      }).length;
+      if (!need) return "";
+      return '<div class="excl-banner soft toeic-none">토익 점수가 필요한 공고 <b>' + need + '건</b>이 있어요. 점수를 입력하면 조금만 채우면 되는 공고를 퀘스트로 보여 드려요 <button type="button" class="link-btn" onclick="openProfile()">점수 입력</button></div>';
     }
     if (skipView !== "v-gap") {
-      setList("v-gap", buildList(gaps, (gpa === null && toeic === null)
+      setList("v-gap", toeicNoneHtml() + buildList(gaps, (gpa === null && toeic === null)
         ? '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div><b>내 평점·토익 점수를 넣으면</b> 조금만 채우면 지원할 수 있는 공고와 채우는 방법(퀘스트)을 보여 드려요.' +
           '<div class="ge-btns"><button type="button" class="btn-cond" onclick="openProfile()">👤 내 점수 입력하기</button>' +
           '<button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🧪 시연 모드로 체험 (토익 750 · 평점 3.3)</button></div></div>'
@@ -5389,7 +5580,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
   if (dockMQ.addEventListener) dockMQ.addEventListener("change", function(e){ if (!e.matches && detailId && window.closeDetail) window.closeDetail(true); });
   window.bcolToggle = function(btn, more) {
     var col = btn.parentNode, on = col.classList.toggle("all");
-    btn.textContent = on ? "접기" : more + "건 더";
+    btn.textContent = on ? "접기" : (btn.getAttribute("data-label") || more + "건 더");
   };
   window.weekPick = function(ts) {
     var d = new Date(ts);
@@ -5397,6 +5588,18 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     showTab("cal"); renderCal();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  // p3.13: 필터 칩 '검증된 공고만' · 내 조건 '화면 설정' 스위치
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest("[data-tg][data-show]");
+    if (!b) return;
+    var k = b.getAttribute("data-show");
+    if (k === "demoMode") { if (window.setDemoMode) window.setDemoMode(!SHOW.demoMode); return; }
+    SHOW[k] = !SHOW[k];
+    if (k === "darkMode") SHOW.themeAuto = false;
+    saveViewState(); applyViewClasses(); render();
+    if (k === "verifiedOnly") showToast(SHOW.verifiedOnly ? "✓ 운영자가 원문과 대조한 공고만 보여줘요" : "검토중 공고도 다시 보여요");
+    if (k === "darkMode") showToast(SHOW.darkMode ? "🌙 어두운 화면으로 바꿨어요" : "밝은 화면으로 바꿨어요");
+  });
   // A1: 공고 정보 오류 제보 (이름·연락처 없이 항목만)
   var REPORT_FIELDS = ["마감일", "자격 조건", "필요 서류", "링크", "기타"];
   window.toggleReport = function(id) {
@@ -5474,6 +5677,8 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
       '<h2 class="ds-title" id="ds-title">' + esc(n.t) + '</h2>' +
       '<p class="ds-org">' + esc(dsOrg(n)) + (ben ? ' · ' + esc(ben) : '') + '</p>' +
       '<p class="ds-check"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>' + fmt(x.due) + ' 마감 · ' + esc(sub.label || "접수 방식은 원문 확인") + '</p>' +
+      (n.dowBad ? '<p class="dow-bad">원문 요일 불일치 · 원문 확인 <small>원문 ' + esc(n.dowBad.split("→")[0]) + '요일 · 실제 ' + esc(n.dowBad.split("→")[1]) + '요일</small></p>' : '') +
+      (n.conds && n.conds.length ? '<p class="ds-cond">' + esc(n.conds.join("·")) + ' 조건이 있어요. 앱이 판정하지 않으니 필수 자격에서 확인하세요</p>' : '') +
       (plan ? '<section class="ds-plan"><div class="ds-plan-h"><b>마감에서 거꾸로 짠 계획</b><span class="ds-dd">' + dd + '</span></div>' + plan + dsDocs(n, docsList) + '</section>' : dsDocs(n, docsList)) +
       dsTalk(n) +
       '<div class="ds-sum">' + summaryCard(n).replace("<details ", "<details " + (VIEW === "plan" ? "" : "open ")) + '</div>';
@@ -5606,6 +5811,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
   // ----- 보기 메뉴 열기/닫기 -----
   var viewBtn = el("view-btn"), viewMenu = el("view-menu");
   function setMenu(open) {
+    if (viewMenu.classList.contains("view-seg")) { viewMenu.hidden = false; return; }   // p3.13: 보기 방식은 늘 보이는 3칸
     viewMenu.hidden = !open;
     if (!open && el("vm-sub")) { el("vm-sub").hidden = true; el("vm-show-btn").setAttribute("aria-expanded", "false"); subPinned = false; cancelSubClose(); }
     viewBtn.setAttribute("aria-expanded", open ? "true" : "false");
@@ -5658,9 +5864,10 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
     if (b.hasAttribute("data-show")) {
       var k = b.getAttribute("data-show");
       SHOW[k] = !SHOW[k];
+      if (k === "darkMode") SHOW.themeAuto = false;
       saveViewState(); applyViewClasses(); render();
       if (k === "wrap" && SHOW.wrap && VIEW !== "details") showToast("텍스트 줄 바꿈은 '자세히' 보기에서 적용돼요");
-      if (k === "verifiedOnly") showToast(SHOW.verifiedOnly ? "✓ 운영자가 검증한 공고만 보여줘요" : "검토중 공고도 다시 보여요");
+      if (k === "verifiedOnly") showToast(SHOW.verifiedOnly ? "✓ 운영자가 원문과 대조한 공고만 보여줘요" : "검토중 공고도 다시 보여요");
       return;   // 표시 옵션은 여러 개 바꿀 수 있게 메뉴를 열어 둠
     }
     if (b.hasAttribute("data-pane")) {
@@ -5803,7 +6010,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
 /* ===== 시안 B · 이모지 → 선 아이콘 (2026.11.17) =====
    화면에 그려진 글자 속 이모지를 같은 뜻의 선 아이콘으로 바꿔요. 공유 문구·툴팁 같은 글자 속성은 그대로 둬요. */
 (function () {
-  var MAP = {"✨": "check", "🎯": "target", "💗": "heart", "♡": "heart", "📅": "calendar", "🗓": "calendar", "📦": "archive", "🔍": "search", "🔎": "search", "👤": "user", "👥": "users", "💾": "save", "🔓": "unlock", "🔒": "lock", "🧪": "flask", "🏫": "school", "🌐": "globe", "⏰": "clock", "🌙": "moon", "💬": "chat", "⚠": "warn", "🤖": "spark", "📂": "folder", "🗂": "folder", "🧩": "blocks", "❓": "help", "❔": "help", "🚀": "play", "⚙": "settings", "🧭": "compass", "📚": "book", "🎓": "grad", "🏅": "award", "📝": "edit", "🏃": "activity", "📮": "mail", "🔗": "link", "🏠": "home", "📌": "pin", "🪟": "layout", "🍯": "bulb", "💡": "bulb", "🙏": "info", "📥": "download", "🟢": "dot", "💤": "pause", "📋": "clipboard", "🏁": "flag", "🚩": "flag", "🏆": "trophy", "✅": "checkc", "⭐": "star", "💪": "spark", "🙌": "spark", "💻": "monitor", "⚡": "zap", "🚨": "bell", "🗑": "trash", "🎁": "gift"};
+  var MAP = {"✨": "check", "🎯": "target", "💗": "heart", "♡": "heart", "📅": "calendar", "🗓": "calendar", "📦": "archive", "🔍": "search", "🔎": "search", "👤": "user", "👥": "users", "💾": "save", "🔓": "unlock", "🔒": "lock", "🧪": "flask", "🏫": "school", "🌐": "globe", "⏰": "clock", "🌙": "moon", "💬": "chat", "⚠": "warn", "🤖": "spark", "📂": "folder", "🗂": "folder", "🧩": "blocks", "❓": "help", "❔": "help", "🚀": "play", "⚙": "settings", "🧭": "compass", "📚": "book", "🎓": "grad", "🏅": "award", "📝": "edit", "🏃": "activity", "📮": "mail", "🔗": "link", "🏠": "home", "📌": "pin", "🪟": "layout", "🍯": "bulb", "💡": "bulb", "🙏": "info", "ℹ": "info", "📥": "download", "🟢": "dot", "💤": "pause", "📋": "clipboard", "🏁": "flag", "🚩": "flag", "🏆": "trophy", "✅": "checkc", "⭐": "star", "💪": "spark", "🙌": "spark", "💻": "monitor", "⚡": "zap", "🚨": "bell", "🗑": "trash", "🎁": "gift"};
   var keys = Object.keys(MAP).sort(function (a, b) { return b.length - a.length; });
   var RE = new RegExp("(" + keys.map(function (k) { return k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")\uFE0F?", "g");
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, OPTION: 1, TITLE: 1, NOSCRIPT: 1 };
@@ -5868,7 +6075,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.18-p3.11";
+  var APP_VERSION = "2026.11.18-p3.14";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
@@ -5934,7 +6141,7 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
   bd.addEventListener("click", closeF);
   sh.querySelector(".fs-x").addEventListener("click", closeF);
   sh.querySelector(".fs-done").addEventListener("click", closeF);
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !sh.hidden) { var vm = $("view-menu"); if (vm && !vm.hidden) return; closeF(); } });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !sh.hidden) { var vm = $("view-menu"); if (vm && !vm.hidden && !vm.classList.contains("view-seg")) return; closeF(); } });
   // ----- 내 조건: 휴대폰은 탭을 누를 때만 조건 화면을 보여 줌 -----
   document.addEventListener("click", function(e){
     var b = e.target.closest && e.target.closest(".bn-item, .tab-btn, #menu-btn, .rail-prof-edit, .bm-seg button");
