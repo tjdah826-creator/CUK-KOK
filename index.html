@@ -2987,7 +2987,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   <section class="profile-card">
     <div class="profile-header" id="btn-toggle-profile">
       <div class="profile-title">
-        <span>👤 내 프로필</span>
+        <span>👤 내 조건</span>
         <span class="saved-badge" id="saved-badge" style="display:none;">저장됨</span>
         <span class="profile-badge-summary" id="profile-summary-text">전체 학년 · 전체 계열 · 재학·휴학</span>
       </div>
@@ -3199,7 +3199,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     </ul>
     <h4>🔒 개인정보</h4>
     <ul>
-      <li>프로필 조건·찜·서류 체크는 이 기기의 브라우저에만 저장되고 서버로 보내지 않아요</li>
+      <li>내 조건·찜·서류 체크는 이 기기의 브라우저에만 저장되고 서버로 보내지 않아요</li>
       <li>댓글은 로그인 없이 닉네임·글 종류·내용·작성 시각만 저장해요. 연락처·이메일·학번 모양의 글자는 자동으로 가려지고, 신고가 쌓인 글은 숨겨져요</li>
     </ul>
     <h4>🧩 오픈소스</h4>
@@ -3218,7 +3218,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 
 <!-- 모바일 하단 내비게이션 -->
 <nav class="bottom-nav" aria-label="하단 메뉴">
-    <button class="bn-item" data-tab="feed" aria-label="오늘 시작할 일">
+    <button class="bn-item" data-tab="feed" aria-label="오늘">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>
       <span class="bn-label">오늘</span>
       <span class="bn-badge" id="bn-feed"></span>
@@ -3374,7 +3374,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 </div>
 
 <!-- [UX 5] 토스트 알림창 -->
-<div id="toast" class="toast" role="status" aria-live="polite">링크가 복사되었습니다.</div>
+<div id="toast" class="toast" role="status" aria-live="polite">링크를 복사했어요</div>
 
 <!-- 공유 바텀시트 -->
 <div id="share-backdrop" class="share-backdrop" onclick="closeShare()"></div>
@@ -3676,6 +3676,8 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   function fmt(d){ return (d.getMonth() + 1) + "." + String(d.getDate()).padStart(2, "0"); }
   // 링크 종류: "직접"(공고 글로 바로 이동) / "메인"(기관 홈페이지·게시판 목록) — 시트의 link_type과 같은 규칙
   function linkTypeOf(n) {
+    // p3.20: '/board/…/single/글ID' 꼴(춘천MBC 등)은 게시판 목록이 아니라 공고 글 (서버 판정보다 우선)
+    if (/^https?:\/\/[^\/?#]+\/board\/[^\/?#]+\/single\/[^\/?#]+/i.test(String(n.url || ""))) return "직접";
     if (n.linkType) return n.linkType;
     var m = String(n.url || "").trim().match(/^https?:\/\/[^\/?#]+([^?#]*)(\?[^#]*)?/i);
     if (!m) return "확인 필요";
@@ -3975,7 +3977,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     a.download = icsName(title) + "_마감.ics";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);   // 바로 해제하면 iOS Safari에서 받기가 실패할 수 있음
-    showToast("📅 캘린더 파일(.ics)이 다운로드되었습니다.");
+    showToast("📅 캘린더 파일(.ics)을 받았어요. 파일을 열면 캘린더에 들어가요");
   };
 
   // [UX 5] 공유 바텀시트 (카카오톡 · 문자 · 메일 · 링크 복사 · 기타 앱)
@@ -4073,7 +4075,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     } else if (kind === "mail") {
       location.href = "mailto:?subject=" + encodeURIComponent("[CUK-콕] " + s.title) + "&body=" + encodeURIComponent(body);
     } else if (kind === "copy") {
-      copyText(s.url, "🔗 공고 링크가 복사되었습니다!");
+      copyText(s.url, "🔗 공고 링크를 복사했어요");
     } else if (kind === "more" && navigator.share) {
       nativeShare(s);
     }
@@ -4090,7 +4092,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     if (liked && idx < 0) bookmarks.push(id);
     if (!liked && idx > -1) bookmarks.splice(idx, 1);
     saveBookmarks();
-    showToast(liked ? "💗 보관함에 저장되었습니다!" : "보관함에서 삭제되었습니다.");
+    showToast(liked ? "💗 보관함에 담았어요" : "보관함에서 뺐어요");
 
     var view = activeView();
     // 보관함 탭에서 찜을 해제하면 카드가 바로 사라지도록 전체를 다시 그림
@@ -6299,7 +6301,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.19";
+  var APP_VERSION = "2026.11.20-p3.20";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
