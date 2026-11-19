@@ -2905,6 +2905,11 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   body.p3 .menu-btn svg { width: 18px; height: 18px; }
   body.p3.prof-on .menu-btn { background: var(--b-blue); border-color: var(--b-blue); color: #FFFFFF; }
 }
+
+/* p3.19 접근성: 움직임 줄이기 설정을 켠 사람에게는 애니메이션·부드러운 스크롤을 끔 (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
 </style>
 </head>
 <body>
@@ -2973,9 +2978,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   <aside class="side">
   <!-- [UX 1] 실시간 인스턴트 검색 바 -->
   <div class="search-bar-wrap">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="live-search" class="search-input" placeholder="공고명, 장학금, 자격 요건 검색...">
-    <button id="search-clear-btn" class="search-clear">✕</button>
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    <input type="text" id="live-search" class="search-input" placeholder="공고명, 장학금, 자격 요건 검색..." aria-label="공고 검색">
+    <button type="button" id="search-clear-btn" class="search-clear" aria-label="검색어 지우기">✕</button>
   </div>
 
   <!-- 프로필 패널 -->
@@ -3111,7 +3116,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       <button type="button" class="d5-chip vo-chip" id="vo-chip" data-show="verifiedOnly" data-tg="1" aria-pressed="false" title="운영자가 원문과 대조한 공고만 보여요">✓ 검증된 공고만</button>
       <div class="sort-wrap">
       <span class="sort-label" style="font-size:12px; color:var(--muted); font-weight:600; white-space:nowrap;">정렬:</span>
-      <select id="sort-select" class="sort-select">
+      <select id="sort-select" class="sort-select" aria-label="정렬 기준">
         <option value="start" selected>준비 시작일순</option>
         <option value="due">마감 임박순</option>
         <option value="sch">장학금 우선순</option>
@@ -3360,7 +3365,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     </div>
     <input type="text" name="website" class="hp" tabindex="-1" aria-hidden="true" aria-label="비워 두세요" autocomplete="off">
     <div class="cmt-input-row">
-      <textarea id="cmt-text" maxlength="500" rows="2" placeholder="질문이나 경험, 준비 팁을 나눠 주세요 (500자 이내)"></textarea>
+      <textarea id="cmt-text" maxlength="500" rows="2" aria-label="댓글 내용" placeholder="질문이나 경험, 준비 팁을 나눠 주세요 (500자 이내)"></textarea>
       <button type="submit" class="cmt-send" id="cmt-send">등록</button>
     </div>
     <div class="cmt-mask-warn" id="cmt-mask-warn" role="status" hidden></div>
@@ -3369,7 +3374,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 </div>
 
 <!-- [UX 5] 토스트 알림창 -->
-<div id="toast" class="toast">링크가 복사되었습니다.</div>
+<div id="toast" class="toast" role="status" aria-live="polite">링크가 복사되었습니다.</div>
 
 <!-- 공유 바텀시트 -->
 <div id="share-backdrop" class="share-backdrop" onclick="closeShare()"></div>
@@ -4658,7 +4663,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       var ss = (s === "transfer" || s === "intl") ? "enrolled" : s;   // 편입생·외국인 유학생 = 재학생 기준
       if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상"];
       // p3.18 F21: 재입학(제적·자퇴생) 공고는 학적 선택지에 맞는 대상이 없어 추천에서 뺌 ('직접 보기'에서만)
-      if (/재입학/.test(n.t || "")) return ["학적 조건", "학적: 재입학 대상(제적·자퇴생) · 학적 선택지에 없어 추천에서 뺐어요"];
+      if (/재입학\s*(모집|신청|접수|안내|원서|대상)/.test(n.t || "") && !/재입학생?도/.test(n.t || "")) return ["학적 조건", "학적: 재입학 대상(제적·자퇴생) · 학적 선택지에 없어 추천에서 뺐어요"];
       // p3.18 (김재은): 학적 기본값 '전체 (재학·휴학)'이면 졸업생·수료생 전용 공고는 뺌
       if (ss === "all" && status.length && status.indexOf("enrolled") < 0 && status.indexOf("leave") < 0) return ["학적 조건", "학적: " + statusText(status) + " 대상 (학적을 고르면 맞는 공고가 보여요)"];
       if (n.stExplicit) {   // p3.14 F07: 원문에 학적 문장이 있을 때만 학적으로 거름
@@ -5126,11 +5131,15 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
                (f !== "all" && Array.isArray(n.field) && n.field.length && n.field.length < 4 && n.field.indexOf(f) > -1); };
       var pi = -1;
       ordered.some(function(x, i){ if (fit(x) && startOf(x) === 0 && mine(x)) { pi = i; return true; } return false; });
+      if (pi < 0) ordered.some(function(x, i){ if (fit(x) && (x.n.demo === true || linkTypeOf(x.n) === "직접")) { pi = i; return true; } return false; });   // F03 직접 링크 우선
       if (pi < 0) ordered.some(function(x, i){ if (fit(x)) { pi = i; return true; } return false; });
       if (pi > 0) ordered = [ordered[pi]].concat(ordered.slice(0, pi), ordered.slice(pi + 1));
+      // p3.19 (QA): 보드 '오늘 시작' 칸도 같은 공고를 맨 앞에 → '1순위'가 두 개로 보이지 않게
+      var top1 = ordered[0], ci = top1 ? c[0].indexOf(top1) : -1;
+      if (ci > 0) c[0].unshift(c[0].splice(ci, 1)[0]);
       window.P3_NOW = ordered.length ? ordered[0].n.id : null;
       return nowHtml(ordered, c) + '<div class="board">' +
-        boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
+        boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 && x === ordered[0] }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
         boardCol("이번 주에 시작", c[1], "", function(x){ return buildTask(x, { showStart: true }); }) +
         boardCol("다음 주에 시작", c[2], "", function(x){ return buildTask(x, { showStart: true }); }) +
         boardCol("그 뒤에 시작", c[3], "", function(x){ return buildTask(x, { showStart: true }); }) + '</div>';
@@ -5820,7 +5829,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     var f = document.createElement("div"); f.className = "rp-form";
     f.innerHTML = '<p class="rp-q">어떤 정보가 원문과 다른가요?</p><div class="rp-chips">' +
       REPORT_FIELDS.map(function(k, i){ return '<label class="rp-chip"><input type="radio" name="rp-field" value="' + k + '"' + (i === 0 ? ' checked' : '') + '>' + k + '</label>'; }).join("") +
-      '</div><textarea id="rp-text" maxlength="200" rows="2" placeholder="예: 원문에는 11.30 18:00 마감이에요 (선택 · 이름·연락처는 적지 마세요)"></textarea>' +
+      '</div><textarea id="rp-text" maxlength="200" rows="2" aria-label="원문과 다른 내용 (선택)" placeholder="예: 원문에는 11.30 18:00 마감이에요 (선택 · 이름·연락처는 적지 마세요)"></textarea>' +
       '<div class="rp-btns"><button type="button" class="btn-cond" id="rp-send">보내기</button><button type="button" class="btn-cond ghost" onclick="toggleReport()">취소</button></div>';
     box.appendChild(f);
     f.querySelector("#rp-send").addEventListener("click", function(){
@@ -6290,7 +6299,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.18";
+  var APP_VERSION = "2026.11.20-p3.19";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
