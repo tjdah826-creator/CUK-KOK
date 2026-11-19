@@ -5131,6 +5131,10 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       window.P3_TODAY = Math.min(3, c[0].length);   // p3.14 F04: 오늘 할 일은 우선순위 상위 3건만
       var lateN = c[0].slice(3).filter(function(x){ return startOf(x) < 0; }).length;
       var ordered = c[0].concat(c[1], c[2], c[3]).filter(function(x){ return !x.closed; });
+      // p3.22: 거주지·소득 조건이 있는 공고(지자체 장학금 등)는 1순위·'다음 할 일'에서 뒤로 — 숨기지 않고 '전체 일정'에는 그대로
+      var limited = function(x){ var k = x.n.conds || []; return k.indexOf("거주지") > -1 || k.indexOf("소득") > -1; };
+      var openOrd = ordered.filter(function(x){ return !limited(x); });
+      if (openOrd.length) ordered = openOrd.concat(ordered.filter(limited));
       // p3.18 (김보민): 1순위 = 준비 기간 안에 할 수 있는 공고 중, 오늘 시작해야 하고 내 학년·계열을 콕 집은 공고 → 없으면 할 수 있는 첫 공고
       var fit = function(x){ return startOf(x) >= 0; };
       var mine = function(x){ var n = x.n;
@@ -5142,14 +5146,15 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       if (pi < 0) ordered.some(function(x, i){ if (fit(x)) { pi = i; return true; } return false; });
       if (pi > 0) ordered = [ordered[pi]].concat(ordered.slice(0, pi), ordered.slice(pi + 1));
       // p3.19 (QA): 보드 '오늘 시작' 칸도 같은 공고를 맨 앞에 → '1순위'가 두 개로 보이지 않게
-      var top1 = ordered[0], ci = top1 ? c[0].indexOf(top1) : -1;
-      if (ci > 0) c[0].unshift(c[0].splice(ci, 1)[0]);
+      var top1 = ordered[0];
+      // p3.22: 1순위가 '이번 주에 시작' 등 다른 칸에 있어도 그 칸 맨 위에 '1순위'로 표시
+      c.forEach(function(col){ var ci = top1 ? col.indexOf(top1) : -1; if (ci > 0) col.unshift(col.splice(ci, 1)[0]); });
       window.P3_NOW = ordered.length ? ordered[0].n.id : null;
       return nowHtml(ordered, c) + '<div class="board">' +
-        boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 && x === ordered[0] }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
-        boardCol("이번 주에 시작", c[1], "", function(x){ return buildTask(x, { showStart: true }); }) +
-        boardCol("다음 주에 시작", c[2], "", function(x){ return buildTask(x, { showStart: true }); }) +
-        boardCol("그 뒤에 시작", c[3], "", function(x){ return buildTask(x, { showStart: true }); }) + '</div>';
+        boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: x === top1 }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
+        boardCol("이번 주에 시작", c[1], "", function(x){ return buildTask(x, { showStart: true, hero: x === top1 }); }) +
+        boardCol("다음 주에 시작", c[2], "", function(x){ return buildTask(x, { showStart: true, hero: x === top1 }); }) +
+        boardCol("그 뒤에 시작", c[3], "", function(x){ return buildTask(x, { showStart: true, hero: x === top1 }); }) + '</div>';
     }
     // ===== p3.15 B안 '지금 한 가지': 1순위 하나 + 그 공고 서류 체크 + 다음 할 일 2건 (나머지는 '전체 보기') =====
     function nowHtml(ordered, c) {
@@ -6306,7 +6311,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.21";
+  var APP_VERSION = "2026.11.20-p3.22";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
