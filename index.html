@@ -2788,6 +2788,8 @@ body.p3 .mh-sub { line-height: 1.5; word-break: keep-all; }
 .tk-k { flex-wrap: wrap; row-gap: 2px; }
 .tk-meta { white-space: nowrap; }
 .tk-k .tk-cmt, .tk-k .tk-cond, .tk-dd { flex: none; white-space: nowrap; }
+.tk-k .tk-cond { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }   /* p3.24: 지역 이름이 붙어 길어지면 줄임 */
+.tk-cond, .ht-cond, .cond-tag { max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
 .bcol-h small { font-weight: 400; font-size: 12px; color: var(--ink-secondary); }
 #src-kosaf.on .kos-wait { display: none; }
 .app-ver.contest { font-weight: 600; color: var(--ink-secondary); margin-bottom: 2px; }
@@ -4616,7 +4618,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   // F07 학적: 원문에 학적 문장("재학생", "휴학생 제외", "수료(유예)생 지원 불가" 등)이 있을 때만 학적으로 거름
   var ST_RE = /(재학생|재학 ?중|휴학생|휴학 ?(중|불가|제외)|수료|유예|졸업생|졸업자|졸업 ?예정|정규 ?학기|신입생|\d{2}학번)/;
   // F06 앱이 판정하지 않는 조건 (거주지·소득·국적)
-  var COND_RE = [["거주지", /(거주|주민등록|주소를 두|관내 ?(고|학교|고등))/], ["소득", /(소득|기초생활|차상위|수급자|지원구간|분위)/], ["국적", /(국적|내국인|외국인 ?(유학생)?만)/]];
+  var COND_RE = [["거주지", /(거주|주민등록|주소를 ?(두|둔|둘)|주소지|관내 ?(고|학교|고등))/], ["소득", /(소득|기초생활|차상위|수급자|지원구간|분위)/], ["국적", /(국적|내국인|외국인 ?(유학생)?만)/]];
   var WD_KO = "일월화수목금토";
   function sqz(t) { return String(t || "").replace(/&#0?39;|&quot;|&amp;/g, "").replace(/^\s*\[[^\]]*\]\s*/, "").replace(/[\s"'“”‘’「」『』.,·…]/g, ""); }
   function prepOne(n) {
@@ -4635,6 +4637,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     n.stExplicit = !!String(n.statusBasis || "").trim() || ST_RE.test(stText);
     var cText = [n.q || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
     n.conds = COND_RE.filter(function(c){ return c[1].test(cText); }).map(function(c){ return c[0]; });
+    n.region = n.conds.indexOf("거주지") > -1 ? regionOf(n) : [];   // p3.24: 거주 지역 이름 (원문에서)
     // F17 근거 문장이 제목과 같으면 '원문 발췌'가 아님
     var qq = sqz(n.q), tt = sqz(n.t);
     n.qIsTitle = !qq || qq === tt || (qq.length >= 8 && tt.indexOf(qq) >= 0) || (tt.length >= 8 && qq.indexOf(tt) >= 0 && qq.length - tt.length < 6);
@@ -4651,8 +4654,28 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   }
   // 점검용(읽기): 개발자 도구·자동 테스트에서 지금 화면의 공고 상태를 볼 때
   window.__cukState = function(){ return { N: N, CARD: CARD, linkTypeOf: linkTypeOf, render: render }; };
+  // p3.24 (이찬준): 거주지 조건 공고는 원문 문장·기관 이름에서 지역 이름을 찾아 '조건 있음' 뒤에 붙임 (최대 2곳)
+  var PROV_RE = /(서울특별시|부산광역시|대구광역시|인천광역시|광주광역시|대전광역시|울산광역시|세종특별자치시|경기도|강원특별자치도|강원도|충청북도|충청남도|전북특별자치도|전라북도|전라남도|경상북도|경상남도|제주특별자치도|제주도)/g;
+  var SGG_RE = /([가-힣]{2,4}(?:시|군|구)|(?:중|동|서|남|북)구)(?!(?:대|성|조|분|간|별|직|험|행|작|약|용|점|장(?!학|회)|사(?!무)|간|체|급|매|설|청년))/g;
+  var SGG_STOP = /(신청|제출|접수|선발|지원|합격|수혜|졸업|입학|해당|필요|발생|위반|등록|모집|발표|확인|변경|이수|취득|평가|심사|면접|결정|지급|납부|재학|휴학|입사|입대|전역|전입|전출|이사|거주|방문|이용|참여|작성|신고|적발|미제출|수령|추천|광역|특별|자치)시$|^(당시|동시|실시|표시|개시|게시|지시|제시|즉시|수시|정시|임시|상시|일시|도시|연구|요구|청구|출구|입구|가구|지구|친구|도구|기구|학구|탐구|추구|육군|해군|공군|국군|장군|학군|교구|자녀가구|다자녀가구|한부모가구|저소득가구|수급가구|차상위가구|무주택가구)$/;
+  function regionOf(n) {
+    var out = [], prov = [];
+    function scan(txt) {
+      String(txt || "").replace(PROV_RE, function(m){ if (prov.indexOf(m) < 0) prov.push(m); return m; })
+        .replace(SGG_RE, function(m){ if (!SGG_STOP.test(m) && out.indexOf(m) < 0 && !PROV_RE.test(m)) out.push(m); PROV_RE.lastIndex = 0; return m; });
+      PROV_RE.lastIndex = 0;
+    }
+    var lines = [n.q || ""].concat(n.required_qualifications || [], n.sum || [], n.caution || []).join("\n").split(/\n| \/ |[.]\s/);
+    lines.forEach(function(l){ if (/(거주|주민등록|주소|관내|출신|소재|연고)/.test(l)) scan(l); });
+    var org = (String(n.t || "").match(/^\s*\[([^\]]+)\]/) || [])[1] || "";
+    if (!out.length) scan(org.replace(/\(재\)|재단법인|사단법인/g, " "));
+    if (!out.length) scan(String(n.t || "").replace(/^\s*(\[[^\]]*\]\s*)+/, ""));
+    if (!out.length) out = prov;
+    return out.slice(0, 2);
+  }
   function condTag(n, cls) {
-    return n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음</span>' : "";
+    var rg = n.region && n.region.length ? n.region.join("·") : "";
+    return n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="' + (rg ? '원문에 나온 거주 지역: ' + esc(rg) + ' · ' : '') + '앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음' + (rg ? ' (' + esc(rg) + ')' : '') + '</span>' : "";
   }
   // F05 카드 제목: 한국어 뒤에 중국어·영어·베트남어가 이어지면 첫 한국어 부분만 (전체 제목은 상세에서)
   function ct(t) {
@@ -5961,7 +5984,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
         ? '<p class="ds-check"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>' + fmt(x.due) + ' 마감 · 원문 대조 완료' + (sub.kind !== "unknown" ? ' · ' + esc(sub.label) : '') + '</p>'
         : '<p class="ds-check todo"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg>' + fmt(x.due) + ' 마감 · ' + esc(sub.label || "접수 방식은 원문 확인") + ' · 운영자 확인 전</p>') +
       (n.dowBad ? '<p class="dow-bad">원문 요일 불일치 · 원문 확인 <small>원문 ' + esc(n.dowBad.split("→")[0]) + '요일 · 실제 ' + esc(n.dowBad.split("→")[1]) + '요일</small></p>' : '') +
-      (n.conds && n.conds.length ? '<p class="ds-cond">' + esc(n.conds.join("·")) + ' 조건이 있어요. 앱이 판정하지 않으니 필수 자격에서 확인하세요</p>' : '') +
+      (n.conds && n.conds.length ? '<p class="ds-cond">' + esc(n.conds.join("·")) + ' 조건이 있어요' + (n.region && n.region.length ? ' (원문 거주 지역: ' + esc(n.region.join("·")) + ')' : '') + '. 앱이 판정하지 않으니 필수 자격에서 확인하세요</p>' : '') +
       (plan ? '<section class="ds-plan"><div class="ds-plan-h"><b>마감에서 거꾸로 짠 계획</b><span class="ds-dd">' + dd + '</span></div>' + plan + dsDocs(n, docsList) + '</section>' : dsDocs(n, docsList)) +
       dsTalk(n) +
       '<div class="ds-sum">' + summaryCard(n).replace("<details ", "<details " + (VIEW === "plan" ? "" : "open ")) + '</div>';
@@ -6358,7 +6381,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.23";
+  var APP_VERSION = "2026.11.20-p3.24";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
