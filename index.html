@@ -2872,6 +2872,39 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
 
 /* p3.16 김재은 의견: 확인 전 공고의 마감 줄은 체크 표시 대신 안내 아이콘 + 차분한 색 */
 .ds-check.todo { color: var(--ink-secondary); }
+
+/* ===== p3.18 학생 후기 반영 ===== */
+details.excl > summary { list-style: none; justify-content: space-between; gap: 10px; color: var(--ink); }
+details.excl > summary::-webkit-details-marker { display: none; }
+details.excl > summary::after { content: none !important; }
+details.excl .ex-t { min-width: 0; font-weight: 600; color: var(--ink); }
+details.excl .ex-t b { color: var(--hot); }
+details.excl .ex-btn { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); color: var(--b-blue); font-size: 13px; font-weight: 700; }
+details.excl .ex-btn::before { content: "직접 보기 ▾"; }
+details.excl[open] .ex-btn::before { content: "접기 ▴"; }
+.sum-content .req-note { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2, rgba(127,127,127,.08)); font-size: 13px; }
+.sum-content .req-note b { display: block; margin-bottom: 4px; color: var(--hot); font-size: 12.5px; }
+.sum-content .req-note ul { margin: 0; padding-left: 18px; color: var(--ink-secondary); }
+.sum-content .req-none { color: var(--ink-secondary); }
+.gap-req { margin: 10px auto 12px; max-width: 560px; text-align: left; }
+.gap-req > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--b-blue); }
+.gap-req ul { list-style: none; margin: 6px 0 0; padding: 0; }
+.gap-req li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.gap-req li .link-btn { text-align: left; font-weight: 600; min-height: 32px; }
+.gap-req .gr-req { color: var(--ink-secondary); }
+.gap-req .gr-v { margin-left: auto; padding: 3px 9px; border-radius: 99px; font-size: 12px; font-weight: 700; background: rgba(127,127,127,.12); color: var(--ink); }
+.gap-req .gr-v.ok { background: #E3F4E1; color: #1E6B2A; }
+.gap-req .gr-v.short { background: #FDEDE4; color: #A33A12; }
+:root[data-theme="dark"] .gap-req .gr-v.ok { background: #1E3A22; color: #B9E8BE; }
+:root[data-theme="dark"] .gap-req .gr-v.short { background: #3D2418; color: #F6C6AE; }
+.qtip-gpa { margin: 6px 0 0; }
+/* 601~1023px(태블릿·반쯤 줄인 PC 창)에서도 '내 조건' 버튼 */
+@media (min-width: 601px) and (max-width: 1023px) {
+  body.p3 .menu-btn { display: inline-flex !important; position: static; transform: none; gap: 6px; width: auto; height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; font-weight: 700; }
+  body.p3 .menu-btn::after { content: "내 조건"; }
+  body.p3 .menu-btn svg { width: 18px; height: 18px; }
+  body.p3.prof-on .menu-btn { background: var(--b-blue); border-color: var(--b-blue); color: #FFFFFF; }
+}
 </style>
 </head>
 <body>
@@ -3434,7 +3467,7 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
     {"target": "토익", "step": "교양과목", "kind": "교양과목", "name": "Pronouncing English Like a Native Speaker (06789)", "desc": "중핵교양 글로벌·외국어 영역 · 3학점 · 영어 발음·말하기 (LC 대비에 도움)", "when": "2026 교육과정 편성표상 1·2학기 편성 (실제 개설은 수강편람 확인)", "url": "https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", "verified": false, "memo": "2026 중핵교양선택필수 표 기준. 매 학기 실제 개설 여부는 수강편람 확인", "status": "개설 학기 확인", "deadline": ""},
     {"target": "토익", "step": "교양과목", "kind": "교양과목", "name": "Critical Reading Across the Disciplines (06822)", "desc": "중핵교양 글로벌·외국어 영역 · 3학점 · 영어 독해 (RC 대비에 도움)", "when": "2026 교육과정 편성표상 1·2학기 편성 (실제 개설은 수강편람 확인)", "url": "https://www.catholic.ac.kr/ko/support/curriculum2_2026.do", "verified": false, "memo": "옛 과목명 Academic Reading", "status": "개설 학기 확인", "deadline": ""},
     {"target": "토익", "step": "비교과", "kind": "학습 지원", "name": "Language 배움이음 (Language SOS Class)", "desc": "교수학습개발원 · 재학생 튜터와 동료 튜터링 · 영어 회화·문법·독해·토익·토플(ITP) · 13주 · ELP 10점", "when": "학기마다 모집 (2026-1: 3/16~6/15 운영, 3/3~3/9 신청)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=268978", "verified": true, "memo": "신청: 트리니티 → AI코디 → MY Activity → CUK 튜터링. 2026-2 모집 공지는 못 찾음", "status": "학기별 공지 확인", "deadline": ""},
-    {"target": "토익", "step": "비교과", "kind": "영어", "name": "YBM 온라인 모의토익 (평생교육원)", "desc": "정기시험과 같은 200문항 · 끝나면 바로 성적 분석 · 1회 4,000원 · 학번으로 가입", "when": "월별 응시 (예: 2026-05 5/1~5/31)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270847", "verified": true, "memo": "유료(4,000원). 모의토익스피킹 20,000원", "status": "상시", "deadline": ""},
+    {"target": "토익", "step": "비교과", "kind": "영어", "name": "YBM 온라인 모의토익 (평생교육원)", "desc": "정기시험과 같은 200문항 · 끝나면 바로 성적 분석 · 1회 4,000원 · 학번으로 가입", "when": "매월 응시 (그달 1일~말일 · 신청 일정은 평생교육원 공지에서 확인)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270847", "verified": true, "memo": "유료(4,000원). 모의토익스피킹 20,000원", "status": "상시", "deadline": ""},
     {"target": "평점", "step": "비교과", "kind": "학습 지원", "name": "학습클리닉 - 학업 및 대학생활코칭", "desc": "교수학습개발원 · 학습 방법·학업 고민 1:1 코칭", "when": "2026-2학기 (~11/4 신청)", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277225", "verified": false, "memo": "공지 본문 세부 내용 확인 필요", "status": "모집 중", "deadline": "2026-11-04"},
     {"target": "평점", "step": "비교과", "kind": "학습 지원", "name": "AI 기반 기초과목 진단 및 맞춤형 학습", "desc": "교수학습개발원 · AI 진단평가 후 취약 영역별 추천 문제·개념 영상·AI 튜터 제공 · 수학(미적분·통계·선형대수), 과학(물리·화학·생물), 영어(토익·토플), 국어(문해력)", "when": "2026-3차 신청 10/28~11/8, 학습 11/10~12/20", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277198&mode=view", "verified": true, "memo": "2026-11-03 기준 신청 기간 중. 공인시험 점수나 학점 직접 부여 과정은 아님", "status": "모집 중", "deadline": "2026-11-08"},
     {"target": "토익", "step": "비교과", "kind": "학습 지원", "name": "AI 기반 기초과목 진단 및 맞춤형 학습", "desc": "교수학습개발원 · AI 진단평가 후 취약 영역별 추천 문제·개념 영상·AI 튜터 제공 · 수학(미적분·통계·선형대수), 과학(물리·화학·생물), 영어(토익·토플), 국어(문해력)", "when": "2026-3차 신청 10/28~11/8, 학습 11/10~12/20", "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277198&mode=view", "verified": true, "memo": "2026-11-03 기준 신청 기간 중. 공인시험 점수나 학점 직접 부여 과정은 아님", "status": "모집 중", "deadline": "2026-11-08"},
@@ -4151,11 +4184,15 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
 
   // 시연: 시연 모드를 켜고 내 점수를 '토익 750 · 평점 3.3'으로 잠깐 바꿔 갭 보완 화면을 체험 (저장하지 않음)
   window.tryDemoScores = function() {
-    el("p-toeic").value = "750"; el("p-toeic-none").checked = false; el("p-gpa").value = "3.3";
+    // p3.18 (김재은): 점수를 하나도 안 넣었을 때만 시연용 점수를 채움. '토익 없음'·빈 평점은 그대로 두고 그 기준으로 계산
+    var tv = String(el("p-toeic").value || "").trim(), none = el("p-toeic-none").checked, gv = String(el("p-gpa").value || "").trim();
+    var fill = !tv && !none && !gv;
+    if (fill) { el("p-toeic").value = "750"; el("p-gpa").value = "3.3"; }
     SHOW.demoMode = true; saveViewState(); applyViewClasses();
     render();
     updateSavedBadge();
-    showToast("🧪 시연 모드 + 시연용 점수(토익 750 · 평점 3.3)로 보여 드려요. '전체 보기'로 되돌릴 수 있어요");
+    showToast(fill ? "🧪 시연 모드 + 시연용 점수(토익 750 · 평점 3.3)로 보여 드려요. '전체 보기'로 되돌릴 수 있어요"
+                   : "🧪 시연 모드를 켰어요. 넣어 둔 점수(" + (none ? "토익 없음 = 0점" : tv ? "토익 " + tv : "토익 비움") + " · " + (gv ? "평점 " + gv : "평점 비움") + ") 그대로 계산해요");
   };
 
   // ===== 🎯 갭 보완 퀘스트 (게임형) =====
@@ -4180,17 +4217,31 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
         ? '마감 ' + md(x.due) + '까지 성적을 받으려면 <b>' + md(lastTest) + ' 전 시험</b>에 응시하세요 (성적 발표까지 보통 2주 안팎)'
         : '이번 마감 전 성적 발표는 어려워요 → <b>다음 회차</b>를 목표로 지금부터 준비하세요';
     }
+    // p3.18 (김보민): 평점은 학기 성적이 확정돼야 바뀜 → 이번 마감 전에 새 학기 성적이 나오는지 판정
+    var gpaReach = true, gpaTip = "";
+    if (!isT) {
+      var y = TODAY.getFullYear(), rel = [new Date(y, 5, 30), new Date(y, 11, 31), new Date(y + 1, 5, 30)].filter(function(d){ return d >= TODAY; })[0];
+      gpaReach = rel.getTime() + 7 * 86400000 <= x.due.getTime();
+      gpaTip = gpaReach
+        ? '이번 학기 성적(' + md(rel) + '경 확정)이 반영되면 마감 ' + md(x.due) + ' 전에 지원 조건을 채울 수 있어요. 공고가 어느 학기 평점을 보는지 원문에서 확인하세요'
+        : '평점은 학기 성적이 확정돼야 바뀌어요. 마감 ' + md(x.due) + ' 전에는 올리기 어려우니 → <b>다음 회차</b>를 목표로 준비하세요';
+    }
+    // p3.18 (김재은): 토익 100점·평점 0.2 넘게 모자라면 '만 더' 대신 '도전 목표'
+    var small = isT ? z.diff <= 100 : z.diff <= 0.2;
+    var subTxt = !isT && !gpaReach ? '평점 +' + z.diff + ' · 이번 회차는 어려워요, 다음 회차 목표'
+      : small ? z.diff + unit + '만 더 채우면 지원할 수 있어요' : z.diff + unit + ' 더 필요해요 · 도전 목표';
     var qkey = function(i){ return n.id + "|" + z.k + "|" + i; };
     var done = steps.filter(function(st, i){ return QUESTS[qkey(i)]; }).length;
     return '<div class="quest" data-qid="' + esc(n.id + "|" + z.k) + '">' +
-      '<div class="quest-head"><span class="quest-badge">🎯 QUEST</span>' +
+      '<div class="quest-head"><span class="quest-badge">' + (small && (isT || gpaReach) ? '🎯 QUEST' : '🧗 도전 목표') + '</span>' +
         '<b class="quest-goal">' + esc(shortTitle(n.t)) + '까지 ' + (isT ? "TOEIC" : "평점") + ' <em>+' + z.diff + unit + '</em></b></div>' +
       '<div class="quest-big"><div><span>지금</span><b>' + z.cur + '</b></div><i aria-hidden="true">→</i><div class="qb-need"><span>지원 자격</span><b>' + z.need + '</b></div></div>' +
       '<div class="quest-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + z.need + '" aria-valuenow="' + z.cur + '">' +
         '<div class="quest-fill" style="width:' + pct + '%"></div>' +
       '</div>' +
       '<div class="quest-scale"><span>내 점수 <b>' + z.cur + '</b></span><span>목표 <b>' + z.need + '</b> 🏁</span></div>' +
-      '<div class="quest-sub"><b>' + pct + '%</b> · ' + z.diff + unit + '만 더 채우면 지원할 수 있어요</div>' +
+      '<div class="quest-sub"><b>' + pct + '%</b> · ' + subTxt + '</div>' +
+      (gpaTip ? '<div class="qtip qtip-gpa">' + gpaTip + '</div>' : '') +
       '<div class="quest-note">※ 달성률은 지원 자격까지 남은 차이예요. 선발 가능성을 뜻하지 않아요.</div>' +
       '<div class="quest-how">이번 주에 할 한 가지부터 · 하나씩 체크해요</div>' +
       '<ol class="quest-steps">' + steps.map(function(st, i){
@@ -4300,7 +4351,10 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
     var id = n.id || ("d" + (uid++));
     var sumList = Array.isArray(n.sum) && n.sum.length ? n.sum : [n.t || "공고 내용 확인"];
     var reqList = requiredList(n);
-    var cautionList = Array.isArray(n.caution) ? n.caution : [];
+    var cautionList = Array.isArray(n.caution) ? n.caution.slice() : [];
+    // p3.18 F19: '확인 필요', '접수 마감' 같은 문장은 자격이 아니라 주의 → 자격 목록에서 빼서 '주의'로
+    var NOTE_RE = /(확인 ?필요|원문에서 확인|원문 확인|요강|접수 ?마감|마감 ?\d|마감일|규격)/;
+    reqList = reqList.filter(function(r){ if (NOTE_RE.test(r) && !/(학년|학적|평점|토익|TOEIC|재학|졸업)/i.test(r)) { if (cautionList.indexOf(r) < 0) cautionList.push(r); return false; } return true; });
     var prefList = Array.isArray(n.preferred_qualifications) ? n.preferred_qualifications : [];
     var docsList = Array.isArray(n.docs) && n.docs.length ? n.docs : ["신청서 및 관련 증빙"];
     var sub = submitInfo(n);
@@ -4325,8 +4379,8 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
         backPlan(n, docsList, sub) +
         '<div class="sum-block"><div class="sum-block-title"><i>1</i>3줄 핵심 요약 · AI 생성</div><ul>' + sumList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' +
         '<div class="sum-block req"><div class="sum-block-title"><i>2</i>필수 지원 자격 <em>못 갖추면 지원 불가</em></div><ul class="req-list">' +
-          reqList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") +
-          cautionList.map(function(s){ return '<li class="caution-li"><span>' + esc(s) + "</span></li>"; }).join("") + '</ul></div>' +
+          (reqList.length ? reqList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") : '<li class="req-none">정리된 자격이 없어요. 원문에서 확인하세요.</li>') + '</ul>' +
+          (cautionList.length ? '<div class="req-note"><b>⚠️ 주의</b><ul>' + cautionList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul></div>' : '') + '</div>' +
         '<div class="sum-block pref"><div class="sum-block-title"><i>3</i>우대 조건 · 가산점 <em>있으면 유리</em></div>' +
           (prefList.length ? '<ul class="pref-list">' + prefList.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul>'
                            : '<div class="sum-empty">정리된 우대 조건이 없어요. 원문에서 확인하세요.</div>') + '</div>' +
@@ -4603,6 +4657,10 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
       var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
       var ss = (s === "transfer" || s === "intl") ? "enrolled" : s;   // 편입생·외국인 유학생 = 재학생 기준
       if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상"];
+      // p3.18 F21: 재입학(제적·자퇴생) 공고는 학적 선택지에 맞는 대상이 없어 추천에서 뺌 ('직접 보기'에서만)
+      if (/재입학/.test(n.t || "")) return ["학적 조건", "학적: 재입학 대상(제적·자퇴생) · 학적 선택지에 없어 추천에서 뺐어요"];
+      // p3.18 (김재은): 학적 기본값 '전체 (재학·휴학)'이면 졸업생·수료생 전용 공고는 뺌
+      if (ss === "all" && status.length && status.indexOf("enrolled") < 0 && status.indexOf("leave") < 0) return ["학적 조건", "학적: " + statusText(status) + " 대상 (학적을 고르면 맞는 공고가 보여요)"];
       if (n.stExplicit) {   // p3.14 F07: 원문에 학적 문장이 있을 때만 학적으로 거름
         if (ss === "grad" || ss === "delay" || ss === "done") {
           // 졸업생: 공고에 졸업생 허용이 있거나, '누구나·일반인·청년' 대상 공고만
@@ -4797,7 +4855,7 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
       return true;
     }).sort(function(a, b){ return a.x.left - b.x.left; });
     el("hid").innerHTML = '<div class="hid-sum">' + esc(hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음") + '</div>' +
-      (exShown.length ? '<details class="excl" id="excl"' + (EXCL_OPEN ? ' open' : '') + '><summary>🔎 내 조건과 달라 <b>추천에서 빠진 공고 ' + exShown.length + '건</b> 직접 보기</summary>' +
+      (exShown.length ? '<details class="excl" id="excl"' + (EXCL_OPEN ? ' open' : '') + '><summary><span class="ex-t">🔎 내 조건과 달라 추천에서 빠진 공고 <b>' + exShown.length + '건</b></span><span class="ex-btn" aria-hidden="true"></span></summary>' +
         '<p class="excl-note">내 조건(학년·학적·계열·팀 인원·점수)과 맞지 않아 추천에서 뺀 공고예요. 공고마다 예외가 있을 수 있으니 원문을 확인해 보세요.</p><ul class="excl-list">' +
         exShown.map(function(e){
           var n = e.x.n;
@@ -4984,9 +5042,25 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
     }
     // 갭 보완이 비었을 때 이유 (점수를 넣었는데 0건)
     function gapWhy() {
-      var withReq = N.filter(function(n){ return !n.noDue && !n.demo && ((gpa !== null && n.gpa) || (toeic !== null && n.toeic)); }).length;
+      // p3.18 (김보민): 마감된 공고는 빼고 세고, 공고마다 내 점수와 비교한 판정을 펼쳐 볼 수 있게
+      var reqAll = N.filter(function(n){ return !n.noDue && !n.demo && ((gpa !== null && n.gpa) || (toeic !== null && n.toeic)); });
+      var reqOpen = reqAll.filter(function(n){ var c = CARD[n.id]; return c && !c.closed; });
+      var withReq = reqOpen.length, closedN = reqAll.filter(function(n){ var c = CARD[n.id]; return c && c.closed; }).length;
       var bigN = hidden["조건 차이가 큼"] || 0;
-      return '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div>지금 공고 중 <b>평점·토익 조건이 있는 공고는 ' + withReq + '건</b>이에요.<br>' +
+      var verdict = function(n){
+        var x = CARD[n.id];
+        if (feed.indexOf(x) > -1) return ["ok", "충족 · 바로 지원"];
+        var e = excluded.filter(function(e){ return e.x.n.id === n.id; })[0];
+        if (e) return [/필요 \(내 점수/.test(e.why) ? "short" : "miss", e.why];
+        return ["miss", "검색어·분야 조건에서 빠짐"];
+      };
+      var reqTxt = function(n){ return [n.toeic ? "토익 " + n.toeic : "", n.gpa ? "평점 " + n.gpa : ""].filter(String).join(" · "); };
+      var list = withReq ? '<details class="gap-req"><summary>내 점수와 비교 보기 (' + withReq + '건)</summary><ul>' + reqOpen.map(function(n){
+          var v = verdict(n);
+          return '<li><button type="button" class="link-btn" onclick="openDetail(\'' + esc(n.id) + '\')">' + esc(ct(n.t)) + '</button><span class="gr-req">' + esc(reqTxt(n)) + ' · D-' + CARD[n.id].left + '</span><span class="gr-v ' + v[0] + '">' + esc(v[1]) + '</span></li>';
+        }).join("") + '</ul></details>' : '';
+      return '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div>진행 중인 공고 중 <b>평점·토익 조건이 있는 공고는 ' + withReq + '건</b>이에요' + (closedN ? ' (마감된 ' + closedN + '건은 뺐어요)' : '') + '.<br>' +
+        list +
         (bigN ? '그중 <b>' + bigN + '건</b>은 차이가 커서(토익 200점·평점 0.5 초과) 숨겼어요. ' : '') +
         (withReq ? '조금만 모자란 공고가 생기면 여기에 퀘스트로 보여 드려요.' : '지금은 점수 조건이 있는 공고가 거의 없어서 비어 있어요. 점수를 미리 채워 두려면 아래 <b>스펙 보완 자료실</b>을 보세요.') +
         '<div class="ge-btns"><button type="button" class="btn-cond ghost" onclick="goRes()">📚 스펙 보완 자료실 보기</button></div>' +
@@ -5045,6 +5119,15 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
       window.P3_TODAY = Math.min(3, c[0].length);   // p3.14 F04: 오늘 할 일은 우선순위 상위 3건만
       var lateN = c[0].slice(3).filter(function(x){ return startOf(x) < 0; }).length;
       var ordered = c[0].concat(c[1], c[2], c[3]).filter(function(x){ return !x.closed; });
+      // p3.18 (김보민): 1순위 = 준비 기간 안에 할 수 있는 공고 중, 오늘 시작해야 하고 내 학년·계열을 콕 집은 공고 → 없으면 할 수 있는 첫 공고
+      var fit = function(x){ return startOf(x) >= 0; };
+      var mine = function(x){ var n = x.n;
+        return (g !== null && Array.isArray(n.grades) && n.grades.length < 4 && n.grades.indexOf(g) > -1) ||
+               (f !== "all" && Array.isArray(n.field) && n.field.length && n.field.length < 4 && n.field.indexOf(f) > -1); };
+      var pi = -1;
+      ordered.some(function(x, i){ if (fit(x) && startOf(x) === 0 && mine(x)) { pi = i; return true; } return false; });
+      if (pi < 0) ordered.some(function(x, i){ if (fit(x)) { pi = i; return true; } return false; });
+      if (pi > 0) ordered = [ordered[pi]].concat(ordered.slice(0, pi), ordered.slice(pi + 1));
       window.P3_NOW = ordered.length ? ordered[0].n.id : null;
       return nowHtml(ordered, c) + '<div class="board">' +
         boardCol("오늘 시작", c[0], "today", function(x, i){ return buildTask(x, { hero: i === 0 }); }, 3, function(m){ return lateN === m ? "준비 시작일이 지난 공고 " + m + "건" : "나머지 " + m + "건 (준비 시작일이 지난 공고 " + lateN + "건 포함)"; }) +
@@ -5200,7 +5283,7 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
       mountRes();
     }
     if (skipView !== "v-bookmark") {
-      setList("v-bookmark", (bookmarked.length ? '<div class="bm-actions"><button type="button" class="btn-cond" onclick="exportBookmarks()">📅 찜한 공고 ' + bookmarked.length + '건 모두 캘린더에 담기</button><span>마감 3일 전·1일 전 알림이 함께 들어가요. 알림은 <b>캘린더 앱</b>이 보내 줘요 (CUK-콕이 따로 보내지 않아요)</span></div>' : '') + (VIEW === "plan" ? savedBoard : buildList)(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없습니다. 마음에 드는 공고의 하트를 눌러보세요!</div>') + '<p class="keep-note">💡 보관함·서류 체크·내 조건은 <b>이 기기의 이 브라우저에만</b> 저장돼요. 휴대폰을 바꾸거나 인터넷 기록을 지우면 사라질 수 있어요. 홈 화면에 추가해 두면 더 안전하고, 내 조건 › <b>저장 내용 옮기기</b>로 다른 기기에 옮길 수 있어요.</p>');
+      setList("v-bookmark", (bookmarked.length ? '<div class="bm-actions"><button type="button" class="btn-cond" onclick="exportBookmarks()">📅 찜한 공고 ' + bookmarked.length + '건 모두 캘린더에 담기</button><span>마감 3일 전·1일 전 알림이 함께 들어가요. 알림은 <b>캘린더 앱</b>이 보내 줘요 (CUK-콕이 따로 보내지 않아요)</span></div>' : '') + (VIEW === "plan" ? savedBoard : buildList)(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없어요. 공고를 눌러 상세를 열고 <b>하트(찜)</b>를 누르면 여기에 모여요.</div>') + '<p class="keep-note">💡 보관함·서류 체크·내 조건은 <b>이 기기의 이 브라우저에만</b> 저장돼요. 휴대폰을 바꾸거나 인터넷 기록을 지우면 사라질 수 있어요. 홈 화면에 추가해 두면 더 안전하고, 내 조건 › <b>저장 내용 옮기기</b>로 다른 기기에 옮길 수 있어요.</p>');
     }
     if (skipView !== "v-past") {
       setList("v-past", buildList(past, '<div class="empty-state">고른 분야·구분에 마감된 공고가 아직 없어요.<br><small>공고는 마감 후 1년 동안 이곳에 모여요.</small></div>'));
@@ -6207,7 +6290,7 @@ body.b-fold.has-now.vplan[data-tab="feed"] #hero-slot { display: none !important
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.19-p3.17";
+  var APP_VERSION = "2026.11.20-p3.18";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
