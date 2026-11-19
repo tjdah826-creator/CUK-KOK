@@ -1758,6 +1758,8 @@
       background: var(--surface); color: var(--ink); text-decoration: none; font: inherit; text-align: left; cursor: pointer;
     }
     .cal-opt:hover { border-color: var(--cuk-accent); background: var(--cuk-soft); }
+    .cal-opt.cal-native { border-color: var(--cuk-accent); }   /* p3.25: 내 폰 캘린더 바로 추가 (아이폰·삼성) */
+    .cal-opt[hidden] { display: none; }
     .cal-opt b { display: block; font-size: 14px; }
     .cal-opt small { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
     .cal-opt-ic {
@@ -3434,6 +3436,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   <div class="share-title" id="cal-sheet-title">마감일을 캘린더에 추가</div>
   <div class="share-sub" id="cal-sheet-sub"></div>
   <div class="cal-opts">
+    <button type="button" class="cal-opt cal-native" id="cal-native" hidden>
+      <span class="cal-opt-ic">📅</span><span><b id="cal-native-t">휴대폰 캘린더에 바로 추가</b><small id="cal-native-s"></small></span>
+    </button>
     <a class="cal-opt" id="cal-google" href="#" target="_blank" rel="noopener" onclick="setTimeout(closeCalSheet, 300)">
       <span class="cal-opt-ic g">G</span><span><b>구글 캘린더에 바로 추가</b><small>새 창에서 일정 등록 화면이 열려요 (안드로이드·PC)</small></span>
     </a>
@@ -3933,6 +3938,38 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       "&ctz=Asia/Seoul";
   }
   var calTarget = null;
+  // p3.25 (이찬준): 아이폰·삼성(안드로이드) 기본 캘린더에 바로 추가
+  //  - 아이폰: .ics를 파일로 받지 않고 바로 열어 iOS의 '캘린더에 추가' 화면을 띄움
+  //  - 안드로이드: 휴대폰 기본 캘린더(삼성 캘린더 등)의 '새 일정' 화면을 제목·날짜가 채워진 채로 엶 (안 열리면 구글 캘린더로)
+  var UA = navigator.userAgent || "";
+  var IS_IOS = /iP(hone|ad|od)/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var IS_AND = /Android/i.test(UA);
+  function androidCalIntent(n, due) {
+    var b = Date.UTC(due.getFullYear(), due.getMonth(), due.getDate()), e = b + 86400000;
+    var enc = function(t){ return encodeURIComponent(String(t || "")).replace(/;/g, "%3B"); };
+    return "intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event" +
+      ";S.title=" + enc("[마감] " + n.t) + ";S.description=" + enc(calDetails(n)) +
+      ";B.allDay=true;l.beginTime=" + b + ";l.endTime=" + e +
+      ";S.browser_fallback_url=" + encodeURIComponent(makeGoogleCalUrl(n, due)) + ";end";
+  }
+  window.addNativeCal = function(n, due) {
+    if (window.__calDry) { window.__calDry = IS_IOS ? "data:text/calendar;charset=utf-8," + encodeURIComponent(buildICS(n, due)) : androidCalIntent(n, due); return; }   // 자동 점검용 (이동하지 않음)
+    if (IS_IOS) {
+      var url = "data:text/calendar;charset=utf-8," + encodeURIComponent(buildICS(n, due));
+      if (window.navigator.standalone) window.open(url, "_blank"); else location.href = url;
+      showToast("📅 '캘린더에 추가' 화면에서 '추가'를 누르세요");
+    } else if (IS_AND) {
+      location.href = androidCalIntent(n, due);
+      showToast("📅 캘린더 앱에서 '저장'을 누르세요");
+    }
+  };
+  if (IS_IOS || IS_AND) {
+    el("cal-native").hidden = false;
+    el("cal-native-t").textContent = IS_IOS ? "아이폰 캘린더에 바로 추가" : "삼성·휴대폰 캘린더에 바로 추가";
+    el("cal-native-s").textContent = IS_IOS ? "‘캘린더에 추가’ 화면이 뜨면 ‘추가’만 누르면 돼요" : "캘린더 앱 새 일정 화면이 뜨면 ‘저장’만 누르면 돼요";
+    el("cal-native").addEventListener("click", function(){ if (!calTarget) return; addNativeCal(calTarget.n, calTarget.due); closeCalSheet(); });
+    el("cal-google").querySelector("small").textContent = "구글 캘린더를 쓰면 여기로 (새 창에서 등록 화면)";
+  }
   window.openCalSheet = function(id) {
     var x = CARD[id];
     if (!x) return;
@@ -3969,7 +4006,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   function icsJoin(lines) { return lines.filter(Boolean).map(icsFold).join("\r\n") + "\r\n"; }
   function icsName(t) { return String(t || "공고").replace(/[\\\/:*?"<>|\r\n#%&]+/g, " ").replace(/\s+/g, " ").trim().substring(0, 20) || "공고"; }
 
-  window.downloadICS = function(n, due) {
+  function buildICS(n, due) {
     var next = new Date(due.getFullYear(), due.getMonth(), due.getDate() + 1);
     var title = n.t;
     var icsData = [
@@ -3988,8 +4025,10 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       "END:VEVENT",
       "END:VCALENDAR"
     ];
-    icsData = icsJoin(icsData);
-
+    return icsJoin(icsData);
+  }
+  window.downloadICS = function(n, due) {
+    var title = n.t, icsData = buildICS(n, due);
     var blob = new Blob([icsData], { type: "text/calendar;charset=utf-8" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
@@ -6381,7 +6420,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.24";
+  var APP_VERSION = "2026.11.20-p3.25";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
