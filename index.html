@@ -3984,7 +3984,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     }
   };
   // p3.28 (이찬준): 아이폰 '바로 추가'는 실제 폰에서 계속 오류 → 아이폰은 기존 '캘린더 파일(.ics) 받기'만 (안드로이드만 바로 추가)
-  if (IS_AND) {
+  // p3.29 (이찬준): 갤럭시도 '바로 추가'를 빼고 구글 캘린더·캘린더 파일(.ics) 받기만 (실기기에서 확인 못 한 기능은 발표 전 제외)
+  var NATIVE_CAL = false;
+  if (NATIVE_CAL && IS_AND) {
     el("cal-native").hidden = false;
     el("cal-native-t").textContent = IS_IOS ? "아이폰 캘린더에 바로 추가" : "삼성·휴대폰 캘린더에 바로 추가";
     el("cal-native-s").textContent = IS_IOS ? "‘캘린더에 추가’ 화면이 뜨면 ‘추가’만 누르면 돼요" : "캘린더 앱 새 일정 화면이 뜨면 ‘저장’만 누르면 돼요";
@@ -6499,7 +6501,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.28";
+  var APP_VERSION = "2026.11.21-p3.29";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
