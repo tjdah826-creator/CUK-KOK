@@ -2918,10 +2918,24 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* p3.21 대회 준수 사항 ③: 1순위 카드의 AI 정리 안내 */
 .now-card .nc-ai { flex: none; font-size: 12px; font-weight: 600; color: inherit; opacity: .9; white-space: nowrap; }
 /* p3.23: 숨기기 · 1순위로 옮기기 (이 기기에만) */
+.quest-cond { margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; background: #FFF7ED; color: #9A3412; font-size: 13.5px; line-height: 1.5; }   /* p3.26 F24 */
+.quest-cond b { display: block; font-size: 12.5px; }
+:root[data-theme="dark"] .quest-cond { background: #3B2410; color: #FCD34D; }
+.nx-h .nx-why { font-weight: 500; font-size: 12px; color: var(--muted); }   /* p3.26 F27 */
+#hero-slot:empty { display: none; }   /* p3.26 F26: 빈 칸이 만드는 위쪽 여백(18px×2) 없앰 */
+@media (max-width: 600px) {   /* p3.26 (정화선 F26): 휴대폰 첫 화면에 공고 3건 — 1순위 카드 안쪽 여백만 조금씩 줄임 */
+  .content.view-plan > .view-toolbar { display: none; }
+  .b-now { row-gap: 8px; }
+  .now-card .nc-title { padding-top: 6px; }
+  .now-card .nc-prog { margin-top: 8px; }
+  .now-card .nc-act { padding-top: 10px; padding-bottom: 8px; }
+  .nx .nx-row { padding-top: 6px; padding-bottom: 6px; margin-bottom: 6px; }
+  .nx .nx-t b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* 다음 할 일 제목은 한 줄 (전체 제목은 누르면 상세) */
+}
 .now-card .nc-own { display: flex; flex-wrap: wrap; gap: 0 20px; margin: 2px 0 0; }
 .now-card .nc-own button { min-height: 44px; padding: 0; border: 0; background: none; color: inherit; opacity: .9; font: inherit; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .ds-own { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 2px; }
-.own-btn { min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.own-btn { min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
 .own-btn.on { border-color: var(--b-blue); color: var(--b-blue); }
 .excl-list .ex-unhide { min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); color: var(--b-blue); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 </style>
@@ -3312,7 +3326,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
         <dt>정렬</dt><dd>마감 임박순 · 장학금 우선순 · 서류 준비 빠른순.</dd>
         <dt>🔍 검색</dt><dd>공고명·혜택·자격 문구로 바로 찾아요.</dd>
         <dt>🔎 추천에서 빠진 공고</dt><dd>내 조건과 달라 추천에서 뺀 공고는 목록 아래 <b>추천에서 빠진 공고 보기</b>에서 빠진 이유와 함께 볼 수 있어요. 팀 구성·연령 같은 세부 자격은 거르지 않고 상세의 <b>필수 자격</b>에 보여 드려요.</dd>
-        <dt>🙈 숨기기 · 📌 1순위로 옮기기</dt><dd>공고 상세 위쪽 버튼으로 관심 없는 공고는 숨기고, 먼저 할 공고는 1순위로 옮길 수 있어요. 숨긴 공고는 <b>추천에서 빠진 공고</b>에서 <b>다시 보기</b>로 되돌려요. 이 기기 브라우저에만 저장돼요.</dd>
+        <dt>숨기기 · 1순위로 옮기기</dt><dd>공고 상세 위쪽 버튼으로 관심 없는 공고는 숨기고, 먼저 할 공고는 1순위로 옮길 수 있어요. 숨긴 공고는 <b>추천에서 빠진 공고</b>에서 <b>다시 보기</b>로 되돌려요. 이 기기 브라우저에만 저장돼요.</dd>
         <dt>✓ 검증 / 검토중</dt><dd>'검증'은 운영자가 원문과 대조한 공고예요. 보기 · 거르기의 <b>✓ 검증된 공고만</b> 칩으로 검증된 것만 볼 수 있어요.</dd>
       </dl>
     </details>
@@ -3957,10 +3971,10 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     if (IS_IOS) {
       var url = "data:text/calendar;charset=utf-8," + encodeURIComponent(buildICS(n, due));
       if (window.navigator.standalone) window.open(url, "_blank"); else location.href = url;
-      showToast("📅 '캘린더에 추가' 화면에서 '추가'를 누르세요");
+      showToast("'캘린더에 추가' 화면에서 '추가'를 누르세요");
     } else if (IS_AND) {
       location.href = androidCalIntent(n, due);
-      showToast("📅 캘린더 앱에서 '저장'을 누르세요");
+      showToast("캘린더 앱에서 '저장'을 누르세요");
     }
   };
   if (IS_IOS || IS_AND) {
@@ -4299,8 +4313,10 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       : small ? z.diff + unit + '만 더 채우면 지원할 수 있어요' : z.diff + unit + ' 더 필요해요 · 도전 목표';
     var qkey = function(i){ return n.id + "|" + z.k + "|" + i; };
     var done = steps.filter(function(st, i){ return QUESTS[qkey(i)]; }).length;
-    return '<div class="quest" data-qid="' + esc(n.id + "|" + z.k) + '">' +
-      '<div class="quest-head"><span class="quest-badge">' + (small && (isT || gpaReach) ? '🎯 QUEST' : '🧗 도전 목표') + '</span>' +
+    var cnd = (n.conds || []).length;   // p3.26 (정화선 F24): 조건 있는 공고는 '도전 목표'가 아니라 조건부터 보여 줌
+    return '<div class="quest' + (cnd ? ' quest-condfirst' : '') + '" data-qid="' + esc(n.id + "|" + z.k) + '">' +
+      (cnd ? '<div class="quest-cond"><b>먼저 확인할 조건</b> ' + esc(n.conds.join("·")) + ' 조건이 있어요' + (n.region && n.region.length ? ' (' + esc(n.region.join("·")) + ')' : '') + (n.targets && n.targets.length ? ' (대상: ' + esc(n.targets.join("·")) + ')' : '') + '. 점수를 채워도 이 조건이 맞아야 지원할 수 있어요</div>' : '') +
+      '<div class="quest-head"><span class="quest-badge">' + (cnd ? '조건 확인 먼저' : small && (isT || gpaReach) ? '🎯 QUEST' : '🚩 도전 목표') + '</span>' +
         '<b class="quest-goal">' + esc(shortTitle(n.t)) + '까지 ' + (isT ? "TOEIC" : "평점") + ' <em>+' + z.diff + unit + '</em></b></div>' +
       '<div class="quest-big"><div><span>지금</span><b>' + z.cur + '</b></div><i aria-hidden="true">→</i><div class="qb-need"><span>지원 자격</span><b>' + z.need + '</b></div></div>' +
       '<div class="quest-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + z.need + '" aria-valuenow="' + z.cur + '">' +
@@ -4632,7 +4648,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     if (on) { HID_IDS.push(id); if (PIN_ID === id) PIN_ID = null; } else HID_IDS.splice(i, 1);
     saveOwn(); render();
     if (detailId === id && window.openDetail) window.openDetail(id, true);
-    showToast(on ? "🙈 숨겼어요. 목록 아래 '추천에서 빠진 공고'에서 다시 볼 수 있어요" : "다시 추천에 보여요");
+    showToast(on ? "숨겼어요. 목록 아래 '추천에서 빠진 공고'에서 다시 볼 수 있어요" : "다시 추천에 보여요");
   };
   window.togglePin = function(id) {
     var on = PIN_ID !== id; PIN_ID = on ? id : null;
@@ -4640,7 +4656,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     saveOwn(); render();
     if (detailId === id && window.openDetail) window.openDetail(id, true);
     var shown = !!document.querySelector('.now-card[data-tk="' + id + '"]');
-    showToast(!on ? "1순위 고정을 풀었어요. 앱이 고른 순서로 돌아가요" : (VIEW === "plan" && !shown) ? "📌 1순위로 정했어요. 지금 고른 분야·교내외·점수 조건에선 '오늘 할 일'에 안 보여요" : "📌 1순위로 옮겼어요. '오늘 할 일' 맨 위에 보여요");
+    showToast(!on ? "1순위 고정을 풀었어요. 앱이 고른 순서로 돌아가요" : (VIEW === "plan" && !shown) ? "1순위로 정했어요. 지금 고른 분야·교내외·점수 조건에선 '오늘 할 일'에 안 보여요" : "1순위로 옮겼어요. '오늘 할 일' 맨 위에 보여요");
   };
   window.adjPrep = function(id, d) {
     var n = N.filter(function(z){ return z.id === id; })[0]; if (!n) return;
@@ -4660,6 +4676,40 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   var COND_RE = [["거주지", /(거주|주민등록|주소를 ?(두|둔|둘)|주소지|관내 ?(고|학교|고등))/], ["소득", /(소득|기초생활|차상위|수급자|지원구간|분위)/], ["국적", /(국적|내국인|외국인 ?(유학생)?만)/]];
   var WD_KO = "일월화수목금토";
   function sqz(t) { return String(t || "").replace(/&#0?39;|&quot;|&amp;/g, "").replace(/^\s*\[[^\]]*\]\s*/, "").replace(/[\s"'“”‘’「」『』.,·…]/g, ""); }
+  // p3.26 (정화선 F23): 대상 조건 이름표 [이름, 찾는 말, 멘토 모집이면 무시]
+  var TARGETS = [
+    ["장기복무 제대군인", /(제대군인|장기복무)/],
+    ["교직원 본인·자녀", /교직원/],
+    ["북한이주·탈북", /(북한(에서)?\s*이주|북한이탈|탈북)/, 1],
+    ["다문화 가정", /다문화/, 1],
+    ["순직자 유자녀", /(순직자|유자녀)/],
+    ["천주교 관련 학문", /(천주교|종교|신자)/],
+    ["귀농 가정", /(귀농|농업에 종사|농업경영)/],
+    ["다자녀 가정", /(다자녀|둘째아)/],
+    ["의·약·간호 계열", /(의대|약대|간호대학|의\/약학|의학·약학)/],
+    ["특정 전공", /((연기|극작|성악|기악|클래식)[가-힣\/·\s]{0,12}전공)/],
+    ["기존 장학생", /(장학생으로 선발된|기존 장학생)/],
+    ["재난·재해 피해 등", /(재난|재해|양육자 사망)/],
+    ["선행 추천", /선행\s*(공적|으로)/]
+  ];
+  // p3.26 (정화선 F23): 다른 대학 재학생만 지원할 수 있는 공고 (가톨릭대 학생은 지원 불가 → 추천에서 뺌)
+  function otherUnivOf(n, tText) {
+    var lines = String(tText || "").split(/ \/ |\/(?=\s)|[;○]/);
+    if (/(학교\s*·?\s*학과|학교\s*무관|대학\s*무관|소속\s*무관|누구나)/.test(tText)) return "";
+    var names = [];
+    lines.forEach(function(l){
+      if (!/(재학|전공자|소속|학부생)/.test(l)) return;
+      (l.match(/[가-힣]{2,8}(?:대학교|대)(?=[\s·\/,(]|재학|$)/g) || []).forEach(function(u){
+        if (/^(간호|국내외|국내|해외|외국|정규|전문|교육부|인정|해당|소속|관내|지역)/.test(u) || /가톨릭/.test(u)) return;
+        u = u.replace(/대학교$/, "대"); if (names.indexOf(u) < 0) names.push(u);
+      });
+    });
+    if (names.length) return names.slice(0, 3).join("·");
+    var m = tText.match(/([가-힣]{2,6}(?:시|군|구|도))\s*소재\s*대학(?:교)?\s*(재학|학생)/);
+    if (m && !/(부천|경기|서울)/.test(m[1])) return m[1] + " 소재 대학";
+    if (/도내\s*대학/.test(tText)) { var pv = (String(n.t || "").match(/(경상남도|경상북도|전라남도|전라북도|전북|충청남도|충청북도|강원|제주|경남|경북|충북|충남|전남)/) || [])[1]; if (pv) return pv + " 도내 대학"; }
+    return "";
+  }
   function prepOne(n) {
     if (n.demo === true) {
       if (n._due0 === undefined) { n._due0 = n.due; n._url0 = n.url || ""; }
@@ -4677,6 +4727,12 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     var cText = [n.q || ""].concat(n.sum || [], n.required_qualifications || []).join(" ");
     n.conds = COND_RE.filter(function(c){ return c[1].test(cText); }).map(function(c){ return c[0]; });
     n.region = n.conds.indexOf("거주지") > -1 ? regionOf(n) : [];   // p3.24: 거주 지역 이름 (원문에서)
+    // p3.26 (정화선 F23): 특정 대상(직업·출신·종교·전공·기존 장학생 등)만 지원할 수 있으면 '대상 조건'
+    var tText = [n.q || "", n.statusBasis || ""].concat(n.required_qualifications || []).join(" ");
+    var mentor = /(멘토|멘토링|서포터즈|봉사)/.test(n.t || "");   // 다문화·탈북 학생을 돕는 멘토 모집은 일반 대학생 대상
+    n.targets = TARGETS.filter(function(t){ return t[1].test(tText) && !(mentor && t[2]); }).map(function(t){ return t[0]; }).slice(0, 2);
+    if (n.targets.length && n.conds.indexOf("대상") < 0) n.conds.push("대상");
+    n.otherUniv = n.src === "교내" ? "" : otherUnivOf(n, tText);
     // F17 근거 문장이 제목과 같으면 '원문 발췌'가 아님
     var qq = sqz(n.q), tt = sqz(n.t);
     n.qIsTitle = !qq || qq === tt || (qq.length >= 8 && tt.indexOf(qq) >= 0) || (tt.length >= 8 && qq.indexOf(tt) >= 0 && qq.length - tt.length < 6);
@@ -4714,7 +4770,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   }
   function condTag(n, cls) {
     var rg = n.region && n.region.length ? n.region.join("·") : "";
-    return n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="' + (rg ? '원문에 나온 거주 지역: ' + esc(rg) + ' · ' : '') + '앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음' + (rg ? ' (' + esc(rg) + ')' : '') + '</span>' : "";
+    return n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="' + (rg ? '원문에 나온 거주 지역: ' + esc(rg) + ' · ' : '') + (n.targets && n.targets.length ? '대상: ' + esc(n.targets.join("·")) + ' · ' : '') + '앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음' + (rg ? ' (' + esc(rg) + ')' : '') + '</span>' : "";
   }
   // F05 카드 제목: 한국어 뒤에 중국어·영어·베트남어가 이어지면 첫 한국어 부분만 (전체 제목은 상세에서)
   function ct(t) {
@@ -4760,6 +4816,10 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       var grades = Array.isArray(n.grades) ? n.grades : [1, 2, 3, 4];
       var status = Array.isArray(n.status) ? n.status : ["enrolled", "leave"];
       var ss = (s === "transfer" || s === "intl") ? "enrolled" : s;   // 편입생·외국인 유학생 = 재학생 기준
+      // p3.26 (정화선 F23): 다른 대학 재학생만 지원 가능
+      if (n.otherUniv) return ["학교 조건", "학교: " + n.otherUniv + " 재학생 대상 · 가톨릭대 학생은 지원할 수 없어요"];
+      // p3.26 (정화선 F28): 학자금 대출·연체·신용회복 지원 사업은 장학금이 아니라 장학 추천에서 뺌
+      if (n.cat === "장학" && /(대출|대부|연체|신용회복|부실채무)/.test((n.t || "") + " " + (n.benefit || ""))) return ["대출 사업", "대출·신용회복 지원 사업이라 장학 추천에서 뺐어요 (장학금 아님)"];
       if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상"];
       // p3.18 F21: 재입학(제적·자퇴생) 공고는 학적 선택지에 맞는 대상이 없어 추천에서 뺌 ('직접 보기'에서만)
       if (/재입학\s*(모집|신청|접수|안내|원서|대상)/.test(n.t || "") && !/재입학생?도/.test(n.t || "")) return ["학적 조건", "학적: 재입학 대상(제적·자퇴생) · 학적 선택지에 없어 추천에서 뺐어요"];
@@ -4865,6 +4925,14 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 
     sortItems(feed);
     sortItems(gaps);
+    // p3.26 (정화선 F24): 조건(거주지·소득·대상) 없는 공고를 먼저, 조건 있는 공고는 뒤로
+    // p3.26 (정화선 F25): 시연 모드에서는 [시연] 공고 먼저, 그중 '영국 단기어학연수'를 맨 위에
+    (function(){
+      var rank = function(x){ var c = (x.n.conds || []).length ? 2 : 0; if (SHOW.demoMode && x.n.demo === true) c = /영국 단기어학연수/.test(x.n.t || "") ? -2 : -1; return c; };
+      var idx = gaps.map(function(x, i){ return [rank(x), i, x]; });
+      idx.sort(function(a, b){ return (a[0] - b[0]) || (a[1] - b[1]); });
+      gaps = idx.map(function(a){ return a[2]; });
+    })();
     sortItems(bookmarked);
 
     // 검증된 공고만 보기: 시트 '검수'가 O인 공고만 남김 (교내/교외 건수도 이 기준으로)
@@ -4934,7 +5002,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     setBadge("bn-bookmark", bookmarked.length);
     setBadge("bn-cal", todayDueCount);
     window.GAP_BEST = null;
-    gaps.forEach(function(x){ (x.short || []).forEach(function(z){
+    gaps.forEach(function(x){ if ((x.n.conds || []).length) return; (x.short || []).forEach(function(z){   // p3.26 F24: 맨 위 문구는 조건 없는 공고 기준
       if (!window.GAP_BEST || (z.k === "토익" && (window.GAP_BEST.k !== "토익" || z.diff < window.GAP_BEST.diff)) || (z.k === window.GAP_BEST.k && z.diff < window.GAP_BEST.diff)) window.GAP_BEST = z;
     }); });
     if (window.updateViewTitle) window.updateViewTitle();
@@ -5194,7 +5262,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       var ver = n.verified === true ? '<span class="tk-ok">검증</span>' : '<span>' + verWord(n) + '</span>';
       if (o.hero) {
         return '<button type="button" class="tk tk-hero" data-tk="' + esc(n.id) + '" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' +
-          '<span class="tk-k"><span class="tk-meta">' + (n.id === PIN_ID ? '📌 ' : '') + '1순위 · 서류 준비 약 ' + (n.prep || 2) + '일</span>' + condTag(n, "tk-cond") + '<span class="tk-dd">' + dd + '</span></span>' +
+          '<span class="tk-k"><span class="tk-meta">' + (n.id === PIN_ID ? '내가 고른 ' : '') + '1순위 · 서류 준비 약 ' + (n.prep || 2) + '일</span>' + condTag(n, "tk-cond") + '<span class="tk-dd">' + dd + '</span></span>' +
           '<b class="tk-t" title="' + esc(n.t) + '">' + demoTag(n) + esc(ct(n.t)) + '</b>' +
           '<span class="tk-m">' + fmt(x.due) + ' 마감 · 서류 ' + done + '/' + docs.length + ' · <b>' + (startOf(x) < 0 ? '빠듯해요 · 오늘 바로' : startOf(x) === 0 ? '오늘 시작해야 해요' : fmt(sd) + ' 시작') + '</b>' + tkCmt(n) + '</span>' +
           '<span class="tk-go">계획 보기</span></button>';
@@ -5222,7 +5290,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     // p3.22~23: 1순위 고르기 (계획 보드 · 바로 지원 화면 공통) — 내가 고른 공고 > 거주지·소득 조건 없는 공고 > 오늘 시작·내 학년/계열 > 직접 링크
     function rankNow(ordered) {
       // p3.22: 거주지·소득 조건이 있는 공고(지자체 장학금 등)는 1순위·'다음 할 일'에서 뒤로 — 숨기지 않고 '전체 일정'에는 그대로
-      var limited = function(x){ var k = x.n.conds || []; return k.indexOf("거주지") > -1 || k.indexOf("소득") > -1; };
+      var limited = function(x){ var k = x.n.conds || []; return k.indexOf("거주지") > -1 || k.indexOf("소득") > -1 || k.indexOf("대상") > -1; };   // p3.26 F23: 대상 조건도
       var openOrd = ordered.filter(function(x){ return !limited(x); });
       if (openOrd.length) ordered = openOrd.concat(ordered.filter(limited));
       // p3.18 (김보민): 1순위 = 준비 기간 안에 할 수 있는 공고 중, 오늘 시작해야 하고 내 학년·계열을 콕 집은 공고 → 없으면 할 수 있는 첫 공고
@@ -5266,18 +5334,19 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       if (!ordered.length) return "";
       var x = ordered[0], n = x.n, docs = docsOf(n), done = docsDone(n), pct = Math.round(done / docs.length * 100);
       var st = startOf(x), sd = new Date(TODAY.getTime() + Math.max(0, st) * P3_DAY);
-      var when = st < 0 ? "빠듯해요 · 오늘 바로" : st === 0 ? "오늘 시작" : fmt(sd) + " 시작";
+      var when = st < 0 ? "빠듯해요 · 오늘 바로" : st === 0 ? "오늘 시작" : st === 1 ? "내일(" + fmt(sd) + ") 시작" : fmt(sd) + " 시작";
       var sub = submitInfo(n), org = dsOrg(n), title = ct(n.t).replace(/^\s*(\[[^\]]*\]\s*)+/, "") || n.t;
-      var showDocs = docs.slice(0, 4);
+      var maxD = window.innerWidth <= 600 ? (docs.length > 2 ? 1 : 2) : 4;   // p3.26 (정화선 F26): 휴대폰은 서류 줄을 2줄까지 (첫 화면에 공고 3건, 나머지는 '서류 N개 더')
+      var showDocs = docs.slice(0, maxD);
       var docRows = showDocs.map(function(d, i){
         var k = n.id + "-doc-" + i, on = !!checkedDocs[k];
         return '<li><label class="nc-doc' + (on ? ' on' : '') + '"><input type="checkbox"' + (on ? ' checked' : '') + ' onchange="toggleDocCheck(\'' + esc(k) + '\')"><span>' + esc(d) + '</span></label></li>';
-      }).join("") + (docs.length > 4 ? '<li><button type="button" class="nc-more" onclick="openDetail(\'' + esc(n.id) + '\')">서류 ' + (docs.length - 4) + '개 더 · 계획에서 보기</button></li>' : '');
+      }).join("") + (docs.length > maxD ? '<li><button type="button" class="nc-more" onclick="openDetail(\'' + esc(n.id) + '\')">서류 ' + (docs.length - maxD) + '개 더 · 계획에서 보기</button></li>' : '');
       var go = n.url
         ? '<a class="nc-go" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + (done ? '원문 보고 이어서 하기' : '원문 보고 시작하기') + '</a>'
         : '<button type="button" class="nc-go" onclick="openDetail(\'' + esc(n.id) + '\')">계획 보기</button>';
       var nowCard = '<section class="now-card' + (x.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(n.id) + '" aria-label="지금 할 일 1순위">' +
-          '<div class="nc-top"><span>' + (n.id === PIN_ID ? '📌 내가 고른 1순위 · ' : '1순위 · ') + when + ' · 서류 준비 약 ' + (n.prep || 2) + '일</span><span class="nc-dd">' + ddText(x) + '</span></div>' +
+          '<div class="nc-top"><span>' + (n.id === PIN_ID ? '내가 고른 1순위 · ' : '1순위 · ') + when + ' · 서류 준비 약 ' + (n.prep || 2) + '일</span><span class="nc-dd">' + ddText(x) + '</span></div>' +
           '<button type="button" class="nc-title" onclick="tkOpen(event,\'' + esc(n.id) + '\')">' + (org ? '<small>' + esc(org) + '</small>' : '') + '<b>' + demoTag(n) + esc(title) + '</b></button>' +
           '<p class="nc-meta" onclick="if(event.target.closest(\'.tk-cmt\'))tkOpen(event,\'' + esc(n.id) + '\')">' + x.due.getFullYear() + '.' + fmt(x.due) + ' (' + WD[x.due.getDay()] + ') 마감 · ' + esc(sub.label || "접수 방식은 원문 확인") + condTag(n, "tk-cond") + tkCmt(n) + '</p>' +
           '<div class="nc-prog"><span class="nc-bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span><b>서류 ' + done + '/' + docs.length + '</b><small class="nc-ai" title="AI가 원문에서 정리한 서류예요. 원문을 꼭 확인하세요">AI 정리 · 원문 확인</small></div>' +
@@ -5285,8 +5354,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
           '<div class="nc-act">' + go +
             (n.url ? '<button type="button" class="nc-plan" onclick="openDetail(\'' + esc(n.id) + '\')">계획 보기</button>' : '') +
             '<button type="button" class="nc-cal" onclick="openCalSheet(\'' + esc(n.id) + '\')" aria-label="마감을 내 캘린더에 넣기" title="마감을 내 캘린더에 넣기"><svg class="ic" aria-hidden="true"><use href="#i-calendar"></use></svg></button>' +
-          '</div><div class="nc-own">' + (n.id === PIN_ID ? '<button type="button" onclick="togglePin(\'' + esc(n.id) + '\')">1순위 고정 풀기</button>' : '') +
-          '<button type="button" onclick="toggleHide(\'' + esc(n.id) + '\')" aria-label="이 공고 숨기기 (추천에서 빼기)">이 공고 숨기기</button></div></section>';
+          '</div></section>';   // p3.26 (정화선 F26): 숨기기·고정 풀기는 공고 상세에만 (첫 화면에 공고 3건)
       var next = ordered.slice(1, 3).map(function(y){
         var s2 = startOf(y), d2 = new Date(TODAY.getTime() + Math.max(0, s2) * P3_DAY);
         return '<button type="button" class="nx-row' + (y.left <= 3 ? ' soon' : '') + '" data-tk="' + esc(y.n.id) + '" onclick="tkOpen(event,\'' + esc(y.n.id) + '\')">' +
@@ -5294,6 +5362,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
           '<span class="nx-d">' + ddText(y) + '</span></button>';
       }).join("");
       var rest = Math.max(0, c[0].length - 1 - Math.min(2, ordered.length - 1));
+      // p3.26 (정화선 F27): 1순위가 오늘 시작이 아니고, 준비 기간이 빠듯한 공고가 아래에 있으면 이유 한 줄
+      var tight = ordered.slice(1, 3).filter(function(y){ return startOf(y) < 0; }).length;
+      var why = st > 0 && tight ? "· 준비 기간이 빠듯한 공고 " + tight + "건은 여기에 뒀어요" : "";
       var parts = [];
       if (c[0].length > 1) parts.push("오늘 " + (c[0].length) + "건");
       if (c[1].length) parts.push("이번 주 " + c[1].length + "건");
@@ -5301,7 +5372,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       var open = !!SHOW_ALL;
       var allBtn = '<button type="button" class="b-allbtn" aria-expanded="' + (open ? 'true' : 'false') + '" onclick="bAllToggle()">' + (open ? '전체 일정 접기' : (parts.length ? parts.join(" · ") + ' · ' : '') + '전체 일정 보기') + '</button>';
       return '<div class="b-now">' + nowCard +
-        '<div class="b-side">' + (next ? '<div class="nx"><div class="nx-h">다음 할 일</div>' + next + '</div>' : '') + allBtn + '</div></div>' +
+        '<div class="b-side">' + (next ? '<div class="nx"><div class="nx-h">다음 할 일' + (why ? ' <small class="nx-why">' + why + '</small>' : '') + '</div>' + next + '</div>' : '') + allBtn + '</div></div>' +
         '<h2 class="b-all-h">전체 일정 <small>이번 주 달력 · 준비 시작일 순</small></h2><div class="b-week">' + weekStrip() + '</div>';
     }
     function savedBoard(arr, emptyHtml) {
@@ -6016,14 +6087,14 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       '<h2 class="ds-title" id="ds-title">' + esc(n.t) + '</h2>' +
       '<p class="ds-org">' + esc(dsOrg(n)) + (ben ? ' · ' + esc(ben) : '') + '</p>' +
       (x.closed ? '' : '<div class="ds-own">' +   // p3.23: 이 기기에만 저장
-        '<button type="button" class="own-btn' + (n.id === PIN_ID ? ' on' : '') + '" aria-pressed="' + (n.id === PIN_ID ? 'true' : 'false') + '" onclick="togglePin(\'' + esc(n.id) + '\')">' + (n.id === PIN_ID ? '📌 1순위 고정 풀기' : '📌 1순위로 옮기기') + '</button>' +
-        '<button type="button" class="own-btn' + (HID_IDS.indexOf(n.id) > -1 ? ' on' : '') + '" aria-pressed="' + (HID_IDS.indexOf(n.id) > -1 ? 'true' : 'false') + '" onclick="toggleHide(\'' + esc(n.id) + '\')">' + (HID_IDS.indexOf(n.id) > -1 ? '👀 다시 보기' : '🙈 숨기기') + '</button></div>') +
+        '<button type="button" class="own-btn' + (n.id === PIN_ID ? ' on' : '') + '" aria-pressed="' + (n.id === PIN_ID ? 'true' : 'false') + '" onclick="togglePin(\'' + esc(n.id) + '\')">' + (n.id === PIN_ID ? '1순위 고정 풀기' : '1순위로 옮기기') + '</button>' +
+        '<button type="button" class="own-btn' + (HID_IDS.indexOf(n.id) > -1 ? ' on' : '') + '" aria-pressed="' + (HID_IDS.indexOf(n.id) > -1 ? 'true' : 'false') + '" onclick="toggleHide(\'' + esc(n.id) + '\')">' + (HID_IDS.indexOf(n.id) > -1 ? '다시 보기' : '숨기기') + '</button></div>') +
       // p3.16 (김재은 의견): '✓ 검증' 공고는 마감 줄에도 '원문 대조 완료' — '확인 필요'와 같이 보이지 않게
       (n._ver0
         ? '<p class="ds-check"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>' + fmt(x.due) + ' 마감 · 원문 대조 완료' + (sub.kind !== "unknown" ? ' · ' + esc(sub.label) : '') + '</p>'
         : '<p class="ds-check todo"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg>' + fmt(x.due) + ' 마감 · ' + esc(sub.label || "접수 방식은 원문 확인") + ' · 운영자 확인 전</p>') +
       (n.dowBad ? '<p class="dow-bad">원문 요일 불일치 · 원문 확인 <small>원문 ' + esc(n.dowBad.split("→")[0]) + '요일 · 실제 ' + esc(n.dowBad.split("→")[1]) + '요일</small></p>' : '') +
-      (n.conds && n.conds.length ? '<p class="ds-cond">' + esc(n.conds.join("·")) + ' 조건이 있어요' + (n.region && n.region.length ? ' (원문 거주 지역: ' + esc(n.region.join("·")) + ')' : '') + '. 앱이 판정하지 않으니 필수 자격에서 확인하세요</p>' : '') +
+      (n.conds && n.conds.length ? '<p class="ds-cond">' + esc(n.conds.join("·")) + ' 조건이 있어요' + (n.region && n.region.length ? ' (원문 거주 지역: ' + esc(n.region.join("·")) + ')' : '') + (n.targets && n.targets.length ? ' (대상: ' + esc(n.targets.join("·")) + ')' : '') + '. 앱이 판정하지 않으니 필수 자격에서 확인하세요</p>' : '') +
       (plan ? '<section class="ds-plan"><div class="ds-plan-h"><b>마감에서 거꾸로 짠 계획</b><span class="ds-dd">' + dd + '</span></div>' + plan + dsDocs(n, docsList) + '</section>' : dsDocs(n, docsList)) +
       dsTalk(n) +
       '<div class="ds-sum">' + summaryCard(n).replace("<details ", "<details " + (VIEW === "plan" ? "" : "open ")) + '</div>';
@@ -6090,7 +6161,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     el("ds-body").innerHTML = detailHtml(x) + dsReport(x.n);
     el("ds-heart").innerHTML = heartButton(x.n.id, bookmarks.indexOf(x.n.id) > -1); el("ds-cmt").innerHTML = dsCmtBtn(x.n); loadTalkPreview(x.n.id);
     if (x.n.demo === true) { el("ds-foot").innerHTML = '<p class="ds-demo">🧪 시연용 <b>가상 공고</b>라 실제로 신청하거나 캘린더에 담을 수 없어요</p>'; } else
-    el("ds-foot").innerHTML = (x.n.url ? '<a class="ds-src" href="' + esc(x.n.url) + '" target="_blank" rel="noopener">원문 공고</a>' : '') +
+    el("ds-foot").innerHTML = (x.n.url ? '<a class="ds-src" href="' + esc(x.n.url) + '" target="_blank" rel="noopener">' + (linkTypeOf(x.n) === "메인" ? '기관 홈페이지' : '원문 공고') + '</a>' : '') +   /* p3.26 (정화선 F30) */
       (x.closed ? '' : '<button type="button" class="ds-cal" onclick="openCalSheet(\'' + esc(id) + '\')">계획을 캘린더로</button>');
     sh.hidden = false; sh.setAttribute("aria-hidden", "false"); el("ds-backdrop").hidden = false;
     document.body.classList.add("ds-open");
@@ -6420,7 +6491,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.20-p3.25";
+  var APP_VERSION = "2026.11.20-p3.26";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
