@@ -2922,6 +2922,16 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 .quest-cond b { display: block; font-size: 12.5px; }
 :root[data-theme="dark"] .quest-cond { background: #3B2410; color: #FCD34D; }
 .nx-h .nx-why { font-weight: 500; font-size: 12px; color: var(--muted); }   /* p3.26 F27 */
+/* p3.30 */
+.first-load-msg { display: none; }
+body.first-load .first-load-msg { display: block; margin: 24px 16px; padding: 18px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); font-weight: 700; text-align: center; }
+body.first-load #page-wrap, body.first-load .bottom-nav { visibility: hidden; }
+.gap-next { margin-top: 14px; border: 1px dashed var(--line); border-radius: 14px; padding: 10px 12px; }
+.gap-next > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 700; }
+.gap-next > summary small { font-weight: 500; color: var(--muted); }
+.excl-notsch { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.excl-notsch > b { font-size: 13px; } .excl-notsch > small { color: var(--muted); font-size: 12px; }
+.excl-notsch .excl-list { margin-top: 8px; }
 #hero-slot:empty { display: none; }   /* p3.26 F26: 빈 칸이 만드는 위쪽 여백(18px×2) 없앰 */
 @media (max-width: 600px) {   /* p3.26 (정화선 F26): 휴대폰 첫 화면에 공고 3건 — 1순위 카드 안쪽 여백만 조금씩 줄임 */
   .content.view-plan > .view-toolbar { display: none; }
@@ -3118,6 +3128,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   <div class="mode-banner" id="mode-banner" hidden>🧪 <b>시연 모드</b> · 시연용 가상 공고([시연])가 함께 보여요. 실제 모집이 아니에요. <button type="button" onclick="setDemoMode(false)">시연 모드 끄기</button></div>
   <div class="campus-note" id="campus-note" hidden></div>
   <div class="cache-banner" id="cache-banner" hidden></div>
+  <div class="first-load-msg" id="first-load-msg" role="status" aria-live="polite">공고 불러오는 중…</div>
   <div class="demo-banner" id="demo-banner">🧪 지금은 <b>시연용 예시 데이터</b>를 보여주고 있어요. 실제 공고를 불러오는 중이거나 연결에 실패했어요.<span id="demo-why"></span></div>
 
   <!-- 공고 분류: 1단계 대분류(교내/교외) + 2단계 중분류(분야) — 본문 위 가운데 -->
@@ -4276,7 +4287,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
   window.tryDemoScores = function() {
     // p3.18 (김재은): 점수를 하나도 안 넣었을 때만 시연용 점수를 채움. '토익 없음'·빈 평점은 그대로 두고 그 기준으로 계산
     var tv = String(el("p-toeic").value || "").trim(), none = el("p-toeic-none").checked, gv = String(el("p-gpa").value || "").trim();
-    var fill = !tv && !none && !gv;
+    var fill = !tv && !none && !gv;   // p3.18 (김재은) 규칙 유지: '토익 없음'은 그대로 0점 기준 (p3.30: 차이가 큰 공고는 버튼으로 볼 수 있게)
     if (fill) { el("p-toeic").value = "750"; el("p-gpa").value = "3.3"; }
     SHOW.demoMode = true; saveViewState(); applyViewClasses();
     render();
@@ -4427,6 +4438,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     if (!due || isNaN(due.getTime())) return "";
     var DAY = 86400000, today = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate());
     if (due < today) return "";
+    // p3.30 (테스터 T2): 오늘 마감인데 마감 시각이 지났으면 준비 계획을 보여 주지 않음
+    var tm = String(n.dueTime || "").match(/(\d{1,2}):(\d{2})/), nw = new Date();
+    if (tm && due.getTime() === today.getTime() && nw.getHours() * 60 + nw.getMinutes() >= (+tm[1]) * 60 + (+tm[2])) return "";
     var prep = n.prep || 2, start = new Date(due.getTime() - prep * DAY);
     var late = start < today; if (late) start = today;
     var steps = [];
@@ -4742,6 +4756,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     n.targets = TARGETS.filter(function(t){ return t[1].test(tText) && !(mentor && t[2]); }).map(function(t){ return t[0]; }).slice(0, 2);
     if (n.targets.length && n.conds.indexOf("대상") < 0) n.conds.push("대상");
     n.otherUniv = n.src === "교내" ? "" : otherUnivOf(n, tText);
+    // p3.30 (김보민 3): 'N학년 (1학기) 진학 예정'은 지금 N-1학년이 지원 → 학년을 그 기준으로 (본과 등 의대 학제는 제외)
+    var gm = tText.match(/(본과\s*)?([2-4])\s*학년(?:\s*\d\s*학기)?\)?\s*(?:으로\s*)?진학\s*예정/);
+    if (gm && !gm[1]) { n.grades = [Number(gm[2]) - 1]; n.gradeBasis = gm[2] + "학년 진학 예정"; }
     // F17 근거 문장이 제목과 같으면 '원문 발췌'가 아님
     var qq = sqz(n.q), tt = sqz(n.t);
     n.qIsTitle = !qq || qq === tt || (qq.length >= 8 && tt.indexOf(qq) >= 0) || (tt.length >= 8 && qq.indexOf(tt) >= 0 && qq.length - tt.length < 6);
@@ -4778,8 +4795,13 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     return out.slice(0, 2);
   }
   function condTag(n, cls) {
+    // p3.30 (김보민 2): 평점·토익을 비워 두면 점수 조건이 있는 공고에 '평점 3.5 이상 필요' 태그
+    var P = window.__PROF || {}, need = [];
+    if (P.gpa === null && n.gpa) need.push("평점 " + n.gpa + " 이상 필요");
+    if (P.toeic === null && n.toeic) need.push("토익 " + n.toeic + " 이상 필요");
+    var sTag = need.length ? '<span class="' + (cls || "cond-tag") + ' score-need" title="내 점수를 넣으면 지원 가능 여부를 바로 알려 드려요">' + esc(need.join(" · ")) + '</span>' : "";
     var rg = n.region && n.region.length ? n.region.join("·") : "";
-    return n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="' + (rg ? '원문에 나온 거주 지역: ' + esc(rg) + ' · ' : '') + (n.targets && n.targets.length ? '대상: ' + esc(n.targets.join("·")) + ' · ' : '') + '앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음' + (rg ? ' (' + esc(rg) + ')' : '') + '</span>' : "";
+    return sTag + (n.conds && n.conds.length ? '<span class="' + (cls || "cond-tag") + '" title="' + (rg ? '원문에 나온 거주 지역: ' + esc(rg) + ' · ' : '') + (n.targets && n.targets.length ? '대상: ' + esc(n.targets.join("·")) + ' · ' : '') + '앱이 판정하지 않는 조건이에요. 원문에서 확인하세요">' + n.conds.join("·") + ' 조건 있음' + (rg ? ' (' + esc(rg) + ')' : '') + '</span>' : "");
   }
   // F05 카드 제목: 한국어 뒤에 중국어·영어·베트남어가 이어지면 첫 한국어 부분만 (전체 제목은 상세에서)
   function ct(t) {
@@ -4804,6 +4826,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     var f = el("p-field").value;
     var s = el("p-status").value;
     var gpa = readGpa(), toeic = readToeic();
+    window.__PROF = { gpa: gpa, toeic: toeic };   // p3.30: 카드 태그(평점·토익 비움)용
     var teamV = el("p-team").value, team = teamV === "all" ? null : +teamV;
     var query = (el("live-search").value || "").trim().toLowerCase();
     var sortOpt = el("sort-select").value;
@@ -4816,7 +4839,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     var ints = [].slice.call(document.querySelectorAll("input[name='interest']:checked")).map(function(x){ return x.value; });
     var feed = [], gaps = [], bookmarked = [], hidden = {}, off = 0, pastAll = [];
     var excluded = [];   // 추천에서 빠진 공고 (이유와 함께) → '추천에서 빠진 공고 보기'로 직접 확인
-    function hide(r, x, why){ hidden[r] = (hidden[r] || 0) + 1; if (x) excluded.push({ x:x, why: why || r }); }
+    function hide(r, x, why){ hidden[r] = (hidden[r] || 0) + 1; if (x) excluded.push({ x:x, why: why || r, notSch: r === "대출 사업" }); }   // p3.30 T4
     function hideMine(x){ hide("내가 숨긴 공고", x, "내가 숨긴 공고"); excluded[excluded.length - 1].mine = true; }   // p3.23
 
     var demoHidden = 0, noDue = [];
@@ -4829,7 +4852,9 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       if (n.otherUniv) return ["학교 조건", "학교: " + n.otherUniv + " 재학생 대상 · 가톨릭대 학생은 지원할 수 없어요"];
       // p3.26 (정화선 F28): 학자금 대출·연체·신용회복 지원 사업은 장학금이 아니라 장학 추천에서 뺌
       if (n.cat === "장학" && /(대출|대부|연체|신용회복|부실채무)/.test((n.t || "") + " " + (n.benefit || ""))) return ["대출 사업", "대출·신용회복 지원 사업이라 장학 추천에서 뺐어요 (장학금 아님)"];
-      if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상"];
+      if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상" + (n.gradeBasis ? " (원문: " + n.gradeBasis + ")" : "")];
+      // p3.30 (외국인 유학생 1): 학적이 외국인 유학생이면 대한민국 국적이 필요한 공고는 뺌
+      if (s === "intl" && (n.conds || []).indexOf("국적") > -1) return ["국적 조건", "국적: 대한민국 국적 필요"];
       // p3.18 F21: 재입학(제적·자퇴생) 공고는 학적 선택지에 맞는 대상이 없어 추천에서 뺌 ('직접 보기'에서만)
       if (/재입학\s*(모집|신청|접수|안내|원서|대상)/.test(n.t || "") && !/재입학생?도/.test(n.t || "")) return ["학적 조건", "학적: 재입학 대상(제적·자퇴생) · 학적 선택지에 없어 추천에서 뺐어요"];
       // p3.18 (김재은): 학적 기본값 '전체 (재학·휴학)'이면 졸업생·수료생 전용 공고는 뺌
@@ -4936,8 +4961,16 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     sortItems(gaps);
     // p3.26 (정화선 F24): 조건(거주지·소득·대상) 없는 공고를 먼저, 조건 있는 공고는 뒤로
     // p3.26 (정화선 F25): 시연 모드에서는 [시연] 공고 먼저, 그중 '영국 단기어학연수'를 맨 위에
+    // p3.30 (테스터 T1): 기존 장학생만 다시 신청하는 공고는 갭 보완에서 뺌
+    gaps = gaps.filter(function(x){ if ((x.n.targets || []).indexOf("기존 장학생") > -1) { hide("대상 조건", x, "대상: 기존 장학생만 다시 신청하는 공고"); return false; } return true; });
+    // p3.30 (테스터 T1): 이번 회차 마감 전에 평점을 바꿀 수 없는 공고는 '다음 회차 준비'로
+    gaps.forEach(function(x){
+      var y = TODAY.getFullYear(), rel = [new Date(y, 5, 30), new Date(y, 11, 31), new Date(y + 1, 5, 30)].filter(function(d){ return d >= TODAY; })[0];
+      var onlyGpa = (x.short || []).length && (x.short || []).every(function(z){ return z.k === "평점"; });
+      x.nextRound = !!(onlyGpa && rel.getTime() + 7 * 86400000 > x.due.getTime());
+    });
     (function(){
-      var rank = function(x){ var c = (x.n.conds || []).length ? 2 : 0; if (SHOW.demoMode && x.n.demo === true) c = /영국 단기어학연수/.test(x.n.t || "") ? -2 : -1; return c; };
+      var rank = function(x){ var c = ((x.n.conds || []).length ? 2 : 0) + (x.nextRound ? 4 : 0); if (SHOW.demoMode && x.n.demo === true) c = /영국 단기어학연수/.test(x.n.t || "") ? -2 : -1; return c; };
       var idx = gaps.map(function(x, i){ return [rank(x), i, x]; });
       idx.sort(function(a, b){ return (a[0] - b[0]) || (a[1] - b[1]); });
       gaps = idx.map(function(a){ return a[2]; });
@@ -5039,16 +5072,19 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       return true;
     }).sort(function(a, b){ return a.x.left - b.x.left; });
     el("hid").innerHTML = '<div class="hid-sum">' + esc(hidTotal ? "숨긴 공고 " + hidTotal + "건 · " + hidParts.join(" · ") : "숨긴 공고 없음") + '</div>' +
-      (exShown.length ? '<details class="excl" id="excl"' + (EXCL_OPEN ? ' open' : '') + '><summary><span class="ex-t">🔎 내 조건과 달라 추천에서 빠진 공고 <b>' + exShown.length + '건</b></span><span class="ex-btn" aria-hidden="true"></span></summary>' +
+      (exShown.length ? '<details class="excl" id="excl"' + (EXCL_OPEN ? ' open' : '') + '><summary><span class="ex-t">🔎 내 조건과 달라 추천에서 빠진 공고 <b>' + exShown.filter(function(e){ return !e.notSch; }).length + '건</b>' + (exShown.some(function(e){ return e.notSch; }) ? ' · 장학금 아님 ' + exShown.filter(function(e){ return e.notSch; }).length + '건' : '') + '</span><span class="ex-btn" aria-hidden="true"></span></summary>' +
         '<p class="excl-note">내 조건(학년·학적·계열·팀 인원·점수)과 맞지 않아 추천에서 뺀 공고예요. 공고마다 예외가 있을 수 있으니 원문을 확인해 보세요.' + (exShown.some(function(e){ return e.mine; }) ? ' 내가 숨긴 공고는 <b>다시 보기</b>를 누르면 추천에 돌아와요.' : '') + '</p><ul class="excl-list">' +
-        exShown.map(function(e){
+        exShown.filter(function(e){ return !e.notSch; }).map(function(e){
           var n = e.x.n;
           return '<li><span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span>' +
             (n.url ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(ct(n.t)) + ' ↗</a>' : '<button type="button" class="link-btn" onclick="openDetail(\'' + esc(n.id) + '\')">' + esc(ct(n.t)) + '</button>') +
             '<span class="excl-meta">' + (e.x.nodue ? '기한 미기재·상시' : 'D-' + e.x.left) + ' · ' + srcLabel(n) + (n.verified === true ? '' : ' · 검토중') + '</span>' +
             '<span class="excl-why">빠진 이유: ' + esc(e.why) + '</span>' +
             (e.mine ? '<button type="button" class="ex-unhide" onclick="toggleHide(\'' + esc(n.id) + '\')">다시 보기</button>' : '') + '</li>';
-        }).join("") + '</ul></details>' : '');
+        }).join("") + '</ul>' +
+        // p3.30 (테스터 T4): 내 조건 때문이 아니라 장학금이 아니라서 뺀 공고(대출·신용회복)는 따로
+        (function(){ var ns = exShown.filter(function(e){ return e.notSch; }); return ns.length ? '<div class="excl-notsch"><b>장학금 아님 ' + ns.length + '건</b> <small>학자금 대출·연체·신용회복 지원 사업이라 장학 추천에서 뺐어요</small><ul class="excl-list">' + ns.map(function(e){ var n = e.x.n; return '<li>' + (n.url ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(ct(n.t)) + ' ↗</a>' : esc(ct(n.t))) + '<span class="excl-meta">D-' + e.x.left + ' · ' + srcLabel(n) + '</span></li>'; }).join("") + '</ul></div>' : ''; })() +
+        '</details>' : '');
     var exQ = query ? exShown.length : 0;
     el("vf-chip").hidden = !SHOW.verifiedOnly;
 
@@ -5059,6 +5095,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       var start = new Date(x.due.getTime() - prep * 86400000);
       var must = x.left - prep <= 0;
       var prepText = prep === 0 ? "⚡ 즉시 온라인 접수" : (must ? "🚨 서류 준비 " + prep + "일 소요 — <b>오늘 바로 착수</b>" : "서류 준비 약 " + prep + "일 소요 → <b>" + fmt(start) + "까지 준비 권장</b>");
+      if (isGap && x.nextRound) prepText = "다음 회차 준비 · 이번 마감(" + fmt(x.due) + ") 전에는 평점을 올리기 어려워요";   // p3.30 T1
 
       var isBookmarked = bookmarks.indexOf(n.id) > -1;
       var isHot = !x.closed && x.left <= 3; // 3일 이내 마감 임박 시 라이브 펄스 효과
@@ -5188,7 +5225,11 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     function buildList(arr, emptyHtml) {
       if (!arr.length) return emptyHtml;
       if (VIEW === "plan") {
-        if (arr[0].isGap && !arr[0].closed) return arr.map(function(x){ return buildCard(x, true); }).join("");   // 갭 보완은 퀘스트 카드 그대로
+        if (arr[0].isGap && !arr[0].closed) {   // 갭 보완은 퀘스트 카드 그대로 · p3.30 T1: 이번 회차가 어려운 공고는 '다음 회차 준비' 묶음
+          var now = arr.filter(function(x){ return !x.nextRound; }), later = arr.filter(function(x){ return x.nextRound; });
+          return now.map(function(x){ return buildCard(x, true); }).join("") +
+            (later.length ? '<details class="gap-next"' + (now.length ? '' : ' open') + '><summary>다음 회차 준비 <b>' + later.length + '건</b> <small>이번 마감 전에는 평점을 올릴 수 없는 공고</small></summary>' + later.map(function(x){ return buildCard(x, true); }).join("") + '</details>' : '');
+        }
         return '<div class="tk-list">' + arr.map(function(x){ return buildTask(x, { showStart: true }); }).join("") + '</div>';
       }
       if (VIEW === "small" || VIEW === "medium") return arr.map(buildTile).join("");
@@ -5228,7 +5269,8 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     // 갭 보완이 비었을 때 이유 (점수를 넣었는데 0건)
     function gapWhy() {
       // p3.18 (김보민): 마감된 공고는 빼고 세고, 공고마다 내 점수와 비교한 판정을 펼쳐 볼 수 있게
-      var reqAll = N.filter(function(n){ return !n.noDue && !n.demo && ((gpa !== null && n.gpa) || (toeic !== null && n.toeic)); });
+      // p3.30 (김보민 1): 점수 입력과 상관없이 같은 기준으로 셈 (시연 모드면 [시연] 공고도)
+      var reqAll = N.filter(function(n){ return !n.noDue && (n.demo !== true || SHOW.demoMode) && (n.gpa || n.toeic); });
       var reqOpen = reqAll.filter(function(n){ var c = CARD[n.id]; return c && !c.closed; });
       var withReq = reqOpen.length, closedN = reqAll.filter(function(n){ var c = CARD[n.id]; return c && c.closed; }).length;
       var bigN = hidden["조건 차이가 큼"] || 0;
@@ -5246,7 +5288,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
         }).join("") + '</ul></details>' : '';
       return '<div class="empty-state gap-empty"><div class="ge-ic">🎯</div>진행 중인 공고 중 <b>평점·토익 조건이 있는 공고는 ' + withReq + '건</b>이에요' + (closedN ? ' (마감된 ' + closedN + '건은 뺐어요)' : '') + '.<br>' +
         list +
-        (bigN ? '그중 <b>' + bigN + '건</b>은 차이가 커서(토익 200점·평점 0.5 초과) 숨겼어요. ' : '') +
+        (bigN ? '그중 <b>' + bigN + '건</b>은 차이가 커서(토익 200점·평점 0.5 초과) 퀘스트에서 뺐어요 <button type="button" class="link-btn" onclick="showExcluded()">차이가 큰 공고 ' + bigN + '건 보기</button> ' : '') +
         (withReq ? '조금만 모자란 공고가 생기면 여기에 퀘스트로 보여 드려요.' : '지금은 점수 조건이 있는 공고가 거의 없어서 비어 있어요. 점수를 미리 채워 두려면 아래 <b>스펙 보완 자료실</b>을 보세요.') +
         '<div class="ge-btns"><button type="button" class="btn-cond ghost" onclick="goRes()">📚 스펙 보완 자료실 보기</button></div>' +
         (usingFallback || SHOW.demoMode ? '' : '<div class="ge-btns"><button type="button" class="btn-cond ghost" onclick="tryDemoScores()">🧪 시연 모드로 퀘스트 체험</button></div>') + '</div>';
@@ -5300,7 +5342,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     function rankNow(ordered) {
       ordered = ordered.filter(function(x){ return ddText(x) !== "마감됨"; });   // p3.27: 오늘 마감 시각이 지난 공고는 '다음 할 일'에서 뺌
       // p3.22: 거주지·소득 조건이 있는 공고(지자체 장학금 등)는 1순위·'다음 할 일'에서 뒤로 — 숨기지 않고 '전체 일정'에는 그대로
-      var limited = function(x){ var k = x.n.conds || []; return k.indexOf("거주지") > -1 || k.indexOf("소득") > -1 || k.indexOf("대상") > -1; };   // p3.26 F23: 대상 조건도
+      var limited = function(x){ var k = x.n.conds || [], P = window.__PROF || {}; return k.indexOf("거주지") > -1 || k.indexOf("소득") > -1 || k.indexOf("대상") > -1 || (P.gpa === null && x.n.gpa > 0) || (P.toeic === null && x.n.toeic > 0); };   // p3.26 F23: 대상 조건도 · p3.30: 점수를 비웠는데 점수 조건 있는 공고도
       var openOrd = ordered.filter(function(x){ return !limited(x); });
       if (openOrd.length) ordered = openOrd.concat(ordered.filter(limited));
       // p3.18 (김보민): 1순위 = 준비 기간 안에 할 수 있는 공고 중, 오늘 시작해야 하고 내 학년·계열을 콕 집은 공고 → 없으면 할 수 있는 첫 공고
@@ -5328,6 +5370,8 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
       var lateN = c[0].slice(3).filter(function(x){ return startOf(x) < 0; }).length;
       var ordered = c[0].concat(c[1], c[2], c[3]).filter(function(x){ return !x.closed; });
       ordered = rankNow(ordered);   // p3.23: 바로 지원 화면의 1순위 카드와 같은 규칙
+      // p3.30 (테스터 T3): 전체 일정 칸마다 거주지·소득 조건 공고는 아래로 (지역 장학금이 일반 공고와 섞이지 않게)
+      c = c.map(function(col){ var lim = function(x){ var k = x.n.conds || []; return k.indexOf("거주지") > -1 || k.indexOf("소득") > -1; }; return col.filter(function(x){ return !lim(x); }).concat(col.filter(lim)); });
       // p3.19 (QA): 보드 '오늘 시작' 칸도 같은 공고를 맨 앞에 → '1순위'가 두 개로 보이지 않게
       var top1 = ordered[0];
       // p3.22: 1순위가 '이번 주에 시작' 등 다른 칸에 있어도 그 칸 맨 위에 '1순위'로 표시
@@ -5480,7 +5524,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
         var c = CARD[n.id]; return !c || !c.closed;
       }).length;
       if (!need) return "";
-      return '<div class="excl-banner soft toeic-none">토익 점수가 필요한 공고 <b>' + need + '건</b>이 있어요. 점수를 입력하면 조금만 채우면 되는 공고를 퀘스트로 보여 드려요 <button type="button" class="link-btn" onclick="openProfile()">점수 입력</button></div>';
+      return '<div class="excl-banner soft toeic-none">토익 <b>없음(0점)</b> 기준으로 비교했어요. 토익 점수가 필요한 공고 <b>' + need + '건</b>은 차이가 커서 퀘스트 대신 \'추천에서 빠진 공고\'에 있어요 <button type="button" class="link-btn" onclick="showExcluded()">차이가 큰 공고 보기</button> <button type="button" class="link-btn" onclick="openProfile()">점수 입력</button></div>';
     }
     if (skipView !== "v-gap") {
       setList("v-gap", toeicNoneHtml() + buildList(gaps, (gpa === null && toeic === null)
@@ -5909,6 +5953,8 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     var bits = [fmt(TODAY) + " (" + WEEKDAY[TODAY.getDay()] + ")"];
     if (g && g !== "all") bits.push(g + "학년");
     if (f && f !== "all" && FIELD[f]) bits.push(FIELD[f]);
+    var stv = el("p-status").value;   // p3.30 (외국인 유학생 3): 학적을 골랐으면 요약 줄에도
+    if (stv && stv !== "all") { var so = el("p-status").options[el("p-status").selectedIndex]; if (so) bits.push(so.textContent.replace(/\s*\(.*\)$/, "")); }
     var gb = window.GAP_BEST, title;
     if (document.body.classList.contains("prof-on")) title = "내 조건";
     else if (currentTab === "feed") title = VIEW === "plan" && window.P3_NOW ? "지금 이것부터" : "오늘 시작할 일";
@@ -6091,12 +6137,12 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     var n = x.n, sub = submitInfo(n);
     var docsList = Array.isArray(n.docs) && n.docs.length ? n.docs : ["신청서 및 관련 증빙"];
     var ben = n.benefit && !/(원문|없음|확인 필요|미확인|참조)/.test(n.benefit) ? n.benefit : "";
-    var dd = ddText(x);
-    var plan = backPlan(n, docsList, sub);
+    var dd = ddText(x), over = x.closed || dd === "마감됨";   // p3.30 (테스터 T2)
+    var plan = over ? "" : backPlan(n, docsList, sub);
     return '<div class="ds-tags">' + demoTag(n) + '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span><span class="tag">' + srcLabel(n) + '</span>' + verifyTag(n) + '</div>' +
       '<h2 class="ds-title" id="ds-title">' + esc(n.t) + '</h2>' +
       '<p class="ds-org">' + esc(dsOrg(n)) + (ben ? ' · ' + esc(ben) : '') + '</p>' +
-      (x.closed ? '' : '<div class="ds-own">' +   // p3.23: 이 기기에만 저장
+      (over ? '' : '<div class="ds-own">' +   // p3.23: 이 기기에만 저장 · p3.30: 마감 시각 지나면 숨김
         '<button type="button" class="own-btn' + (n.id === PIN_ID ? ' on' : '') + '" aria-pressed="' + (n.id === PIN_ID ? 'true' : 'false') + '" onclick="togglePin(\'' + esc(n.id) + '\')">' + (n.id === PIN_ID ? '1순위 고정 풀기' : '1순위로 옮기기') + '</button>' +
         '<button type="button" class="own-btn' + (HID_IDS.indexOf(n.id) > -1 ? ' on' : '') + '" aria-pressed="' + (HID_IDS.indexOf(n.id) > -1 ? 'true' : 'false') + '" onclick="toggleHide(\'' + esc(n.id) + '\')">' + (HID_IDS.indexOf(n.id) > -1 ? '다시 보기' : '숨기기') + '</button></div>') +
       // p3.16 (김재은 의견): '✓ 검증' 공고는 마감 줄에도 '원문 대조 완료' — '확인 필요'와 같이 보이지 않게
@@ -6172,7 +6218,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     el("ds-heart").innerHTML = heartButton(x.n.id, bookmarks.indexOf(x.n.id) > -1); el("ds-cmt").innerHTML = dsCmtBtn(x.n); loadTalkPreview(x.n.id);
     if (x.n.demo === true) { el("ds-foot").innerHTML = '<p class="ds-demo">🧪 시연용 <b>가상 공고</b>라 실제로 신청하거나 캘린더에 담을 수 없어요</p>'; } else
     el("ds-foot").innerHTML = (x.n.url ? '<a class="ds-src" href="' + esc(x.n.url) + '" target="_blank" rel="noopener">' + (linkTypeOf(x.n) === "메인" ? '기관 홈페이지' : '원문 공고') + '</a>' : '') +   /* p3.26 (정화선 F30) */
-      (x.closed ? '' : '<button type="button" class="ds-cal" onclick="openCalSheet(\'' + esc(id) + '\')">계획을 캘린더로</button>');
+      ((x.closed || ddText(x) === "마감됨") ? '' : '<button type="button" class="ds-cal" onclick="openCalSheet(\'' + esc(id) + '\')">계획을 캘린더로</button>');
     sh.hidden = false; sh.setAttribute("aria-hidden", "false"); el("ds-backdrop").hidden = false;
     document.body.classList.add("ds-open");
     requestAnimationFrame(function(){ sh.classList.add("show"); });
@@ -6374,6 +6420,12 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
     }
   }
   if (useCache()) { setBasisDate(true); render(); }
+  else { document.body.classList.add("first-load"); el("demo-banner").style.display = "none"; }   // p3.30 (테스터 T5): 처음엔 '불러오는 중'만, 실패하면 그때 시연 데이터+안내
+  function endFirstLoad(failed) {
+    if (!document.body.classList.contains("first-load")) return;
+    document.body.classList.remove("first-load");
+    if (failed && usingFallback) el("demo-banner").style.display = "";
+  }
 
   function loadSheet() {
     if (!SHEET_API_URL || !SHEET_API_URL.startsWith("https://script.google.com")) return;
@@ -6393,7 +6445,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
         if (!Array.isArray(data)) throw new Error("웹앱 응답 형식이 달라요");
         if (!data.length) throw new Error("시트에서 보여 줄 공고가 0건이에요 (AI 정리·마감일 확인 필요)");
         var json = JSON.stringify(data);
-        if (json === lastJSON) return;   // 바뀐 게 없으면 화면을 건드리지 않음
+        if (json === lastJSON) { endFirstLoad(false); return; }   // 바뀐 게 없으면 화면을 건드리지 않음
         lastJSON = json;
         N = data;
         usingFallback = false;
@@ -6402,9 +6454,11 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: cacheAt, data: data })); } catch (e) {}
         setBasisDate(true);
         render();
+        endFirstLoad(false);
       })
       .catch(function(err) {
         console.warn("시트 API 연동 실패 (기존 데이터 유지):", err);
+        endFirstLoad(true);
         if (!usingFallback && cacheAt) cacheNote(true);
         if (usingFallback) {
           var why = el("demo-why");
@@ -6501,7 +6555,7 @@ details.excl[open] .ex-btn::before { content: "접기 ▴"; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.21-p3.29";
+  var APP_VERSION = "2026.11.21-p3.30";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
