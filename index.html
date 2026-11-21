@@ -5067,6 +5067,8 @@ body.first-load #page-wrap, body.first-load .bottom-nav { visibility: hidden; }
     var kos = el("src-kosaf");
     if (kos) { var hasK = N.some(function(n){ return /^공공데이터\(한국장학재단\)/.test(String(n.origin || "")); }); kos.classList.toggle("on", hasK); }
     var exShown = excluded.filter(function(e){
+      // p3.31 (가상 테스터 F32): 기한 미기재·숨긴 공고도 검색어로 거름 (엉뚱한 검색어에 "N건 빠졌어요"가 뜨던 것)
+      if (query && (e.x.n.t + " " + (e.x.n.benefit || "") + " " + (e.x.n.src || "") + " " + (e.x.n.cat || "") + " " + (e.x.n.q || "")).toLowerCase().indexOf(query) === -1) return false;
       if (SCOPE !== "all" && scopeOf(e.x.n) !== SCOPE) return false;
       if (SHOW.verifiedOnly && e.x.n._ver0 !== true) return false;
       return true;
@@ -6555,7 +6557,7 @@ body.first-load #page-wrap, body.first-load .bottom-nav { visibility: hidden; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.21-p3.30";
+  var APP_VERSION = "2026.11.22-p3.31";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
