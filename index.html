@@ -35,10 +35,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://tjdah826-creator.github.io/CUK-KOK/og-image.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 시안 B (2026.11.17 확정): IBM Plex Sans KR + IBM Plex Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <!-- p3.36 (이찬준 요청 · 11/23): 글꼴을 부드럽게 — IBM Plex Sans KR·Mono → Pretendard (숫자도 같은 글꼴, 고정폭 숫자) -->
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
   <style>
     :root {
       /* 가톨릭대 사이버캠퍼스 앱 색상 참고 */
@@ -70,9 +69,9 @@
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
-      --font-body: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       --font-display: "Hahmlet", serif;
-      --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+      --font-mono: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
     }
 
     /* 다크 테마는 기본으로 끔 (PC 다크모드에서 화면이 어두워지던 문제).
@@ -2050,9 +2049,9 @@
       --b-blue: #2546C4;
       --b-blue-soft: #E8ECFA;
       --b-ink: #16181D;
-      --font-body: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui, sans-serif;
-      --font-display: "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo", system-ui, sans-serif;
-      --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+      --font-body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+      --font-display: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+      --font-mono: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;   /* p3.36: 날짜·숫자도 둥근 글꼴 (고정폭 숫자로 줄 맞춤) */
       --cuk-primary: #2546C4;
       --cuk-accent: #2546C4;
       --cuk-soft: #E8ECFA;
@@ -2084,7 +2083,8 @@
     @media (min-width: 1024px) {
       :root { --cuk-univ: #2546C4; --cuk-univ-soft: #E8ECFA; --bg: #F3F4F7; }
     }
-    body { font-family: var(--font-body); letter-spacing: -0.005em; }
+    body { font-family: var(--font-body); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }   /* p3.36: 글꼴 부드럽게 */
+    button, input, select, textarea { font-family: inherit; }
     /* 선 아이콘 (이모지 대신) */
     .ic { width: 1.15em; height: 1.15em; vertical-align: -0.2em; display: inline-block; flex: none;
           fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
@@ -2311,12 +2311,12 @@
     .quest-big { display:flex; align-items:flex-end; gap:14px; margin:14px 0 6px; }
     .quest-big div { display:flex; flex-direction:column; gap:2px; }
     .quest-big span { font-size:11.5px; color:var(--muted); font-weight:600; }
-    .quest-big b { font-family:var(--font-mono, 'IBM Plex Mono', monospace); font-size:clamp(30px, 9cqi, 40px); line-height:1; font-weight:600; color:var(--ink); letter-spacing:-0.02em; }
+    .quest-big b { font-family:var(--font-mono, var(--font-body)); font-size:clamp(30px, 9cqi, 40px); line-height:1; font-weight:600; color:var(--ink); letter-spacing:-0.02em; }
     .quest-big .qb-need b { color:var(--b-blue); }
     .quest-big i { font-style:normal; font-size:22px; color:var(--muted); padding-bottom:4px; }
     .quest-scale { display:none; }
     .quest-sub { font-size:13px; color:var(--ink-secondary); margin-top:6px; }
-    .quest-sub b { font-family:var(--font-mono, 'IBM Plex Mono', monospace); }
+    .quest-sub b { font-family:var(--font-mono, var(--font-body)); }
     .quest-how { margin-top:16px; font-size:12.5px; font-weight:700; color:var(--ink); letter-spacing:.01em; }
     .qstep { background:var(--surface, #fff); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
     .qstep.done { opacity:.75; }
@@ -2328,7 +2328,7 @@
     .m-head { display:none; }
     @media (max-width: 1023px) {
       .m-head { display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding:6px 2px 14px; }
-      .mh-sub { margin:0 0 4px; font-size:12.5px; color:var(--muted); font-family:var(--font-mono, 'IBM Plex Mono', monospace); }
+      .mh-sub { margin:0 0 4px; font-size:12.5px; color:var(--muted); font-family:var(--font-mono, var(--font-body)); }
       .mh-title { margin:0; font-size:26px; line-height:1.2; font-weight:700; letter-spacing:-0.02em; color:var(--ink); }
       .mh-search { flex:none; width:44px; height:44px; border-radius:12px; border:1px solid var(--line); background:var(--surface); color:var(--ink); display:grid; place-items:center; cursor:pointer; }
       .mh-search .ic { width:20px; height:20px; }
@@ -2349,7 +2349,7 @@
     .wk-t { min-width:0; display:flex; flex-direction:column; gap:3px; }
     .wk-t b { font-size:14px; font-weight:600; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .wk-t small { font-size:12px; color:var(--muted); }
-    .wk-d { flex:none; font-family:var(--font-mono, 'IBM Plex Mono', monospace); font-size:13px; font-weight:600; color:var(--ink-secondary); }
+    .wk-d { flex:none; font-family:var(--font-mono, var(--font-body)); font-size:13px; font-weight:600; color:var(--ink-secondary); }
     .wk-d.hot { color:var(--hot); }
     .wk-more { width:100%; border:0; background:none; color:var(--b-blue); font:inherit; font-size:12.5px; font-weight:600; padding:10px 0 8px; border-top:1px solid var(--line); cursor:pointer; }
     @media (min-width: 1024px) {
@@ -2380,7 +2380,7 @@
     .ds-plan { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px 16px; margin-bottom:14px; }
     .ds-plan-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
     .ds-plan-h b { font-size:15px; color:var(--ink); }
-    .ds-dd { font-family:var(--font-mono, 'IBM Plex Mono', monospace); font-weight:600; font-size:14px; color:#fff; background:var(--b-blue); border-radius:8px; padding:3px 8px; }
+    .ds-dd { font-family:var(--font-mono, var(--font-body)); font-weight:600; font-size:14px; color:#fff; background:var(--b-blue); border-radius:8px; padding:3px 8px; }
     .ds-plan .sum-block.plan { margin:0; padding:0; border:0; background:none; }
     .ds-plan .sum-block-title { display:none; }
     .ds-sum .sum-block.plan { display:none; }
@@ -2407,14 +2407,14 @@ body.p3 #content > .search-bar-wrap, body.p3 #content > .nav-filter, body.p3 .vi
 .mh-btns { display: flex; gap: 8px; flex: none; }
 .mh-filter { position: relative; }
 .mh-fl { display: none; }
-.mh-badge { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--b-blue); color: #FFFFFF; font: 600 10.5px/18px 'IBM Plex Mono', monospace; font-style: normal; text-align: center; }
+.mh-badge { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--b-blue); color: #FFFFFF; font: 600 10.5px/18px var(--font-mono); font-style: normal; text-align: center; }
 /* 주간 띠 */
 .wstrip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; padding: 4px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
 .wd { display: flex; flex-direction: column; align-items: center; gap: 1px; min-height: 64px; padding: 6px 0; border: 0; border-radius: 12px; background: transparent; color: var(--muted); font: inherit; font-size: 11px; cursor: pointer; }
-.wd b { font: 600 16px/1.2 'IBM Plex Mono', monospace; color: var(--ink); }
+.wd b { font: 600 16px/1.2 var(--font-mono); color: var(--ink); }
 .wd.on { background: var(--b-blue); color: #FFFFFF; }
 .wd.on b { color: #FFFFFF; }
-.wd-m { display: flex; gap: 4px; min-height: 14px; font: 600 10.5px 'IBM Plex Mono', monospace; }
+.wd-m { display: flex; gap: 4px; min-height: 14px; font: 600 10.5px var(--font-mono); }
 .wd-m em { font-style: normal; }
 .wd-m .s { color: var(--b-blue); }
 .wd-m .e { color: var(--hot); }
@@ -2425,7 +2425,7 @@ body.p3 #content > .search-bar-wrap, body.p3 #content > .nav-filter, body.p3 .vi
 .board { display: flex; flex-direction: column; gap: 18px; }
 .bcol-h { display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px 6px; margin-bottom: 8px; border-bottom: 2px solid var(--line); }
 .bcol-h b { font-size: 15px; color: var(--ink); }
-.bcol-h span { font: 500 12.5px 'IBM Plex Mono', monospace; color: var(--muted); }
+.bcol-h span { font: 500 12.5px var(--font-mono); color: var(--muted); }
 .bcol.today .bcol-h b { color: var(--b-blue); }
 .bcol-more { display: none; }
 .bcol.all .bcol-more { display: block; }
@@ -2438,10 +2438,10 @@ body.p3 #content > .search-bar-wrap, body.p3 #content > .nav-filter, body.p3 .vi
 .tk.sel { border: 2px solid var(--b-blue); padding: 10px 12px; }
 .tk-k { display: flex; gap: 4px; align-items: center; font-size: 11.5px; font-weight: 600; color: var(--muted); }
 .tk-ok { color: #1F6B3A; }
-.tk-dd { margin-left: auto; font: 600 12.5px 'IBM Plex Mono', monospace; color: var(--ink-secondary); }
+.tk-dd { margin-left: auto; font: 600 12.5px var(--font-mono); color: var(--ink-secondary); }
 .tk.soon .tk-dd { color: var(--hot); }
 .tk-t { font-size: 14.5px; font-weight: 600; line-height: 1.38; }
-.tk-m { font-size: 12px; color: var(--muted); font-family: 'IBM Plex Mono', 'IBM Plex Sans KR', monospace; }
+.tk-m { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
 .tk-bar { display: block; height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; margin-top: 2px; }
 .tk-bar i { display: block; height: 100%; background: var(--b-blue); }
 .tk-hero { background: var(--b-blue); border-color: var(--b-blue); color: #FFFFFF; padding: 15px 16px; gap: 6px; }
@@ -2457,7 +2457,7 @@ body.p3 #content > .search-bar-wrap, body.p3 #content > .nav-filter, body.p3 .vi
 .ds-doc input { width: 20px; height: 20px; accent-color: var(--b-blue); }
 .ds-doc.on span { text-decoration: line-through; color: var(--muted); }
 /* 달력: 준비 시작 표시 */
-.cal-st { font: 600 10.5px 'IBM Plex Mono', monospace; color: var(--b-blue); }
+.cal-st { font: 600 10.5px var(--font-mono); color: var(--b-blue); }
 .cal-day.sel .cal-st { color: inherit; }
 .cal-st-box { margin-bottom: 14px; }
 .cal-st-row { display: flex; justify-content: space-between; gap: 10px; width: 100%; min-height: 44px; padding: 8px 2px; border: 0; border-top: 1px solid var(--line); background: none; color: var(--ink); font: inherit; font-size: 13.5px; text-align: left; cursor: pointer; }
@@ -2521,7 +2521,7 @@ body.fs-open { overflow: hidden; }
   body.p3 .help-btn { order: 9; margin: auto 0 0; align-self: flex-start; }
   body.p3 .rail-prof { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.07); color: #C9CDD6; font-size: 12.5px; }
   body.p3 .rail-prof b { color: #FFFFFF; font-size: 13px; }
-  body.p3 .rail-prof i { font-style: normal; font-family: 'IBM Plex Mono', monospace; color: #FFFFFF; }
+  body.p3 .rail-prof i { font-style: normal; font-family: var(--font-mono); color: #FFFFFF; }
   body.p3 .rail-prof-edit { align-self: flex-start; margin-top: 4px; min-height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; }
   body.p3 .wrap { display: block; max-width: none; margin: 0; padding: 20px 24px 40px; }
   body.p3:not(.prof-on) .side { display: none; }
@@ -2529,7 +2529,7 @@ body.fs-open { overflow: hidden; }
   body.p3.prof-on #hero-slot, body.p3.prof-on .content { display: none; }
   body.p3 .m-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 0 0 12px; }
   body.p3 .mh-title { font-size: 26px; }
-  body.p3 .mh-sub { margin: 0 0 4px; font-size: 12.5px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+  body.p3 .mh-sub { margin: 0 0 4px; font-size: 12.5px; color: var(--muted); font-family: var(--font-mono); }
   body.p3 .mh-search { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
   body.p3 .mh-filter { width: auto; display: flex; gap: 6px; padding: 0 14px; font: inherit; font-weight: 600; }
   body.p3 .mh-fl { display: inline; }
@@ -2575,9 +2575,9 @@ body.fs-open { overflow: hidden; }
 body.p3 .view-toolbar { margin: 0; padding: 0; min-height: 0; border: 0; }
 body.p3 .cal-head { background: var(--surface); color: var(--ink); border-bottom: 1px solid var(--line); }
 body.p3 .cal-head-count { color: var(--muted); }
-body.p3 .cal-month { color: var(--ink); font-family: 'IBM Plex Mono', monospace; }
+body.p3 .cal-month { color: var(--ink); font-family: var(--font-mono); }
 body.p3 .cal-arrow, body.p3 .cal-today-btn { background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
-body.p3 .cal-cnt { background: transparent !important; color: var(--hot); font: 600 10.5px 'IBM Plex Mono', monospace; padding: 0; }
+body.p3 .cal-cnt { background: transparent !important; color: var(--hot); font: 600 10.5px var(--font-mono); padding: 0; }
 body.p3 .cal-cnt::before { content: "●"; margin-right: 1px; }
 body.p3 .cal-cnt.gap { color: #9A5B00; }
 :root[data-theme="dark"] body.p3 .cal-cnt.gap { color: #FCD34D; }
@@ -2813,7 +2813,7 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
 .b-now > * { min-width: 0; }
 .now-card { background: var(--b-blue); color: #FFFFFF; border-radius: 18px; padding: 16px 16px 6px; }
 .nc-top { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; font-weight: 600; opacity: .92; }
-.nc-dd { font: 600 13px 'IBM Plex Mono', monospace; white-space: nowrap; }
+.nc-dd { font: 600 13px var(--font-mono); white-space: nowrap; }
 .nc-title { display: block; width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; padding: 10px 0 2px; cursor: pointer; }
 .nc-title small { display: block; font-size: 12.5px; opacity: .85; margin-bottom: 2px; }
 .nc-title b { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: 19px; line-height: 1.35; letter-spacing: -.01em; }
@@ -2847,7 +2847,7 @@ details.excl > summary { min-height: 44px; display: flex; align-items: center; }
 .nx-t b { font-size: 14px; font-weight: 600; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .nx-t small { font-size: 12px; color: var(--ink-secondary); }
 .nx-t em { font-style: normal; font-size: 11.5px; font-weight: 600; color: var(--ink-secondary); }
-.nx-d { flex: none; font: 600 13px 'IBM Plex Mono', monospace; color: var(--ink-secondary); }
+.nx-d { flex: none; font: 600 13px var(--font-mono); color: var(--ink-secondary); }
 .nx-row.soon .nx-d { color: var(--hot); }
 .b-allbtn { width: 100%; min-height: 48px; padding: 0 12px; border: 1px dashed var(--line); border-radius: 12px; background: none; color: var(--ink-secondary); font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
 .b-allbtn:hover { border-color: var(--b-blue); color: var(--b-blue); }
@@ -3283,7 +3283,7 @@ body.first-load #page-wrap, body.first-load .bottom-nav { visibility: hidden; }
     <ul>
       <li>찜 하트 애니메이션: <a href="https://uiverse.io" target="_blank" rel="noopener">Uiverse.io</a> (MIT License) 수정 사용</li>
       <li>하단 메뉴 아이콘: <a href="https://lucide.dev" target="_blank" rel="noopener">Lucide</a> 기반 (ISC License)</li>
-      <li>글꼴: IBM Plex Sans KR · IBM Plex Mono (SIL Open Font License 1.1)</li>
+      <li>글꼴: Pretendard (SIL Open Font License 1.1)</li>
       <li>선 아이콘: 위 아이콘과 같은 선 굵기로 이 프로젝트에서 직접 그림</li>
     </ul>
     <p class="app-ver contest">2026 가톨릭대학교 생성형 AI 경진대회 출품작 · 시연용 서비스</p>
@@ -6675,7 +6675,7 @@ body.first-load #page-wrap, body.first-load .bottom-nav { visibility: hidden; }
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.23-p3.35";
+  var APP_VERSION = "2026.11.24-p3.36";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {

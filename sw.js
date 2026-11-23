@@ -5,7 +5,7 @@
  * - 글꼴(Google Fonts)은 한 번 받은 것을 다시 써요.
  * 버전을 올리면 예전 저장본은 지워져요. index.html의 APP_VERSION과 같게 맞춰 주세요.
  */
-var VERSION = "2026.11.23-p3.35";
+var VERSION = "2026.11.24-p3.36";
 var SHELL_CACHE = "cuk-kok-shell-" + VERSION;
 var FONT_CACHE = "cuk-kok-fonts-v1";
 var SHELL = [
@@ -61,7 +61,7 @@ self.addEventListener("fetch", function (e) {
   var req = e.request;
   if (req.method !== "GET") return;
   var url = new URL(req.url);
-  if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
+  if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com" || (url.hostname === "cdn.jsdelivr.net" && url.pathname.indexOf("/pretendard") > -1)) {   // p3.36: Pretendard 글꼴도 한 번 받으면 오프라인 보관
     e.respondWith(fontCacheFirst(req));
     return;
   }
