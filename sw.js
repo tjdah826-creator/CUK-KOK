@@ -5,7 +5,7 @@
  * - 글꼴(Google Fonts)은 한 번 받은 것을 다시 써요.
  * 버전을 올리면 예전 저장본은 지워져요. index.html의 APP_VERSION과 같게 맞춰 주세요.
  */
-var VERSION = "2026.11.24-p3.36";
+var VERSION = "2026.11.24-p3.37";
 var SHELL_CACHE = "cuk-kok-shell-" + VERSION;
 var FONT_CACHE = "cuk-kok-fonts-v1";
 var SHELL = [
