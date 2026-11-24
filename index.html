@@ -2937,6 +2937,15 @@ body.first-load #page-wrap, body.first-load .bottom-nav { visibility: hidden; }
 .excl-notsch > b { font-size: 13px; } .excl-notsch > small { color: var(--muted); font-size: 12px; }
 .excl-notsch .excl-list { margin-top: 8px; }
 #hero-slot:empty { display: none; }
+/* p3.39 (투표 1B·2C·3A·5A·6A) */
+.ds-key { margin: 12px 0 6px; padding: 10px 14px; border: 1px solid var(--line, #E5E7EB); border-radius: 14px; background: var(--surface, #fff); display: flex; flex-direction: column; gap: 6px; }
+.ds-key .ki-row { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: baseline; margin: 0; }
+.ds-key dt { font-size: 13px; color: var(--muted); font-weight: 600; }
+.ds-key dd { margin: 0; font-size: 14.5px; color: var(--ink); line-height: 1.45; overflow-wrap: anywhere; }
+.ds-key .ki-dd { display: inline-block; margin-left: 4px; padding: 1px 8px; border-radius: 99px; background: #EEF2FF; color: #3730A3; font-size: 12px; font-weight: 700; }
+:root[data-theme="dark"] .ds-key .ki-dd { background: #1E2A5A; color: #C7D2FE; }
+.plan-more { margin-top: 8px; } .plan-more > summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; font-size: 13px; font-weight: 600; color: var(--muted); }
+.bcol-closed { margin-top: 6px; } .bcol-closed > summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; font-size: 13px; font-weight: 600; color: var(--muted); }
 /* p3.38 (김보민·김재은·김선정 11/23~24) */
 .ai-note { background: var(--line-subtle, #F3F4F6) !important; border-color: var(--line, #E5E7EB) !important; }
 :root[data-theme="dark"] .ai-note { background: rgba(255,255,255,.05) !important; border-color: rgba(255,255,255,.12) !important; }
@@ -3113,8 +3122,13 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
           <option value="delay">졸업유예</option>
           <option value="done">수료</option>
           <option value="transfer">편입생</option>
-          <option value="intl">외국인 유학생</option>
           <option value="grad">졸업생</option>
+        </select>
+      </label>
+      <label class="filter-field">국적   <!-- p3.39 (투표 6A · 김보민 7): 학적과 따로 → '재학 + 외국인 유학생' 같이 선택 -->
+        <select id="p-nation">
+          <option value="kr" selected>내국인</option>
+          <option value="intl">외국인 유학생</option>
         </select>
       </label>
       <label class="filter-field">캠퍼스
@@ -4519,8 +4533,8 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     steps.push({ d: due, t: "마감", s: sub.label || "접수 방식은 원문 확인", last: true });
     return '<div class="sum-block plan"><div class="sum-block-title"><i>0</i>마감에서 거꾸로 짠 준비 계획 <em>예시 일정</em></div><ol class="plan-list">' +
       steps.map(function(x){ return '<li class="' + (x.last ? 'last' : '') + '"><span class="pl-d">' + fmt(x.d) + '</span><span class="pl-t"><b>' + esc(x.t) + '</b><small>' + esc(x.s) + '</small></span></li>'; }).join("") +
-      '</ol>' + tight + '<div class="plan-note">' + (n.prepAI !== undefined && n.prepAI !== n.prep ? '서류 준비 ' + prep + '일은 <b>내가 정한 값</b>이에요 (AI 추정 ' + (n.prepAI || 2) + '일).' : '서류 준비 ' + prep + '일은 AI가 서류 수로 추정한 값이에요. 내 일정에 맞게 조정하세요.') +
-      '<span class="prep-adj"><button type="button" onclick="adjPrep(\'' + esc(n.id) + '\',-1)" aria-label="준비 기간 하루 줄이기">−1일</button><button type="button" onclick="adjPrep(\'' + esc(n.id) + '\',1)" aria-label="준비 기간 하루 늘리기">+1일</button>' + (n.prepAI !== undefined && n.prepAI !== n.prep ? '<button type="button" onclick="adjPrep(\'' + esc(n.id) + '\',0)">AI 값으로</button>' : '') + '</span></div></div>';
+      '</ol>' + tight + '<details class="plan-more"><summary>준비 기간 조정</summary><div class="plan-note">' + (n.prepAI !== undefined && n.prepAI !== n.prep ? '서류 준비 ' + prep + '일은 <b>내가 정한 값</b>이에요 (AI 추정 ' + (n.prepAI || 2) + '일).' : '서류 준비 ' + prep + '일은 AI가 서류 수로 추정한 값이에요. 내 일정에 맞게 조정하세요.') +
+      '<span class="prep-adj"><button type="button" onclick="adjPrep(\'' + esc(n.id) + '\',-1)" aria-label="준비 기간 하루 줄이기">−1일</button><button type="button" onclick="adjPrep(\'' + esc(n.id) + '\',1)" aria-label="준비 기간 하루 늘리기">+1일</button>' + (n.prepAI !== undefined && n.prepAI !== n.prep ? '<button type="button" onclick="adjPrep(\'' + esc(n.id) + '\',0)">AI 값으로</button>' : '') + '</span></div></details></div>';
   }
   function summaryCard(n) {
     var id = n.id || ("d" + (uid++));
@@ -4915,6 +4929,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     var P = window.__PROF || {}, need = [];
     if (stChk(n, P.st)) need.push("학적 확인 필요 (대학생 대상)");
     if (hasaOnly(n)) need.push("해당 학생만 (학사 안내)");
+    if (P.team > 1 && (n.cat === "공모전" || n.cat === "대외활동") && teamRange(n).max === 1) need.push("개인 참가만 가능");   // p3.39 (투표 3A)
     if (P.gpa === null && n.gpa) need.push("평점 " + n.gpa + " 이상 필요");
     if (P.toeic === null && n.toeic) need.push("토익 " + n.toeic + " 이상 필요");
     var sTag = need.length ? '<span class="' + (cls || "cond-tag") + ' score-need" title="내 점수를 넣으면 지원 가능 여부를 바로 알려 드려요">' + esc(need.join(" · ")) + '</span>' : "";
@@ -4943,9 +4958,10 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     var gv = el("p-grade").value, g = gv === "all" ? null : +gv;
     var f = el("p-field").value;
     var s = el("p-status").value;
+    var isIntl = (el("p-nation") && el("p-nation").value === "intl") || s === "intl";   // p3.39 (투표 6A)
     var gpa = readGpa(), toeic = readToeic();
-    window.__PROF = { gpa: gpa, toeic: toeic, st: s };   // p3.30: 카드 태그(평점·토익 비움)용 · p3.33: 학적(졸업생·수료)
     var teamV = el("p-team").value, team = teamV === "all" ? null : +teamV;
+    window.__PROF = { gpa: gpa, toeic: toeic, st: s, team: team, intl: isIntl };   // p3.30: 카드 태그(평점·토익 비움)용 · p3.33: 학적(졸업생·수료)
     var query = (el("live-search").value || "").trim().toLowerCase();
     window.__Q = query;   // p3.35 (정화선 F57): 검색 중에는 목록의 1순위 라벨도 숨김
     var sortOpt = el("sort-select").value;
@@ -4975,7 +4991,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
       if ((ss === "grad" || ss === "done") && grades.length && grades.length < 4) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상" + (n.gradeBasis ? " (원문: " + n.gradeBasis + ")" : "") + " · 졸업생·수료생은 학년 대상 공고에서 뺐어요"];
       if (g !== null && grades.indexOf(g) < 0) return ["학년 조건", "학년: " + grades.join("·") + "학년 대상" + (n.gradeBasis ? " (원문: " + n.gradeBasis + ")" : "")];
       // p3.30 (외국인 유학생 1): 학적이 외국인 유학생이면 대한민국 국적이 필요한 공고는 뺌
-      if (s === "intl" && (n.conds || []).indexOf("국적") > -1) return ["국적 조건", "국적: 대한민국 국적 필요"];
+      if (isIntl && (n.conds || []).indexOf("국적") > -1) return ["국적 조건", "국적: 대한민국 국적 필요"];
       // p3.18 F21: 재입학(제적·자퇴생) 공고는 학적 선택지에 맞는 대상이 없어 추천에서 뺌 ('직접 보기'에서만)
       if (/재입학\s*(모집|신청|접수|안내|원서|대상)/.test(n.t || "") && !/재입학생?도/.test(n.t || "")) return ["학적 조건", "학적: 재입학 대상(제적·자퇴생) · 학적 선택지에 없어 추천에서 뺐어요"];
       // p3.18 (김재은): 학적 기본값 '전체 (재학·휴학)'이면 졸업생·수료생 전용 공고는 뺌
@@ -5046,9 +5062,11 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
       if (HID_IDS.indexOf(n.id) > -1) { hideMine(x); return; }   // p3.23: 내가 숨긴 공고 (보관함에는 그대로)
       var ew = eligWhy(n);
       if (ew) { hide(ew[0], x, ew[1]); return; }
-      if (team !== null && n.cat === "공모전") {   // 팀 인원은 공모전에만 적용 (내가 팀 인원을 골랐을 때만)
+      // p3.39 (투표 3A · 김재은 1·2·6): 팀 전용 공고(최소 2명 이상)는 분류와 상관없이 개인이면 뺌 · 개인 참가만 가능한 공모전은 팀이어도 남기고 '개인 참가만' 표시
+      if (team !== null) {
         var tr = teamRange(n);
-        if (team < tr.min || team > tr.max) { hide("팀 인원 조건 미부합", x, "팀 인원: " + teamText(n)); return; }
+        if (tr.min > 1 && team < tr.min) { hide("팀 인원 조건 미부합", x, "팀 인원: " + teamText(n) + " (팀 전용)"); return; }
+        if (n.cat === "공모전" && tr.max > 1 && team > tr.max) { hide("팀 인원 조건 미부합", x, "팀 인원: " + teamText(n)); return; }
       }
       x.offCat = ints.indexOf(n.cat) < 0;   // 분야 칩은 건수를 센 뒤에 거름
 
@@ -5476,13 +5494,16 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     }
     function boardCol(title, arr, cls, mk, top, moreLabel) {
       top = top || 6;
-      arr = arr.filter(function(x){ return ddText(x) !== "마감됨"; }).concat(arr.filter(function(x){ return ddText(x) === "마감됨"; }));   // p3.34 (정화선 F48): 마감됨은 맨 아래
+      // p3.39 (투표 2C): 오늘 마감 시각이 지난 공고는 'N건' 접기로 (목록·숫자에서 빼고 눌러서 보기)
+      var closedArr = arr.filter(function(x){ return ddText(x) === "마감됨"; });
+      arr = arr.filter(function(x){ return ddText(x) !== "마감됨"; });
+      var closedHtml = closedArr.length ? '<details class="bcol-closed"><summary>마감됨 ' + closedArr.length + '건</summary>' + closedArr.map(mk).join("") + '</details>' : '';
       var items = arr.map(mk), more = items.length - top;
       var lbl = moreLabel ? moreLabel(more) : more + "건 더";
       var liveN = arr.filter(function(x){ return ddText(x) !== "마감됨"; }).length;   // p3.33 (정화선 F40): 마감됨은 숫자에서 뺌
       return '<section class="bcol' + (cls ? ' ' + cls : '') + '"><div class="bcol-h"><b>' + title + '</b><span>' + liveN + '건</span></div>' +   /* p3.34 (정화선 F48) */
         (arr.length ? items.slice(0, top).join("") + (more > 0 ? '<div class="bcol-more">' + items.slice(top).join("") + '</div><button type="button" class="bcol-btn" data-label="' + esc(lbl) + '" onclick="bcolToggle(this,' + more + ')">' + esc(lbl) + '</button>' : '')
-                    : '<p class="bcol-empty">없어요</p>') + '</section>';
+                    : '<p class="bcol-empty">없어요</p>') + closedHtml + '</section>';
     }
     // 1순위(맨 위 큰 카드)는 공고 글로 바로 가는 링크가 있는 공고를 먼저 (p3.14 F03)
     function directFirst(arr) {
@@ -6020,7 +6041,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
 
   // ===== 내 조건 저장 (기기·브라우저별, localStorage) =====
   // 처음 방문하면 모든 조건이 "전체". 저장해 두면 다음에 열 때 그 조건으로 시작해요.
-  var PROFILE_IDS = ["p-grade", "p-field", "p-status", "p-campus", "p-gpa", "p-toeic", "p-team"];
+  var PROFILE_IDS = ["p-grade", "p-field", "p-status", "p-nation", "p-campus", "p-gpa", "p-toeic", "p-team"];
   var PROFILE_KEY = "cuk_profile";
 
   function currentProfile() {
@@ -6033,6 +6054,9 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     return p;
   }
   function applyProfile(p) {
+    // p3.39 (투표 6A): 예전에 학적을 '외국인 유학생'으로 저장했으면 → 학적 재학 + 국적 외국인 유학생
+    if (p && p["p-status"] === "intl") { p = JSON.parse(JSON.stringify(p)); p["p-status"] = "enrolled"; p["p-nation"] = "intl"; }
+    if (p && p["p-nation"] == null && el("p-nation")) el("p-nation").value = "kr";
     PROFILE_IDS.forEach(function(id){
       var sel = el(id);
       if (!p || p[id] == null) return;
@@ -6120,11 +6144,14 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
   function updateMHead() {
     var box = el("m-head"); if (!box) return;
     var g = el("p-grade").value, f = el("p-field").value;
-    var bits = [fmt(TODAY) + " (" + WEEKDAY[TODAY.getDay()] + ")"];
+    // p3.39 (투표 1B): 내 조건 먼저, 날짜는 빼기 → "4학년 · 자연·공학 · 수료 · 바로 지원 12"
+    var bits = [];
     if (g && g !== "all") bits.push(g + "학년");
     if (f && f !== "all" && FIELD[f]) bits.push(FIELD[f]);
     var stv = el("p-status").value;   // p3.30 (외국인 유학생 3): 학적을 골랐으면 요약 줄에도
     if (stv && stv !== "all") { var so = el("p-status").options[el("p-status").selectedIndex]; if (so) bits.push(so.textContent.replace(/\s*\(.*\)$/, "")); }
+    if (el("p-nation") && el("p-nation").value === "intl") bits.push("외국인 유학생");   // p3.39 (투표 6A)
+    if (!bits.length) bits.push(fmt(TODAY) + " (" + WEEKDAY[TODAY.getDay()] + ")");   // 조건을 안 골랐으면 날짜
     var gb = window.GAP_BEST, title;
     if (document.body.classList.contains("prof-on")) title = "내 조건";
     else if (currentTab === "feed") title = el("live-search").value.trim() ? "검색 결과" : VIEW === "plan" && window.P3_NOW ? "오늘의 지원 가이드" : "오늘의 지원 가이드";   // p3.34 (정화선 F42·F49)
@@ -6132,7 +6159,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     else if (currentTab === "bookmark") title = "보관함";
     else if (currentTab === "past") title = "지난 공고";
     else title = "계획 달력";
-    if (currentTab === "feed" && !document.body.classList.contains("prof-on")) bits.unshift(["바로 지원 " + el("n-feed").textContent].concat(+el("n-gap").textContent ? ["갭 보완 " + el("n-gap").textContent] : []).concat(+el("n-bookmark").textContent ? ["보관 " + el("n-bookmark").textContent] : []).join(" · "));
+    if (currentTab === "feed" && !document.body.classList.contains("prof-on")) bits.push(["바로 지원 " + el("n-feed").textContent].concat(+el("n-gap").textContent ? ["갭 보완 " + el("n-gap").textContent] : []).concat(+el("n-bookmark").textContent ? ["보관 " + el("n-bookmark").textContent] : []).join(" · "));
     var nf = (SCOPE !== "all" ? 1 : 0) + (SHOW.d5 ? 1 : 0) + (SHOW.verifiedOnly ? 1 : 0) + (el("live-search").value.trim() ? 1 : 0);
     // p3.34 (정화선 F44) · p3.35 (F56): 칩은 '시연 중' 표시, 끄기는 한 번 더 묻고 · 요약 숫자는 칩 아래 줄
     var demoChip = SHOW.demoMode && currentTab === "feed" ? '<div class="mh-demo-row"><button type="button" class="mh-demo" onclick="if(confirm(\'시연 모드를 끌까요? 시연 공고와 갭 보완 퀘스트가 사라져요.\'))setDemoMode(false)" aria-label="시연 중 (누르면 끌지 물어봐요)">시연 중</button></div>' : '';
@@ -6300,6 +6327,15 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     }
     return "D-" + x.left;
   }
+  // p3.39 (투표 5A): 상세 맨 위 '핵심 정보' 3줄 — 마감 · 접수 방식 · 혜택 (나머지 설명은 아래에서 펼쳐 보기)
+  function keyInfo(n, x, sub, ben) {
+    var dd = x.left === 0 ? "오늘" : "D-" + x.left;
+    var row = function(k, v){ return '<div class="ki-row"><dt>' + k + '</dt><dd>' + v + '</dd></div>'; };
+    return '<dl class="ds-key" aria-label="핵심 정보">' +
+      row("마감", '<b>' + fmt(x.due) + ' (' + WD[x.due.getDay()] + ')' + dueHM(n) + '</b> <span class="ki-dd">' + dd + '</span>') +
+      row("접수", esc(sub.label || "원문 확인")) +
+      row("혜택", esc(ben || n.benefit || "원문 확인")) + '</dl>';
+  }
   // p3.34 (정화선 F50): 마감 시각이 있으면 상세 마감 줄에 같이 (예: 11.26 17:00 마감)
   function dueHM(n) { var t = String(n.dueTime || ""); return /^\d{1,2}:\d{2}$/.test(t) && t !== "23:59" ? " " + t : ""; }
   function dsOrg(n) {
@@ -6315,14 +6351,15 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     var plan = over ? "" : backPlan(n, docsList, sub);
     return '<div class="ds-tags">' + demoTag(n) + '<span class="tag ' + (n.cat === "장학" ? 'sch' : 'primary') + '">' + esc(n.cat) + '</span><span class="tag">' + srcLabel(n) + '</span>' + verifyTag(n) + '</div>' +
       '<h2 class="ds-title" id="ds-title">' + esc(n.t) + '</h2>' +
-      '<p class="ds-org">' + esc(dsOrg(n)) + (ben ? ' · ' + esc(ben) : '') + '</p>' +
+      '<p class="ds-org">' + esc(dsOrg(n)) + (over && ben ? ' · ' + esc(ben) : '') + '</p>' +
       (over ? '' : '<div class="ds-own">' +   // p3.23: 이 기기에만 저장 · p3.30: 마감 시각 지나면 숨김
         '<button type="button" class="own-btn' + (n.id === PIN_ID ? ' on' : '') + '" aria-pressed="' + (n.id === PIN_ID ? 'true' : 'false') + '" onclick="togglePin(\'' + esc(n.id) + '\')">' + (n.id === PIN_ID ? '1순위 고정 풀기' : '1순위로 옮기기') + '</button>' +
         '<button type="button" class="own-btn' + (HID_IDS.indexOf(n.id) > -1 ? ' on' : '') + '" aria-pressed="' + (HID_IDS.indexOf(n.id) > -1 ? 'true' : 'false') + '" onclick="toggleHide(\'' + esc(n.id) + '\')">' + (HID_IDS.indexOf(n.id) > -1 ? '다시 보기' : '숨기기') + '</button></div>') +
       // p3.16 (김재은 의견): '✓ 검증' 공고는 마감 줄에도 '원문 대조 완료' — '확인 필요'와 같이 보이지 않게
+      (over ? '' : keyInfo(n, x, sub, ben)) +   /* p3.39 (투표 5A · 김선정 1): 마감·접수 방식·혜택 3줄 먼저 */
       (over ? '<p class="ds-closed"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg>신청 마감 (' + fmt(x.due) + (/^\d{1,2}:\d{2}$/.test(String(n.dueTime || "")) ? ' ' + esc(n.dueTime) : '') + ')</p>' : n._ver0   /* p3.33 (정화선 F40) */
-        ? '<p class="ds-check"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>' + fmt(x.due) + dueHM(n) + ' 마감 · 원문 대조 완료' + (sub.kind !== "unknown" ? ' · ' + esc(sub.label) : '') + '</p>'
-        : '<p class="ds-check todo"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg>' + fmt(x.due) + dueHM(n) + ' 마감 · ' + esc(sub.label || "접수 방식은 원문 확인") + ' · 운영자 확인 전</p>') +
+        ? '<p class="ds-check"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg>원문 대조 완료</p>'
+        : '<p class="ds-check todo"><svg class="ic" aria-hidden="true"><use href="#i-info"></use></svg>운영자 확인 전 · 원문에서 한 번 더 확인하세요</p>') +
       (n.dowBad ? '<p class="dow-bad">원문 요일 불일치 · 원문 확인 <small>원문 ' + esc(n.dowBad.split("→")[0]) + '요일 · 실제 ' + esc(n.dowBad.split("→")[1]) + '요일</small></p>' : '') +
       (hasaOnly(n) ? '<p class="ds-cond">해당 학생만 보는 학사 안내예요 (예: 계절학기 신청자). 내가 해당하는지 원문에서 먼저 확인하세요</p>' : '') +   /* p3.35 F58 */
       (n.conds && n.conds.length ? '<p class="ds-cond">' + esc(n.conds.join("·")) + ' 조건이 있어요' + (n.region && n.region.length ? ' (원문 거주 지역: ' + esc(n.region.join("·")) + ')' : '') + (n.targets && n.targets.length ? ' (대상: ' + esc(n.targets.join("·")) + ')' : '') + '. 앱이 판정하지 않으니 필수 자격에서 확인하세요</p>' : '') +
@@ -6730,7 +6767,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.24-p3.38";
+  var APP_VERSION = "2026.11.24-p3.39";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
@@ -6831,7 +6868,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
     gnb.appendChild(rp);
     var paint = function(){
       var v = function(id){ var e = $(id); if (!e) return ""; var o = e.options ? e.options[e.selectedIndex] : null; return o ? o.text : e.value; };
-      var bits = [v("p-grade"), v("p-field"), v("p-status")].filter(function(t){ return t && !/^전체/.test(t); });
+      var bits = [v("p-grade"), v("p-field"), v("p-status")].filter(function(t){ return t && !/^전체/.test(t); }).concat(($("p-nation") || {}).value === "intl" ? ["외국인 유학생"] : []);
       var g = ($("p-gpa") || {}).value, t = ($("p-toeic-none") || {}).checked ? "없음" : ($("p-toeic") || {}).value;
       rp.innerHTML = '<b>내 조건</b><span>' + (bits.join(" · ") || "조건 없음 (전체)") + '</span>' +
         '<span>평점 <i>' + (g || "무관") + '</i> · TOEIC <i>' + (t || "무관") + '</i></span>' +
