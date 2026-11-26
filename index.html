@@ -691,6 +691,14 @@
       border: 1px dashed var(--line);
       color: var(--muted);
     }
+    /* p3.40 보관함 빈 화면 · 저장 안내 (이찬준 메모 1·2) */
+    .bm-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px 16px; border-style: solid; }
+    .bm-empty-ic { color: var(--ink-secondary, var(--muted)); }
+    .bm-empty-t { font-size: 16px; color: var(--ink, inherit); }
+    .bm-empty-s { font-size: 13px; color: var(--muted); }
+    .bm-note { grid-column: 1 / -1; margin: 14px 0 0; padding: 14px 16px; border-radius: var(--radius-lg); background: var(--surface-2, rgba(127,127,127,.08)); }
+    .bm-note b { display: block; font-size: 14px; margin-bottom: 4px; }
+    .bm-note p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--muted); }
     /* 시연 데이터 · AI 안내 · 출처 */
     .src-note { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
     .src-note a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
@@ -5726,7 +5734,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
       mountRes();
     }
     if (skipView !== "v-bookmark") {
-      setList("v-bookmark", (bookmarked.length ? '<div class="bm-actions"><button type="button" class="btn-cond" onclick="exportBookmarks()">📅 찜한 공고 ' + bookmarked.length + '건 모두 캘린더에 담기</button><span>마감 3일 전·1일 전 알림도 함께 들어가요<br>알림은 <b>캘린더 앱</b>이 보내 줘요</span></div>' : '') + (VIEW === "plan" ? savedBoard : buildList)(bookmarked, '<div class="empty-state">보관함에 저장된 공고가 없어요. 공고를 눌러 상세를 열고 <b>하트(찜)</b>를 누르면 여기에 모여요.</div>') + '<ul class="keep-note"><li>💡 보관함·서류 체크·내 조건은 <b>이 기기에만</b> 저장돼요.</li><li>인터넷 기록을 지우면 사라질 수 있어요.</li><li>다른 기기로는 내 조건 › <b>저장 내용 옮기기</b></li></ul>');
+      setList("v-bookmark", (bookmarked.length ? '<div class="bm-actions"><button type="button" class="btn-cond" onclick="exportBookmarks()">📅 찜한 공고 ' + bookmarked.length + '건 모두 캘린더에 담기</button><span>마감 3일 전·1일 전 알림도 함께 들어가요<br>알림은 <b>캘린더 앱</b>이 보내 줘요</span></div>' : '') + (VIEW === "plan" ? savedBoard : buildList)(bookmarked, '<div class="empty-state bm-empty"><svg class="bm-empty-ic" viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b class="bm-empty-t">아직 저장한 공고가 없어요.</b><span class="bm-empty-s">관심 있는 공고를 하트로 저장하고 한곳에서 확인해 보세요!</span></div>') + '<div class="bm-note"><b>💡 저장 안내</b><p>저장한 공고와 서류 체크 내용은 현재 기기에 보관돼요. 다른 기기에서는 확인할 수 없으니 참고해 주세요.</p></div>');  /* p3.40 (이찬준 메모 1·2) */
     }
     if (skipView !== "v-past") {
       setList("v-past", buildList(past, '<div class="empty-state">고른 분야·구분에 마감된 공고가 아직 없어요.<br><small>공고는 마감 후 1년 동안 이곳에 모여요.</small></div>'));
@@ -6767,7 +6775,7 @@ details.cmt-rule ul { margin: 4px 0 2px; padding-left: 18px; display: flex; flex
 /* ===== 시안 B · 5단계: 오프라인 실행 (서비스 워커) + 화면 버전 =====
    새로 받기 우선이라 수정본을 올리면 다음 접속에 바로 반영돼요. sw.js의 VERSION과 같게 맞춰 주세요. */
 (function () {
-  var APP_VERSION = "2026.11.24-p3.39";
+  var APP_VERSION = "2026.11.26-p3.40";
   var v = document.getElementById("app-ver");
   if (v) v.textContent = APP_VERSION;
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
